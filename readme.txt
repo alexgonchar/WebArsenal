@@ -1,1 +1,0 @@
-This is WebArsenal computer online store
