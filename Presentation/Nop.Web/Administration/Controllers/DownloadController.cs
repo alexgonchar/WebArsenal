@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Nop.Core.Domain.Media;
 using Nop.Services.Authentication;
-using Nop.Services.Customers;
 using Nop.Services.Media;
+using Nop.Services.Security;
 using Nop.Web.Framework.Controllers;
 
 namespace Nop.Admin.Controllers
@@ -15,11 +15,15 @@ namespace Nop.Admin.Controllers
     public class DownloadController : BaseNopController
     {
         private readonly IDownloadService _downloadService;
+        private readonly IPermissionService _permissionService;
         private readonly IAuthenticationService _authenticationService;
 
-        public DownloadController(IDownloadService downloadService, IAuthenticationService authenticationService)
+        public DownloadController(IDownloadService downloadService,
+             IPermissionService permissionService,
+            IAuthenticationService authenticationService)
         {
             this._downloadService = downloadService;
+            this._permissionService = permissionService;
             this._authenticationService = authenticationService;
         }
 
@@ -53,10 +57,11 @@ namespace Nop.Admin.Controllers
         {
             //insert
             var download = new Download()
-              {
-                  UseDownloadUrl = true,
-                  DownloadUrl = downloadUrl,
-                  IsNew = true
+            {
+                DownloadGuid = Guid.NewGuid(),
+                UseDownloadUrl = true,
+                DownloadUrl = downloadUrl,
+                IsNew = true
               };
             _downloadService.InsertDownload(download);
 
@@ -82,12 +87,13 @@ namespace Nop.Admin.Controllers
                 throw new Exception("User is not authenticated");
 
             var customer = ((FormsAuthenticationService)_authenticationService).GetAuthenticatedCustomerFromTicket(ticket);
-            if (!customer.IsAdmin())
+            if (!_permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel, customer))
                 throw new Exception("User is not admin");
 
 
             var download = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 UseDownloadUrl = false,
                 DownloadUrl = "",
                 DownloadBinary = httpPostedFile.GetDownloadBits(),

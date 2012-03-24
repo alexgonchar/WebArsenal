@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
+using Nop.Core.Domain;
+using Nop.Core.Infrastructure;
 
 namespace Nop.Core
 {
@@ -151,7 +153,21 @@ namespace Nop.Core
         /// <returns>Store host location</returns>
         public virtual string GetStoreHost(bool useSsl)
         {
-            string result = "http://" + ServerVariables("HTTP_HOST");
+            var httpHost = ServerVariables("HTTP_HOST");
+            var result = "";
+            if (!String.IsNullOrEmpty(httpHost))
+            {
+                result = "http://" + httpHost;
+            }
+            else
+            {
+                //HTTP_HOST variable is not available.
+                //It's possible only when HttpContext is not available (for example, running in a schedule task)
+                //so let's resolve StoreInformationSettings here.
+                //Do not inject it via contructor because it'll break the instllation (settings are not available at that moment)
+                var storeSettings = EngineContext.Current.Resolve<StoreInformationSettings>();
+                result = storeSettings.StoreUrl;
+            }
             if (!result.EndsWith("/"))
                 result += "/";
             if (useSsl)
@@ -486,8 +502,9 @@ namespace Nop.Core
         /// <summary>
         /// Restart application domain
         /// </summary>
+        /// <param name="makeRedirect">A value indicating whether </param>
         /// <param name="redirectUrl">Redirect URL; empty string if you want to redirect to the current page URL</param>
-        public virtual void RestartAppDomain(string redirectUrl = "")
+        public virtual void RestartAppDomain(bool makeRedirect = false, string redirectUrl = "")
         {
             if (CommonHelper.GetTrustLevel() > AspNetHostingPermissionLevel.Medium)
             {
@@ -521,12 +538,11 @@ namespace Nop.Core
             // If setting up extensions/modules requires an AppDomain restart, it's very unlikely the
             // current request can be processed correctly.  So, we redirect to the same URL, so that the
             // new request will come to the newly started AppDomain.
-            var httpContext = _httpContext;
-            if (httpContext != null)
+            if (_httpContext != null && makeRedirect)
             {
                 if (String.IsNullOrEmpty(redirectUrl))
                     redirectUrl = GetThisPageUrl(true);
-                httpContext.Response.Redirect(redirectUrl, true /*endResponse*/);
+                _httpContext.Response.Redirect(redirectUrl, true /*endResponse*/);
             }
         }
 

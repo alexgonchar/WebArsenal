@@ -6,6 +6,7 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
+using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
@@ -39,6 +40,7 @@ namespace Nop.Services.Tests.Orders
         IWorkContext _workContext;
         ITaxService _taxService;
         IShippingService _shippingService;
+        IShipmentService _shipmentService;
         IPaymentService _paymentService;
         ICheckoutAttributeParser _checkoutAttributeParser;
         IDiscountService _discountService;
@@ -75,6 +77,7 @@ namespace Nop.Services.Tests.Orders
         CatalogSettings _catalogSettings;
         IOrderProcessingService _orderProcessingService;
         IEventPublisher _eventPublisher;
+        CurrencySettings _currencySettings;
 
         [SetUp]
         public new void SetUp()
@@ -97,6 +100,8 @@ namespace Nop.Services.Tests.Orders
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
 
+            _localizationService = MockRepository.GenerateMock<ILocalizationService>();
+
             //shipping
             _shippingSettings = new ShippingSettings();
             _shippingSettings.ActiveShippingRateComputationMethodSystemNames = new List<string>();
@@ -108,8 +113,10 @@ namespace Nop.Services.Tests.Orders
                 _logger,
                 _productAttributeParser,
                 _checkoutAttributeParser,
+                _localizationService,
                 _shippingSettings, pluginFinder, 
                 _eventPublisher, _shoppingCartSettings);
+            _shipmentService = MockRepository.GenerateMock<IShipmentService>();
             
 
             _paymentService = MockRepository.GenerateMock<IPaymentService>();
@@ -134,7 +141,6 @@ namespace Nop.Services.Tests.Orders
 
             _orderService = MockRepository.GenerateMock<IOrderService>();
             _webHelper = MockRepository.GenerateMock<IWebHelper>();
-            _localizationService= MockRepository.GenerateMock<ILocalizationService>();
             _languageService = MockRepository.GenerateMock<ILanguageService>();
             _productService = MockRepository.GenerateMock<IProductService>();
             _priceFormatter= MockRepository.GenerateMock<IPriceFormatter>();
@@ -162,56 +168,23 @@ namespace Nop.Services.Tests.Orders
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
 
+            _currencySettings = new CurrencySettings();
+
             _orderProcessingService = new OrderProcessingService(_orderService, _webHelper,
                 _localizationService, _languageService,
                 _productService, _paymentService, _logger,
                 _orderTotalCalcService, _priceCalcService, _priceFormatter,
                 _productAttributeParser, _productAttributeFormatter,
                 _giftCardService, _shoppingCartService, _checkoutAttributeFormatter,
-                _shippingService, _taxService,
+                _shippingService, _shipmentService, _taxService,
                 _customerService, _discountService,
                 _encryptionService, _workContext, _workflowMessageService,
                 _smsService, _customerActivityService, _currencyService,
                 _eventPublisher, _paymentSettings, _rewardPointsSettings,
-                _orderSettings, _taxSettings, _localizationSettings);
+                _orderSettings, _taxSettings, _localizationSettings,
+                _currencySettings);
         }
-
-        [Test]
-        public void Ensure_order_can_only_be_shipped_when_orderStatus_is_not_cancelled_and_its_not_shipped_yet()
-        {
-            var order = new Order();
-            foreach (OrderStatus os in Enum.GetValues(typeof(OrderStatus)))
-                foreach (PaymentStatus ps in Enum.GetValues(typeof(PaymentStatus)))
-                    foreach (ShippingStatus ss in Enum.GetValues(typeof(ShippingStatus)))
-                    {
-                        order.OrderStatus = os;
-                        order.PaymentStatus = ps;
-                        order.ShippingStatus = ss;
-                        if (os != OrderStatus.Cancelled && ss == ShippingStatus.NotYetShipped)
-                            _orderProcessingService.CanShip(order).ShouldBeTrue();
-                        else
-                            _orderProcessingService.CanShip(order).ShouldBeFalse();
-                    }
-        }
-
-        [Test]
-        public void Ensure_order_can_only_be_delivered_when_orderStatus_is_not_cancelled_and_its_already_shipped()
-        {
-            var order = new Order();
-            foreach (OrderStatus os in Enum.GetValues(typeof(OrderStatus)))
-                foreach (PaymentStatus ps in Enum.GetValues(typeof(PaymentStatus)))
-                    foreach (ShippingStatus ss in Enum.GetValues(typeof(ShippingStatus)))
-                    {
-                        order.OrderStatus = os;
-                        order.PaymentStatus = ps;
-                        order.ShippingStatus = ss;
-                        if (os != OrderStatus.Cancelled && ss == ShippingStatus.Shipped)
-                            _orderProcessingService.CanDeliver(order).ShouldBeTrue();
-                        else
-                            _orderProcessingService.CanDeliver(order).ShouldBeFalse();
-                    }
-        }
-
+        
         [Test]
         public void Ensure_order_can_only_be_cancelled_when_orderStatus_is_not_cancelled_yet()
         {

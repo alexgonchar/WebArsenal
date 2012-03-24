@@ -59,7 +59,7 @@ namespace Nop.Admin.Controllers
 
             var queuedEmails = _queuedEmailService.SearchEmails(model.SearchFromEmail, model.SearchToEmail, 
                 startDateValue, endDateValue, 
-                model.SearchLoadNotSent, model.SearchMaxSentTries, 
+                model.SearchLoadNotSent, model.SearchMaxSentTries, true,
                 command.Page - 1, command.PageSize);
             var gridModel = new GridModel<QueuedEmailModel>
             {
@@ -183,27 +183,20 @@ namespace Nop.Admin.Controllers
 			return RedirectToAction("List");
 		}
 
-        //TODO: currently, only records within current page are passed, 
-        //need to somehow pass all of the records
-        [HttpPost, ActionName("List")]
-        [FormValueRequired("delete-selected")]
-        public ActionResult DeleteSelected(QueuedEmailListModel model, ICollection<int> checkedRecords)
+        [HttpPost]
+        public ActionResult DeleteSelected(ICollection<int> selectedIds)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMessageQueue))
                 return AccessDeniedView();
 
-            if (checkedRecords != null)
+            if (selectedIds != null)
             {
-                foreach (var queuedEmailId in checkedRecords)
-                {
-                    var queuedEmail = _queuedEmailService.GetQueuedEmailById(queuedEmailId);
+                var queuedEmails = _queuedEmailService.GetQueuedEmailsByIds(selectedIds.ToArray());
+                foreach (var queuedEmail in queuedEmails)
                     _queuedEmailService.DeleteQueuedEmail(queuedEmail);
-                }
             }
 
-            //return View(model);
-            //refresh page 
-            return List();
+            return Json(new { Result = true });
         }
 	}
 }

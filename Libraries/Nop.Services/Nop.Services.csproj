@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus, Version=2.9.0.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+    <Reference Include="EPPlus, Version=3.0.0.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EPPlus.2.9.0.1\lib\2.0\EPPlus.dll</HintPath>
+      <HintPath>..\..\packages\EPPlus.3.0.0.2\lib\net20\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -47,7 +47,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Microsoft ASP.NET\ASP.NET MVC 3\Assemblies\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\aspnetmvc\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -199,6 +199,7 @@
     <Compile Include="Orders\CheckoutAttributeParser.cs" />
     <Compile Include="Orders\CheckoutAttributeService.cs" />
     <Compile Include="Orders\EventPublisherExtensions.cs" />
+    <Compile Include="Orders\OrderExtensions.cs" />
     <Compile Include="Orders\IOrderReportService.cs" />
     <Compile Include="Orders\OrderReportService.cs" />
     <Compile Include="Orders\IOrderProcessingService.cs" />
@@ -261,6 +262,8 @@
     <Compile Include="Seo\ISitemapGenerator.cs" />
     <Compile Include="Seo\SitemapGenerator.cs" />
     <Compile Include="Seo\UpdateFrequency.cs" />
+    <Compile Include="Shipping\IShipmentService.cs" />
+    <Compile Include="Shipping\ShipmentService.cs" />
     <Compile Include="Shipping\ShippingExtentions.cs" />
     <Compile Include="Shipping\IShippingService.cs" />
     <Compile Include="Shipping\GetShippingOptionRequest.cs" />
@@ -268,6 +271,9 @@
     <Compile Include="Shipping\IShippingRateComputationMethod.cs" />
     <Compile Include="Shipping\ShippingRateComputationMethodType.cs" />
     <Compile Include="Shipping\ShippingService.cs" />
+    <Compile Include="Shipping\Tracking\ShipmentStatusEvent.cs" />
+    <Compile Include="Shipping\Tracking\GeneralShipmentTracker.cs" />
+    <Compile Include="Shipping\Tracking\IShipmentTracker.cs" />
     <Compile Include="Tasks\ScheduleTaskService.cs" />
     <Compile Include="Tasks\IScheduleTaskService.cs" />
     <Compile Include="Tasks\ITask.cs" />
@@ -340,9 +346,6 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferenceUrl Include="http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl">

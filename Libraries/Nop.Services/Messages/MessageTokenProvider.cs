@@ -23,6 +23,7 @@ using Nop.Services.Directory;
 using Nop.Services.Forums;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
+using Nop.Services.Media;
 using Nop.Services.Orders;
 using Nop.Services.Seo;
 
@@ -40,6 +41,8 @@ namespace Nop.Services.Messages
         private readonly ICurrencyService _currencyService;
         private readonly IWebHelper _webHelper;
         private readonly IWorkContext _workContext;
+        private readonly IDownloadService _downloadService;
+        private readonly IOrderService _orderService;
 
         private readonly StoreInformationSettings _storeSettings;
         private readonly MessageTemplatesSettings _templatesSettings;
@@ -55,7 +58,8 @@ namespace Nop.Services.Messages
             ILocalizationService localizationService, IDateTimeHelper dateTimeHelper,
             IEmailAccountService emailAccountService,
             IPriceFormatter priceFormatter, ICurrencyService currencyService,IWebHelper webHelper,
-            IWorkContext workContext,
+            IWorkContext workContext, IDownloadService downloadService,
+            IOrderService orderService,
             StoreInformationSettings storeSettings, MessageTemplatesSettings templatesSettings,
             EmailAccountSettings emailAccountSettings, CatalogSettings catalogSettings,
             TaxSettings taxSettings)
@@ -68,6 +72,8 @@ namespace Nop.Services.Messages
             this._currencyService = currencyService;
             this._webHelper = webHelper;
             this._workContext = workContext;
+            this._downloadService = downloadService;
+            this._orderService = orderService;
 
             this._storeSettings = storeSettings;
             this._templatesSettings = templatesSettings;
@@ -122,12 +128,11 @@ namespace Nop.Services.Messages
 
                 sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
                 //add download link
-                var orderProcessingService = EngineContext.Current.Resolve<IOrderProcessingService>();
-                if (orderProcessingService.IsDownloadAllowed(opv))
+                if (_downloadService.IsDownloadAllowed(opv))
                 {
                     //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
                     string downloadUrl = string.Format("{0}download/getdownload?opvId={1}", _webHelper.GetStoreLocation(false), opv.OrderProductVariantGuid);
-                    string downloadLink = string.Format("<a class=\"link\" href=\"{0}\">{1}</a>", downloadUrl, _localizationService.GetResource("Messages.Order.Products(s).Download", languageId));
+                    string downloadLink = string.Format("<a class=\"link\" href=\"{0}\">{1}</a>", downloadUrl, _localizationService.GetResource("Messages.Order.Product(s).Download", languageId));
                     sb.AppendLine("&nbsp;&nbsp;(");
                     sb.AppendLine(downloadLink);
                     sb.AppendLine(")");
@@ -385,6 +390,78 @@ namespace Nop.Services.Messages
             return result;
         }
 
+        /// <summary>
+        /// Convert a collection to a HTML table
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <returns>HTML table of products</returns>
+        protected virtual string ProductListToHtmlTable(Shipment shipment, int languageId)
+        {
+            var result = "";
+
+            var language = _languageService.GetLanguageById(languageId);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<table border=\"0\" style=\"width:100%;\">");
+
+            #region Products
+            sb.AppendLine(string.Format("<tr style=\"background-color:{0};text-align:center;\">", _templatesSettings.Color1));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Name", languageId)));
+            sb.AppendLine(string.Format("<th>{0}</th>", _localizationService.GetResource("Messages.Order.Product(s).Quantity", languageId)));
+            sb.AppendLine("</tr>");
+
+            var table = shipment.ShipmentOrderProductVariants.ToList();
+            for (int i = 0; i <= table.Count - 1; i++)
+            {
+                var sopv = table[i];
+                var opv = _orderService.GetOrderProductVariantById(sopv.OrderProductVariantId);
+                if (opv == null)
+                    continue;
+
+                var productVariant = opv.ProductVariant;
+                if (productVariant == null)
+                    continue;
+
+                sb.AppendLine(string.Format("<tr style=\"background-color: {0};text-align: center;\">", _templatesSettings.Color2));
+                //product name
+                string productName = "";
+                //product name
+                if (!String.IsNullOrEmpty(opv.ProductVariant.GetLocalized(x => x.Name, languageId)))
+                    productName = string.Format("{0} ({1})", opv.ProductVariant.Product.GetLocalized(x => x.Name, languageId), opv.ProductVariant.GetLocalized(x => x.Name, languageId));
+                else
+                    productName = opv.ProductVariant.Product.GetLocalized(x => x.Name, languageId);
+
+                sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
+                //attributes
+                if (!String.IsNullOrEmpty(opv.AttributeDescription))
+                {
+                    sb.AppendLine("<br />");
+                    sb.AppendLine(opv.AttributeDescription);
+                }
+                //sku
+                if (_catalogSettings.ShowProductSku)
+                {
+                    if (!String.IsNullOrEmpty(opv.ProductVariant.Sku))
+                    {
+                        sb.AppendLine("<br />");
+                        string sku = string.Format(_localizationService.GetResource("Messages.Order.Product(s).SKU", languageId), HttpUtility.HtmlEncode(opv.ProductVariant.Sku));
+                        sb.AppendLine(sku);
+                    }
+                }
+                sb.AppendLine("</td>");
+
+                sb.AppendLine(string.Format("<td style=\"padding: 0.6em 0.4em;text-align: center;\">{0}</td>", sopv.Quantity));
+
+                sb.AppendLine("</tr>");
+            }
+            #endregion
+            
+            sb.AppendLine("</table>");
+            result = sb.ToString();
+            return result;
+        }
+
         #endregion
 
         #region Methods
@@ -435,7 +512,6 @@ namespace Nop.Services.Messages
             tokens.Add(new Token("Order.ShippingCountry", order.ShippingAddress != null && order.ShippingAddress.Country != null ? order.ShippingAddress.Country.GetLocalized(x => x.Name) : ""));
 
 
-            tokens.Add(new Token("Order.TrackingNumber", order.TrackingNumber));
             tokens.Add(new Token("Order.VatNumber", order.VatNumber));
 
             tokens.Add(new Token("Order.Product(s)", ProductListToHtmlTable(order, languageId), true));
@@ -453,6 +529,18 @@ namespace Nop.Services.Messages
 
             //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
             tokens.Add(new Token("Order.OrderURLForCustomer", string.Format("{0}orderdetails/{1}", _webHelper.GetStoreLocation(false), order.Id), true));
+        }
+
+        public virtual void AddShipmentTokens(IList<Token> tokens, Shipment shipment, int languageId)
+        {
+            tokens.Add(new Token("Shipment.ShipmentNumber", shipment.Id.ToString()));
+            tokens.Add(new Token("Shipment.Product(s)", ProductListToHtmlTable(shipment, languageId), true));
+            tokens.Add(new Token("Shipment.URLForCustomer", string.Format("{0}orderdetails/shipment/{1}", _webHelper.GetStoreLocation(false), shipment.Id), true));
+        }
+
+        public virtual void AddOrderNoteTokens(IList<Token> tokens, OrderNote orderNote)
+        {
+            tokens.Add(new Token("Order.NewNoteText", orderNote.FormatOrderNoteText(), true));
         }
 
         public virtual void AddReturnRequestTokens(IList<Token> tokens, ReturnRequest returnRequest, OrderProductVariant opv)
@@ -638,11 +726,14 @@ namespace Nop.Services.Messages
                 "%Order.ShippingStateProvince%",
                 "%Order.ShippingZipPostalCode%", 
                 "%Order.ShippingCountry%",
-                "%Order.TrackingNumber%",
                 "%Order.VatNumber%", 
                 "%Order.Product(s)%",
                 "%Order.CreatedOn%",
                 "%Order.OrderURLForCustomer%",
+                "%Order.NewNoteText%",
+                "%Shipment.ShipmentNumber%",
+                "%Shipment.Product(s)%",
+                "%Shipment.URLForCustomer%",
                 "%ReturnRequest.ID%", 
                 "%ReturnRequest.Product.Quantity%",
                 "%ReturnRequest.Product.Name%", 

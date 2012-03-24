@@ -11,6 +11,7 @@ using Nop.Core.Domain.Shipping;
 using Nop.Core.Events;
 using Nop.Core.Plugins;
 using Nop.Services.Catalog;
+using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Orders;
 
@@ -35,6 +36,7 @@ namespace Nop.Services.Shipping
         private readonly ILogger _logger;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly ICheckoutAttributeParser _checkoutAttributeParser;
+        private readonly ILocalizationService _localizationService;
         private readonly ShippingSettings _shippingSettings;
         private readonly IPluginFinder _pluginFinder;
         private readonly IEventPublisher _eventPublisher;
@@ -52,6 +54,7 @@ namespace Nop.Services.Shipping
         /// <param name="logger">Logger</param>
         /// <param name="productAttributeParser">Product attribute parser</param>
         /// <param name="checkoutAttributeParser">Checkout attribute parser</param>
+        /// <param name="localizationService">Localization service</param>
         /// <param name="shippingSettings">Shipping settings</param>
         /// <param name="pluginFinder">Plugin finder</param>
         /// <param name="eventPublisher">Event published</param>
@@ -61,6 +64,7 @@ namespace Nop.Services.Shipping
             ILogger logger,
             IProductAttributeParser productAttributeParser,
             ICheckoutAttributeParser checkoutAttributeParser,
+            ILocalizationService localizationService,
             ShippingSettings shippingSettings,
             IPluginFinder pluginFinder,
             IEventPublisher eventPublisher,
@@ -71,6 +75,7 @@ namespace Nop.Services.Shipping
             this._logger = logger;
             this._productAttributeParser = productAttributeParser;
             this._checkoutAttributeParser = checkoutAttributeParser;
+            this._localizationService = localizationService;
             this._shippingSettings = shippingSettings;
             this._pluginFinder = pluginFinder;
             this._eventPublisher = eventPublisher;
@@ -320,17 +325,17 @@ namespace Nop.Services.Shipping
             
             //create a package
             var getShippingOptionRequest = CreateShippingOptionRequest(cart, shippingAddress);
-            var shippingRateComputationMethods = LoadActiveShippingRateComputationMethods();
+            var shippingRateComputationMethods = LoadActiveShippingRateComputationMethods()
+                .Where(srcm => 
+                    String.IsNullOrWhiteSpace(allowedShippingRateComputationMethodSystemName) || 
+                    allowedShippingRateComputationMethodSystemName.Equals(srcm.PluginDescriptor.SystemName, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
             if (shippingRateComputationMethods.Count == 0)
                 throw new NopException("Shipping rate computation method could not be loaded");
 
             //get shipping options
             foreach (var srcm in shippingRateComputationMethods)
             {
-                if (!String.IsNullOrWhiteSpace(allowedShippingRateComputationMethodSystemName) &&
-                   !allowedShippingRateComputationMethodSystemName.Equals(srcm.PluginDescriptor.SystemName, StringComparison.InvariantCultureIgnoreCase))
-                    continue;
-
                 var getShippingOptionResponse = srcm.GetShippingOptions(getShippingOptionRequest);
                 foreach (var so2 in getShippingOptionResponse.ShippingOptions)
                 {
@@ -353,10 +358,16 @@ namespace Nop.Services.Shipping
                 }
             }
 
-
+            if (_shippingSettings.ReturnValidOptionsIfThereAreAny)
+            {
+                //return valid options if there are any (no matter of the errors returned by other shipping rate compuation methods).
+                if (result.ShippingOptions.Count > 0 && result.Errors.Count > 0)
+                    result.Errors.Clear();
+            }
+            
             //no shipping options loaded
             if (result.ShippingOptions.Count == 0 && result.Errors.Count == 0)
-                result.Errors.Add("Shipping options could not be loaded");
+                result.Errors.Add(_localizationService.GetResource("Checkout.ShippingOptionCouldNotBeLoaded"));
             
             return result;
         }

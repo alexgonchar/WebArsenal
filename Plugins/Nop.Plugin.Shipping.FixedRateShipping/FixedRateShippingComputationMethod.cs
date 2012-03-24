@@ -6,6 +6,7 @@ using Nop.Core.Plugins;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Shipping;
+using Nop.Services.Shipping.Tracking;
 
 namespace Nop.Plugin.Shipping.FixedRateShipping
 {
@@ -152,6 +153,19 @@ namespace Nop.Plugin.Shipping.FixedRateShipping
             get
             {
                 return ShippingRateComputationMethodType.Offline;
+            }
+        }
+        
+        /// <summary>
+        /// Gets a shipment tracker
+        /// </summary>
+        public IShipmentTracker ShipmentTracker
+        {
+            get
+            {
+                //uncomment a line below to return a general shipment tracker (finds an appropriate tracker by tracking number)
+                //return new GeneralShipmentTracker(EngineContext.Current.Resolve<ITypeFinder>());
+                return null;
             }
         }
 

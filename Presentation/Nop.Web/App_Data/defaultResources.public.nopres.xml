@@ -51,6 +51,9 @@
 			<LocaleResource Name="Avatar">
 				<Value>Avatar</Value>
 				<Children>
+          <LocaleResource Name="MaximumUploadedFileSize">
+            <Value>Maximum avatar size is {0} bytes</Value>
+          </LocaleResource>
 					<LocaleResource Name="RemoveAvatar">
 						<Value>Remove avatar</Value>
 					</LocaleResource>
@@ -1087,6 +1090,9 @@
 			<LocaleResource Name="ShippingMethod">
 				<Value>Shipping method</Value>
 			</LocaleResource>
+      <LocaleResource Name="ShippingOptionCouldNotBeLoaded">
+        <Value>Shipping options could not be loaded</Value>
+      </LocaleResource>
 			<LocaleResource Name="ShipToThisAddress">
 				<Value>Ship to this address</Value>
 			</LocaleResource>
@@ -1319,6 +1325,9 @@
 					<LocaleResource Name="Datepicker">
 						<Value>Date picker</Value>
 					</LocaleResource>
+          <LocaleResource Name="FileUpload">
+            <Value>File upload</Value>
+          </LocaleResource>
 				</Children>
 			</LocaleResource>
 			<LocaleResource Name="Nop.Core.Domain.Catalog.BackorderMode">
@@ -1385,11 +1394,17 @@
 					<LocaleResource Name="Position">
 						<Value>Position</Value>
 					</LocaleResource>
-					<LocaleResource Name="Name">
-						<Value>Name</Value>
+					<LocaleResource Name="NameAsc">
+						<Value>Name: A to Z</Value>
 					</LocaleResource>
-					<LocaleResource Name="Price">
-						<Value>Price</Value>
+					<LocaleResource Name="NameDesc">
+						<Value>Name: Z to A</Value>
+					</LocaleResource>
+					<LocaleResource Name="PriceAsc">
+						<Value>Price: Low to High</Value>
+					</LocaleResource>
+					<LocaleResource Name="PriceDesc">
+						<Value>Price: High to Low</Value>
 					</LocaleResource>
 					<LocaleResource Name="CreatedOn">
 						<Value>Created on</Value>
@@ -1695,6 +1710,9 @@
 					<LocaleResource Name="NotYetShipped">
 						<Value>Not yet shipped</Value>
 					</LocaleResource>
+          <LocaleResource Name="PartiallyShipped">
+            <Value>Partially shipped</Value>
+          </LocaleResource>
 					<LocaleResource Name="Shipped">
 						<Value>Shipped</Value>
 					</LocaleResource>
@@ -2365,9 +2383,6 @@
 			<LocaleResource Name="BillingAddress">
 				<Value>Billing Address</Value>
 			</LocaleResource>
-			<LocaleResource Name="DeliveredOn">
-				<Value>Delivered on</Value>
-			</LocaleResource>
 			<LocaleResource Name="Email">
 				<Value>Email</Value>
 			</LocaleResource>
@@ -2390,12 +2405,6 @@
 						<Value>Note</Value>
 					</LocaleResource>
 				</Children>
-			</LocaleResource>
-			<LocaleResource Name="NotYetDelivered">
-				<Value>Not delivered yet</Value>
-			</LocaleResource>
-			<LocaleResource Name="NotYetShipped">
-				<Value>Not shipped yet</Value>
 			</LocaleResource>
 			<LocaleResource Name="Order#">
 				<Value>Order #</Value>
@@ -2461,11 +2470,85 @@
 			<LocaleResource Name="RewardPoints">
 				<Value>{0} reward points</Value>
 			</LocaleResource>
-			<LocaleResource Name="ShippedOn">
-				<Value>Shipped on</Value>
-			</LocaleResource>
 			<LocaleResource Name="Reorder">
 				<Value>Re-order</Value>
+			</LocaleResource>
+      <LocaleResource Name="Shipments">
+        <Value>Shipments</Value>
+        <Children>
+          <LocaleResource Name="DeliveryDate">
+            <Value>Date delivered</Value>
+            <Children>
+              <LocaleResource Name="NotYet">
+                <Value>Not yet</Value>
+              </LocaleResource>
+            </Children>
+          </LocaleResource>
+          <LocaleResource Name="Email">
+            <Value>Email</Value>
+          </LocaleResource>
+          <LocaleResource Name="Fax">
+            <Value>Fax</Value>
+          </LocaleResource>
+          <LocaleResource Name="ID">
+            <Value>Shipment #</Value>
+          </LocaleResource>
+          <LocaleResource Name="Information">
+            <Value>Shipment #{0}</Value>
+          </LocaleResource>
+          <LocaleResource Name="Order#">
+            <Value>Order #</Value>
+          </LocaleResource>
+          <LocaleResource Name="Phone">
+            <Value>Phone</Value>
+          </LocaleResource>
+          <LocaleResource Name="Product(s)">
+            <Value>Shipped product(s)</Value>
+            <Children>
+              <LocaleResource Name="SKU">
+                <Value>SKU</Value>
+              </LocaleResource>
+              <LocaleResource Name="Name">
+                <Value>Name</Value>
+              </LocaleResource>
+              <LocaleResource Name="Quantity">
+                <Value>Qty shipped</Value>
+              </LocaleResource>
+            </Children>
+          </LocaleResource>
+          <LocaleResource Name="ShippedDate">
+            <Value>Date shipped</Value>
+          </LocaleResource>
+          <LocaleResource Name="ShippingAddress">
+            <Value>Shipping Address</Value>
+          </LocaleResource>
+          <LocaleResource Name="ShippingMethod">
+            <Value>Shipping Method</Value>
+          </LocaleResource>
+          <LocaleResource Name="TrackingNumber">
+            <Value>Tracking number</Value>
+          </LocaleResource>
+          <LocaleResource Name="ViewDetails">
+            <Value>View details</Value>
+          </LocaleResource>
+        </Children>
+      </LocaleResource>
+			<LocaleResource Name="ShipmentStatusEvents">
+				<Value>Shipment status events</Value>
+				<Children>
+					<LocaleResource Name="Event">
+						<Value>Event</Value>
+					</LocaleResource>
+					<LocaleResource Name="Location">
+						<Value>Location</Value>
+					</LocaleResource>
+					<LocaleResource Name="Country">
+						<Value>Country</Value>
+					</LocaleResource>
+					<LocaleResource Name="Date">
+						<Value>Date</Value>
+					</LocaleResource>
+				</Children>
 			</LocaleResource>
 			<LocaleResource Name="Shipping">
 				<Value>Shipping</Value>
@@ -2490,9 +2573,6 @@
 			</LocaleResource>
 			<LocaleResource Name="TotalDiscount">
 				<Value>Discount</Value>
-			</LocaleResource>
-			<LocaleResource Name="TrackingNumber">
-				<Value>Tracking number</Value>
 			</LocaleResource>
 			<LocaleResource Name="VATNumber">
 				<Value>VAT number</Value>
@@ -2576,6 +2656,9 @@
 			<LocaleResource Name="SendPM">
 				<Value>Post a private message</Value>
 			</LocaleResource>
+      <LocaleResource Name="ShipmentDetails">
+        <Value>Shipment details</Value>
+      </LocaleResource>
 			<LocaleResource Name="ShoppingCart">
 				<Value>Shopping Cart</Value>
 			</LocaleResource>
@@ -2769,7 +2852,7 @@
 				<Value>Name: {0}</Value>
 			</LocaleResource>
 			<LocaleResource Name="Order">
-				<Value>Order</Value>
+				<Value>Order #{0}</Value>
 			</LocaleResource>
 			<LocaleResource Name="Phone">
 				<Value>Phone: {0}</Value>
@@ -2780,6 +2863,9 @@
 			<LocaleResource Name="QTY">
 				<Value>Quantity</Value>
 			</LocaleResource>
+      <LocaleResource Name="Shipment">
+        <Value>Shipment #{0}</Value>
+      </LocaleResource>
 			<LocaleResource Name="ShippingMethod">
 				<Value>Shipping method: {0}</Value>
 			</LocaleResource>
@@ -2793,6 +2879,9 @@
 			<LocaleResource Name="OnlyRegisteredUsersVote">
 				<Value>Only registered users can vote.</Value>
 			</LocaleResource>
+      <LocaleResource Name="SelectAnswer">
+        <Value>Please select an answer</Value>
+      </LocaleResource>
 			<LocaleResource Name="Title">
 				<Value>Community poll</Value>
 			</LocaleResource>
@@ -3138,6 +3227,9 @@
 			<LocaleResource Name="ProductHasBeenAddedToTheCart">
 				<Value>The product has been added to the cart</Value>
 			</LocaleResource>
+			<LocaleResource Name="ProductHasBeenAddedToTheWishlist">
+				<Value>The product has been added to the wishlist</Value>
+			</LocaleResource>
 			<LocaleResource Name="Qty">
 				<Value>Qty</Value>
 			</LocaleResource>
@@ -3432,6 +3524,9 @@
 			<LocaleResource Name="Category">
 				<Value>Category</Value>
 			</LocaleResource>
+			<LocaleResource Name="IncludeSubCategories">
+				<Value>Automatically search sub categories</Value>
+			</LocaleResource>
 			<LocaleResource Name="Manufacturer">
 				<Value>Manufacturer</Value>
 			</LocaleResource>
@@ -3556,6 +3651,9 @@
 			<LocaleResource Name="ItemYouSave">
 				<Value>You save</Value>
 			</LocaleResource>
+      <LocaleResource Name="MaximumUploadedFileSize">
+        <Value>Maximum file size is {0} KB</Value>
+      </LocaleResource>
 			<LocaleResource Name="MaximumQuantity">
 				<Value>The maximum quantity allowed for purchase is {0}.</Value>
 			</LocaleResource>
@@ -3689,10 +3787,6 @@
 			<LocaleResource Name="WishlistDisabled">
 				<Value>Wishlist is disabled for this product</Value>
 			</LocaleResource>
-		</Children>
-	</LocaleResource>
-	<LocaleResource Name="ShoppingCartWarning">
-		<Children>
 		</Children>
 	</LocaleResource>
 	<LocaleResource Name="Sitemap">

@@ -7,6 +7,7 @@ using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
+using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Logging;
@@ -52,6 +53,7 @@ namespace Nop.Services.Orders
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICheckoutAttributeFormatter _checkoutAttributeFormatter;
         private readonly IShippingService _shippingService;
+        private readonly IShipmentService _shipmentService;
         private readonly ITaxService _taxService;
         private readonly ICustomerService _customerService;
         private readonly IDiscountService _discountService;
@@ -60,7 +62,7 @@ namespace Nop.Services.Orders
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly ISmsService _smsService;
         private readonly ICustomerActivityService _customerActivityService;
-        private readonly ICurrencyService _currencyService; 
+        private readonly ICurrencyService _currencyService;
         private readonly IEventPublisher _eventPublisher;
 
         private readonly PaymentSettings _paymentSettings;
@@ -68,6 +70,7 @@ namespace Nop.Services.Orders
         private readonly OrderSettings _orderSettings;
         private readonly TaxSettings _taxSettings;
         private readonly LocalizationSettings _localizationSettings;
+        private readonly CurrencySettings _currencySettings;
 
         #endregion
 
@@ -92,6 +95,7 @@ namespace Nop.Services.Orders
         /// <param name="shoppingCartService">Shopping cart service</param>
         /// <param name="checkoutAttributeFormatter">Checkout attribute service</param>
         /// <param name="shippingService">Shipping service</param>
+        /// <param name="shipmentService">Shipment service</param>
         /// <param name="taxService">Tax service</param>
         /// <param name="customerService">Customer service</param>
         /// <param name="discountService">Discount service</param>
@@ -107,6 +111,7 @@ namespace Nop.Services.Orders
         /// <param name="orderSettings">Order settings</param>
         /// <param name="taxSettings">Tax settings</param>
         /// <param name="localizationSettings">Localization settings</param>
+        /// <param name="currencySettings">Currency settings</param>
         public OrderProcessingService(IOrderService orderService,
             IWebHelper webHelper,
             ILocalizationService localizationService,
@@ -123,6 +128,7 @@ namespace Nop.Services.Orders
             IShoppingCartService shoppingCartService,
             ICheckoutAttributeFormatter checkoutAttributeFormatter,
             IShippingService shippingService,
+            IShipmentService shipmentService,
             ITaxService taxService,
             ICustomerService customerService,
             IDiscountService discountService,
@@ -137,7 +143,8 @@ namespace Nop.Services.Orders
             RewardPointsSettings rewardPointsSettings,
             OrderSettings orderSettings,
             TaxSettings taxSettings,
-            LocalizationSettings localizationSettings)
+            LocalizationSettings localizationSettings,
+            CurrencySettings currencySettings)
         {
             this._orderService = orderService;
             this._webHelper = webHelper;
@@ -157,6 +164,7 @@ namespace Nop.Services.Orders
             this._workContext = workContext;
             this._workflowMessageService = workflowMessageService;
             this._shippingService = shippingService;
+            this._shipmentService = shipmentService;
             this._taxService = taxService;
             this._customerService = customerService;
             this._discountService = discountService;
@@ -170,6 +178,7 @@ namespace Nop.Services.Orders
             this._orderSettings = orderSettings;
             this._taxSettings = taxSettings;
             this._localizationSettings = localizationSettings;
+            this._currencySettings = currencySettings;
         }
 
         #endregion
@@ -348,7 +357,8 @@ namespace Nop.Services.Orders
 
             if (order.OrderStatus == OrderStatus.Pending)
             {
-                if (order.ShippingStatus == ShippingStatus.Shipped ||
+                if (order.ShippingStatus == ShippingStatus.PartiallyShipped || 
+                    order.ShippingStatus == ShippingStatus.Shipped ||
                     order.ShippingStatus == ShippingStatus.Delivered)
                 {
                     SetOrderStatus(order, OrderStatus.Processing, false);
@@ -360,7 +370,7 @@ namespace Nop.Services.Orders
             {
                 if (order.PaymentStatus == PaymentStatus.Paid)
                 {
-                    if (!CanShip(order) && !CanDeliver(order))
+                    if (!OrderHasItemsToShip(order) && !OrderHasItemsToDeliver(order))
                     {
                         SetOrderStatus(order, OrderStatus.Complete, true);
                     }
@@ -422,7 +432,8 @@ namespace Nop.Services.Orders
                 {
                     var customerCurrency = (customer.Currency != null && customer.Currency.Published) ? customer.Currency : _workContext.WorkingCurrency;
                     customerCurrencyCode = customerCurrency.CurrencyCode;
-                    customerCurrencyRate = customerCurrency.Rate;
+                    var primaryStoreCurrency = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId);
+                    customerCurrencyRate = customerCurrency.Rate / primaryStoreCurrency.Rate;
                 }
                 else
                 {
@@ -929,9 +940,6 @@ namespace Nop.Services.Orders
                             ShippingStatus = shippingStatus,
                             ShippingMethod = shippingMethodName,
                             ShippingRateComputationMethodSystemName = shippingRateComputationMethodSystemName,
-                            ShippedDateUtc = null,
-                            DeliveryDateUtc = null,
-                            TrackingNumber = "",
                             VatNumber = vatNumber,
                             CreatedOnUtc = DateTime.UtcNow
                         };
@@ -1500,47 +1508,98 @@ namespace Nop.Services.Orders
         }
 
 
-
         /// <summary>
-        /// Gets a value indicating whether shipping is allowed
+        /// Gets a value indicating whether an order has items to ship
         /// </summary>
         /// <param name="order">Order</param>
-        /// <returns>A value indicating whether shipping is allowed</returns>
-        public virtual bool CanShip(Order order)
+        /// <returns>A value indicating whether an order has items to ship</returns>
+        public virtual bool OrderHasItemsToShip(Order order)
         {
             if (order == null)
                 throw new ArgumentNullException("order");
+            
+            foreach (var opv in order.OrderProductVariants)
+            {
+                //we can ship only shippable products
+                if (!opv.ProductVariant.IsShipEnabled)
+                    continue;
 
-            if (order.OrderStatus == OrderStatus.Cancelled)
-                return false;
+                //quantities
+                var qtyShippedTotal = opv.GetTotalNumberOfShippedItems();
+                var qtyOrdered = opv.Quantity;
+                var maxQtyToShip = qtyOrdered - qtyShippedTotal;
+                if (maxQtyToShip < 0)
+                    maxQtyToShip = 0;
 
-            if (order.ShippingStatus == ShippingStatus.NotYetShipped)
+                //ensure that this product variant can be shipped (have at least one item to ship)
+                if (maxQtyToShip <= 0)
+                    continue;
+
+                //yes, we have at least one item to ship
                 return true;
-
+            }
             return false;
         }
-
         /// <summary>
-        /// Ships order
+        /// Gets a value indicating whether an order has items to deliver
         /// </summary>
         /// <param name="order">Order</param>
-        /// <param name="notifyCustomer">True to notify customer</param>
-        public virtual void Ship(Order order, bool notifyCustomer)
+        /// <returns>A value indicating whether an order has items to deliver</returns>
+        public virtual bool OrderHasItemsToDeliver(Order order)
         {
             if (order == null)
                 throw new ArgumentNullException("order");
 
-            if (!CanShip(order))
-                throw new NopException("Cannot do shipment for order.");
+            foreach (var opv in order.OrderProductVariants)
+            {
+                //we can ship only shippable products
+                if (!opv.ProductVariant.IsShipEnabled)
+                    continue;
 
-            order.ShippedDateUtc = DateTime.UtcNow;
-            order.ShippingStatusId = (int)ShippingStatus.Shipped;
+                //quantities
+                var qtyDeliveredTotal = opv.GetTotalNumberOfDeliveredItems();
+                var qtyOrdered = opv.Quantity;
+                var maxQtyToDeliver = qtyOrdered - qtyDeliveredTotal;
+                if (maxQtyToDeliver < 0)
+                    maxQtyToDeliver = 0;
+
+                //ensure that this product variant can be delivered (have at least one item to ship)
+                if (maxQtyToDeliver <= 0)
+                    continue;
+
+                //yes, we have at least one item to deliver
+                return true;
+            }
+            return false;
+        }
+        
+        /// <summary>
+        /// Send a shipment
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
+        /// <param name="notifyCustomer">True to notify customer</param>
+        public virtual void Ship(Shipment shipment, bool notifyCustomer)
+        {
+            if (shipment == null)
+                throw new ArgumentNullException("shipment");
+
+            var order = _orderService.GetOrderById(shipment.OrderId);
+            if (order == null)
+                throw new Exception("Order cannot be loaded");
+
+            //check whether we have more items to ship
+            _shipmentService.InsertShipment(shipment);
+
+            if (OrderHasItemsToShip(order))
+                order.ShippingStatusId = (int)ShippingStatus.PartiallyShipped;
+            else
+                order.ShippingStatusId = (int)ShippingStatus.Shipped;
             _orderService.UpdateOrder(order);
 
             //add a note
             order.OrderNotes.Add(new OrderNote()
                 {
-                    Note = "Order has been shipped",
+                    Note = string.Format("Shipment# {0} has been sent", shipment.Id),
                     DisplayToCustomer = false,
                     CreatedOnUtc = DateTime.UtcNow
                 });
@@ -1548,13 +1607,13 @@ namespace Nop.Services.Orders
 
             if (notifyCustomer)
             {
-                //otify customer
-                int orderShippedCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderShippedCustomerNotification(order, order.CustomerLanguageId);
-                if (orderShippedCustomerNotificationQueuedEmailId > 0)
+                //notify customer
+                int queuedEmailId = _workflowMessageService.SendShipmentSentCustomerNotification(shipment, order.CustomerLanguageId);
+                if (queuedEmailId > 0)
                 {
                     order.OrderNotes.Add(new OrderNote()
                     {
-                        Note = string.Format("\"Shipped\" email (to customer) has been queued. Queued email identifier: {0}.", orderShippedCustomerNotificationQueuedEmailId),
+                        Note = string.Format("\"Shipped\" email (to customer) has been queued. Queued email identifier: {0}.", queuedEmailId),
                         DisplayToCustomer = false,
                         CreatedOnUtc = DateTime.UtcNow
                     });
@@ -1565,47 +1624,32 @@ namespace Nop.Services.Orders
             //check order status
             CheckOrderStatus(order);
         }
-        
-        /// <summary>
-        /// Gets a value indicating whether order is delivered
-        /// </summary>
-        /// <param name="order">Order</param>
-        /// <returns>A value indicating whether shipping is delivered</returns>
-        public virtual bool CanDeliver(Order order)
-        {
-            if (order == null)
-                throw new ArgumentNullException("order");
-
-            if (order.OrderStatus == OrderStatus.Cancelled)
-                return false;
-
-            if (order.ShippingStatus == ShippingStatus.Shipped)
-                return true;
-
-            return false;
-        }
 
         /// <summary>
-        /// Marks order status as delivered
+        /// Marks a shipment as delivered
         /// </summary>
-        /// <param name="order">Order</param>
+        /// <param name="shipment">Shipment</param>
         /// <param name="notifyCustomer">True to notify customer</param>
-        public virtual void Deliver(Order order, bool notifyCustomer)
+        public virtual void Deliver(Shipment shipment, bool notifyCustomer)
         {
+            if (shipment == null)
+                throw new ArgumentNullException("shipment");
+
+            var order = shipment.Order;
             if (order == null)
-                throw new ArgumentNullException("order");
+                throw new Exception("Order cannot be loaded");
 
-            if (!CanDeliver(order))
-                throw new NopException("Cannot do delivery for order.");
+            shipment.DeliveryDateUtc = DateTime.UtcNow;
+            _shipmentService.UpdateShipment(shipment);
 
-            order.DeliveryDateUtc = DateTime.UtcNow;
-            order.ShippingStatusId = (int)ShippingStatus.Delivered;
+            if (!OrderHasItemsToShip(order) && !OrderHasItemsToDeliver(order))
+                order.ShippingStatusId = (int)ShippingStatus.Delivered;
             _orderService.UpdateOrder(order);
 
             //add a note
             order.OrderNotes.Add(new OrderNote()
             {
-                Note = "Order has been delivered",
+                Note = string.Format("Shipment# {0} has been delivered", shipment.Id),
                 DisplayToCustomer = false,
                 CreatedOnUtc = DateTime.UtcNow
             });
@@ -1614,12 +1658,12 @@ namespace Nop.Services.Orders
             if (notifyCustomer)
             {
                 //send email notification
-                int orderDeliveredCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderDeliveredCustomerNotification(order, order.CustomerLanguageId);
-                if (orderDeliveredCustomerNotificationQueuedEmailId > 0)
+                int queuedEmailId = _workflowMessageService.SendShipmentDeliveredCustomerNotification(shipment, order.CustomerLanguageId);
+                if (queuedEmailId > 0)
                 {
                     order.OrderNotes.Add(new OrderNote()
                     {
-                        Note = string.Format("\"Delivered\" email (to customer) has been queued. Queued email identifier: {0}.", orderDeliveredCustomerNotificationQueuedEmailId),
+                        Note = string.Format("\"Delivered\" email (to customer) has been queued. Queued email identifier: {0}.", queuedEmailId),
                         DisplayToCustomer = false,
                         CreatedOnUtc = DateTime.UtcNow
                     });
@@ -2401,94 +2445,7 @@ namespace Nop.Services.Orders
                     opv.UnitPriceExclTax, opv.Quantity, false);
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether download is allowed
-        /// </summary>
-        /// <param name="orderProductVariant">Order produvt variant to check</param>
-        /// <returns>True if download is allowed; otherwise, false.</returns>
-        public virtual bool IsDownloadAllowed(OrderProductVariant orderProductVariant)
-        {
-            if (orderProductVariant == null)
-                return false;
-
-            var order = orderProductVariant.Order;
-            if (order == null || order.Deleted)
-                return false;
-
-            //order status
-            if (order.OrderStatus == OrderStatus.Cancelled)
-                return false;
-
-            var productVariant = orderProductVariant.ProductVariant;
-            if (productVariant == null || !productVariant.IsDownload)
-                return false;
-
-            //payment status
-            switch (productVariant.DownloadActivationType)
-            {
-                case DownloadActivationType.WhenOrderIsPaid:
-                    {
-                        if (order.PaymentStatus == PaymentStatus.Paid && order.PaidDateUtc.HasValue)
-                        {
-                            //expiration date
-                            if (productVariant.DownloadExpirationDays.HasValue)
-                            {
-                                if (order.PaidDateUtc.Value.AddDays(productVariant.DownloadExpirationDays.Value) > DateTime.UtcNow)
-                                {
-                                    return true;
-                                }
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    break;
-                case DownloadActivationType.Manually:
-                    {
-                        if (orderProductVariant.IsDownloadActivated)
-                        {
-                            //expiration date
-                            if (productVariant.DownloadExpirationDays.HasValue)
-                            {
-                                if (order.CreatedOnUtc.AddDays(productVariant.DownloadExpirationDays.Value) > DateTime.UtcNow)
-                                {
-                                    return true;
-                                }
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether license download is allowed
-        /// </summary>
-        /// <param name="orderProductVariant">Order produvt variant to check</param>
-        /// <returns>True if license download is allowed; otherwise, false.</returns>
-        public virtual bool IsLicenseDownloadAllowed(OrderProductVariant orderProductVariant)
-        {
-            if (orderProductVariant == null)
-                return false;
-
-            return IsDownloadAllowed(orderProductVariant) && 
-                orderProductVariant.LicenseDownloadId.HasValue &&
-                orderProductVariant.LicenseDownloadId > 0;
-        }
-
         
-
         /// <summary>
         /// Check whether return request is allowed
         /// </summary>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Orders;
+using Nop.Core.Domain.Shipping;
 using Nop.Services.Payments;
 
 namespace Nop.Services.Orders
@@ -46,33 +47,34 @@ namespace Nop.Services.Orders
 
 
 
-        /// <summary>
-        /// Gets a value indicating whether shipping is allowed
-        /// </summary>
-        /// <param name="order">Order</param>
-        /// <returns>A value indicating whether shipping is allowed</returns>
-        bool CanShip(Order order);
 
         /// <summary>
-        /// Ships order
+        /// Gets a value indicating whether an order has items to ship
         /// </summary>
         /// <param name="order">Order</param>
+        /// <returns>A value indicating whether an order has items to ship</returns>
+        bool OrderHasItemsToShip(Order order);
+
+        /// <summary>
+        /// Gets a value indicating whether an order has items to deliver
+        /// </summary>
+        /// <param name="order">Order</param>
+        /// <returns>A value indicating whether an order has items to deliver</returns>
+        bool OrderHasItemsToDeliver(Order order);
+
+        /// <summary>
+        /// Send a shipment
+        /// </summary>
+        /// <param name="shipment">Shipment</param>
         /// <param name="notifyCustomer">True to notify customer</param>
-        void Ship(Order order, bool notifyCustomer);
+        void Ship(Shipment shipment, bool notifyCustomer);
         
         /// <summary>
-        /// Gets a value indicating whether order is delivered
+        /// Marks a shipment as delivered
         /// </summary>
-        /// <param name="order">Order</param>
-        /// <returns>A value indicating whether shipping is delivered</returns>
-        bool CanDeliver(Order order);
-
-        /// <summary>
-        /// Marks order status as delivered
-        /// </summary>
-        /// <param name="order">Order</param>
+        /// <param name="shipment">Shipment</param>
         /// <param name="notifyCustomer">True to notify customer</param>
-        void Deliver(Order order, bool notifyCustomer);
+        void Deliver(Shipment shipment, bool notifyCustomer);
 
 
 
@@ -227,28 +229,11 @@ namespace Nop.Services.Orders
 
 
         /// <summary>
-        /// Gets a value indicating whether download is allowed
-        /// </summary>
-        /// <param name="orderProductVariant">Order produvt variant to check</param>
-        /// <returns>True if download is allowed; otherwise, false.</returns>
-        bool IsDownloadAllowed(OrderProductVariant orderProductVariant);
-
-        /// <summary>
-        /// Gets a value indicating whether license download is allowed
-        /// </summary>
-        /// <param name="orderProductVariant">Order produvt variant to check</param>
-        /// <returns>True if license download is allowed; otherwise, false.</returns>
-        bool IsLicenseDownloadAllowed(OrderProductVariant orderProductVariant);
-
-        /// <summary>
         /// Place order items in current user shopping cart.
         /// </summary>
         /// <param name="order">The order</param>
         void ReOrder(Order order);
-
         
-
-
         /// <summary>
         /// Check whether return request is allowed
         /// </summary>

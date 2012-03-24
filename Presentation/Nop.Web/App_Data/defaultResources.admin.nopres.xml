@@ -1008,8 +1008,14 @@
 					<LocaleResource Name="ProductReviews">
 						<Value>Product reviews</Value>
 						<Children>
+							<LocaleResource Name="ApproveSelected">
+								<Value>Approve selected</Value>
+							</LocaleResource>
 							<LocaleResource Name="BackToList">
 								<Value>back to product review list</Value>
+							</LocaleResource>
+							<LocaleResource Name="DisapproveSelected">
+								<Value>Disapprove selected</Value>
 							</LocaleResource>
 							<LocaleResource Name="EditProductReviewDetails">
 								<Value>Edit product review details</Value>
@@ -1083,6 +1089,26 @@
 										<Children>
 											<LocaleResource Name="Hint">
 												<Value>The date/time that the review was created.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="List">
+								<Children>
+									<LocaleResource Name="CreatedOnFrom">
+										<Value>Created from</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>The creation from date for the search.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="CreatedOnTo">
+										<Value>Created to</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>The creation to date for the search.</Value>
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
@@ -2259,6 +2285,9 @@
 					<LocaleResource Name="ConfigurationNotRequired">
 						<Value>Configuration is not required</Value>
 					</LocaleResource>
+					<LocaleResource Name="CsvFile">
+						<Value>CSV file</Value>
+					</LocaleResource>
 					<LocaleResource Name="DeleteConfirmationParam">
 						<Value>Are you sure you want to delete "{0}"?</Value>
 					</LocaleResource>
@@ -2271,11 +2300,30 @@
 					<LocaleResource Name="Edit">
 						<Value>Edit</Value>
 					</LocaleResource>
+					<LocaleResource Name="ExcelFile">
+						<Value>Excel file</Value>
+					</LocaleResource>
 					<LocaleResource Name="ExportToExcel">
 						<Value>Export to Excel</Value>
+						<Children>
+							<LocaleResource Name="All">
+								<Value>Export to Excel (all)</Value>
+							</LocaleResource>
+							<LocaleResource Name="Selected">
+								<Value>Export to Excel (selected)</Value>
+							</LocaleResource>
+						</Children>
 					</LocaleResource>
 					<LocaleResource Name="ExportToXml">
 						<Value>Export to XML</Value>
+						<Children>
+							<LocaleResource Name="All">
+								<Value>Export to XML (all)</Value>
+							</LocaleResource>
+							<LocaleResource Name="Selected">
+								<Value>Export to XML (selected)</Value>
+							</LocaleResource>
+						</Children>
 					</LocaleResource>
 					<LocaleResource Name="ExportToCsv">
 						<Value>Export to CSV</Value>
@@ -2291,6 +2339,9 @@
 					</LocaleResource>
 					<LocaleResource Name="List">
 						<Value>List</Value>
+					</LocaleResource>
+					<LocaleResource Name="LoseUnsavedChanges">
+						<Value>You are going to lose any unsaved changes. Are you sure?</Value>
 					</LocaleResource>
 					<LocaleResource Name="No">
 						<Value>No</Value>
@@ -2325,6 +2376,9 @@
 					<LocaleResource Name="Update">
 						<Value>Update</Value>
 					</LocaleResource>
+          <LocaleResource Name="UploadFile">
+            <Value>Please upload a file</Value>
+          </LocaleResource>
 					<LocaleResource Name="WrongEmail">
 						<Value>Wrong email</Value>
 					</LocaleResource>
@@ -2549,6 +2603,9 @@
 									<LocaleResource Name="AddNew">
 										<Value>Add a new state/province</Value>
 									</LocaleResource>
+									<LocaleResource Name="CantDeleteWithAddresses">
+										<Value>The state can't be deleted. It has associated addresses.</Value>
+									</LocaleResource>
 									<LocaleResource Name="EditStateDetails">
 										<Value>Edit state/province</Value>
 									</LocaleResource>
@@ -2622,12 +2679,21 @@
 							<LocaleResource Name="BackToList">
 								<Value>back to currency list</Value>
 							</LocaleResource>
+							<LocaleResource Name="CantDeleteExchange">
+								<Value>The primary exchange rate currency can't be deleted.</Value>
+							</LocaleResource>
+							<LocaleResource Name="CantDeletePrimary">
+								<Value>The primary store currency can't be deleted.</Value>
+							</LocaleResource>
 							<LocaleResource Name="EditCurrencyDetails">
 								<Value>Edit currency details</Value>
 							</LocaleResource>
 							<LocaleResource Name="GetLiveRates">
 								<Value>Get live rates</Value>
 							</LocaleResource>
+              <LocaleResource Name="LiveRates">
+                <Value>Live currency rates</Value>
+              </LocaleResource>
 							<LocaleResource Name="ApplyRate">
 								<Value>Apply rate</Value>
 							</LocaleResource>
@@ -3031,6 +3097,17 @@
 									</LocaleResource>
 								</Children>
 							</LocaleResource>
+							<LocaleResource Name="XmlFile">
+								<Value>Xml file</Value>
+								<Children>
+									<LocaleResource Name="Note1">
+										<Value>NOTE: It can take up to several minutes.</Value>
+									</LocaleResource>
+									<LocaleResource Name="Note2">
+										<Value>NOTE: DO NOT click twice.</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
 							<LocaleResource Name="Added">
 								<Value>The new language has been added successfully.</Value>
 							</LocaleResource>
@@ -3051,6 +3128,9 @@
 							<LocaleResource Name="Weights">
 								<Value>Weights</Value>
 								<Children>
+									<LocaleResource Name="CantDeletePrimary">
+										<Value>The primary weight can't be deleted.</Value>
+									</LocaleResource>
 									<LocaleResource Name="Description">
 										<Value>NOTE: if you change your primary weight, then do not forget to update the appropriate ratios of the units</Value>
 									</LocaleResource>
@@ -3091,6 +3171,9 @@
 							<LocaleResource Name="Dimensions">
 								<Value>Dimensions</Value>
 								<Children>
+									<LocaleResource Name="CantDeletePrimary">
+										<Value>The primary dimension can't be deleted.</Value>
+									</LocaleResource>
 									<LocaleResource Name="Description">
 										<Value>NOTE: if you change your primary dimension, then do not forget to update the appropriate ratios of the units</Value>
 									</LocaleResource>
@@ -3180,6 +3263,34 @@
 					<LocaleResource Name="Plugins">
 						<Value>Plugins</Value>
 						<Children>
+							<LocaleResource Name="Description">
+								<Value>Manual plugin installation</Value>
+								<Children>
+									<LocaleResource Name="Step1">
+										<Value>Upload the plugin to the /plugins folder in your nopCommerce directory.</Value>
+									</LocaleResource>
+									<LocaleResource Name="Step2">
+										<Value>Restart your application (or click 'Reload list of plugins' button).</Value>
+									</LocaleResource>
+									<LocaleResource Name="Step3">
+										<Value>Scroll down through the list of plugins to find the newly installed plugin.</Value>
+									</LocaleResource>
+									<LocaleResource Name="Step4">
+										<Value>Click on the 'Install' link to install the plugin.</Value>
+									</LocaleResource>
+									<LocaleResource Name="Step5">
+										<Value>Note: If you're running nopCommerce in medium trust, then it's recommended to clear your \Plugins\bin\ directory</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="Editing">
+								<Value>Editing</Value>
+								<Children>
+									<LocaleResource Name="Hint">
+										<Value>This grid allows the bulk editing of the 'Friendly name' and 'Display order' fields. To enter edit mode just click a cell.</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
 							<LocaleResource Name="Fields">
 								<Children>
 									<LocaleResource Name="Group">
@@ -3205,6 +3316,9 @@
 									</LocaleResource>
 									<LocaleResource Name="Install">
 										<Value>Install</Value>
+									</LocaleResource>
+									<LocaleResource Name="Installation">
+										<Value>Installation</Value>
 									</LocaleResource>
 									<LocaleResource Name="Installed">
 										<Value>Installed</Value>
@@ -3354,6 +3468,14 @@
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
+                  <LocaleResource Name="ShowProductsFromSubcategories">
+                    <Value>Include products from subcategories</Value>
+                    <Children>
+                      <LocaleResource Name="Hint">
+                        <Value>Check if you want a category details page to include products from subcategories.</Value>
+                      </LocaleResource>
+                    </Children>
+                  </LocaleResource>
 									<LocaleResource Name="ShowCategoryProductNumber">
 										<Value>Show the number of distinct products besides each category</Value>
 										<Children>
@@ -4201,6 +4323,14 @@
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
+									<LocaleResource Name="CaptchaShowOnLoginPage">
+										<Value>Show on login page</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Check to show CAPTCHA on login page.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
 									<LocaleResource Name="CaptchaShowOnRegistrationPage">
 										<Value>Show on registration page</Value>
 										<Children>
@@ -4214,6 +4344,22 @@
 										<Children>
 											<LocaleResource Name="Hint">
 												<Value>Check to show CAPTCHA on contact us page.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="CaptchaShowOnEmailWishlistToFriendPage">
+										<Value>Show on 'email wishlist to a friend' page</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Check to show CAPTCHA on 'email wishlist to a friend' page.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="CaptchaShowOnEmailProductToFriendPage">
+										<Value>Show on 'email product to a friend' page</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Check to show CAPTCHA on 'email product to a friend' page.</Value>
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
@@ -4618,6 +4764,14 @@
 							<LocaleResource Name="Shipping">
 								<Value>Shipping settings</Value>
 								<Children>
+									<LocaleResource Name="DisplayShipmentEventsToCustomers">
+										<Value>Display shipment events</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Check if you want your customers to see shipment events on their shipment details pages (if supported by your shipping rate computation method).</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
 									<LocaleResource Name="FreeShippingOverXEnabled">
 										<Value>Free shipping over 'X'</Value>
 										<Children>
@@ -4668,6 +4822,14 @@
 										<Children>
 											<LocaleResource Name="Hint">
 												<Value>If checked, a customer will be taken to the Shopping Cart page immediately after adding a product to their cart. If unchecked, a customer will stay on the same page that they are adding the product to the cart from.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="DisplayWishlistAfterAddingProduct">
+										<Value>Display wishlist after adding product</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>If checked, a customer will be taken to the Wishlist page immediately after adding a product to their wishlist. If unchecked, a customer will stay on the same page that they are adding the product to the wishlist from.</Value>
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
@@ -6382,7 +6544,31 @@
 											</LocaleResource>
 										</Children>
 									</LocaleResource>
-								</Children>
+                  <LocaleResource Name="SearchCompany">
+                    <Value>Company</Value>
+                    <Children>
+                      <LocaleResource Name="Hint">
+                        <Value>Search by company.</Value>
+                      </LocaleResource>
+                    </Children>
+                  </LocaleResource>
+                  <LocaleResource Name="SearchPhone">
+                    <Value>Phone</Value>
+                    <Children>
+                      <LocaleResource Name="Hint">
+                        <Value>Search by a phone number.</Value>
+                      </LocaleResource>
+                    </Children>
+                  </LocaleResource>
+                  <LocaleResource Name="SearchZipCode">
+                    <Value>Zip code</Value>
+                    <Children>
+                      <LocaleResource Name="Hint">
+                        <Value>Search by zip code.</Value>
+                      </LocaleResource>
+                    </Children>
+                  </LocaleResource>
+                </Children>
 							</LocaleResource>
 							<LocaleResource Name="Orders">
 								<Value>Orders</Value>
@@ -7066,21 +7252,7 @@
 										<Value>Customer IP address from where order has been placed.</Value>
 									</LocaleResource>
 								</Children>
-							</LocaleResource>
-							<LocaleResource Name="DeliveryDate">
-								<Value>Delivery date</Value>
-								<Children>
-									<LocaleResource Name="Button">
-										<Value>Set as delivered</Value>
-									</LocaleResource>
-									<LocaleResource Name="Hint">
-										<Value>The date this order was delivered.</Value>
-									</LocaleResource>
-									<LocaleResource Name="NotYet">
-										<Value>Not yet</Value>
-									</LocaleResource>
-								</Children>
-							</LocaleResource>
+							</LocaleResource>							
 							<LocaleResource Name="Edit">
 								<Children>
 									<LocaleResource Name="InclTax">
@@ -7363,21 +7535,7 @@
 							</LocaleResource>
 							<LocaleResource Name="SaveOrderTotals">
 								<Value>Save order totals</Value>
-							</LocaleResource>
-							<LocaleResource Name="ShippedDate">
-								<Value>Shipped date</Value>
-								<Children>
-									<LocaleResource Name="Button">
-										<Value>Set as shipped</Value>
-									</LocaleResource>
-									<LocaleResource Name="Hint">
-										<Value>The date this order was shipped.</Value>
-									</LocaleResource>
-									<LocaleResource Name="NotYet">
-										<Value>Not yet</Value>
-									</LocaleResource>
-								</Children>
-							</LocaleResource>
+							</LocaleResource>							
 							<LocaleResource Name="ShippingAddress">
 								<Value>Shipping address</Value>
 								<Children>
@@ -7418,17 +7576,6 @@
 								<Children>
 									<LocaleResource Name="Hint">
 										<Value>Total tax applied to this order. Manage your tax settings from Configuration : Tax</Value>
-									</LocaleResource>
-								</Children>
-							</LocaleResource>
-							<LocaleResource Name="TrackingNumber">
-								<Value>Tracking number</Value>
-								<Children>
-									<LocaleResource Name="Button">
-										<Value>Set tracking number</Value>
-									</LocaleResource>
-									<LocaleResource Name="Hint">
-										<Value>Set a tracking number of the current order.</Value>
 									</LocaleResource>
 								</Children>
 							</LocaleResource>
@@ -7561,13 +7708,79 @@
 					</LocaleResource>
 					<LocaleResource Name="PdfInvoice">
 						<Value>Invoice (PDF)</Value>
-					</LocaleResource>
-					<LocaleResource Name="PrintPackagingSlip">
-						<Value>Print packaging slip</Value>
-					</LocaleResource>
+					</LocaleResource>					
 					<LocaleResource Name="Products">
 						<Value>Products</Value>
 						<Children>
+							<LocaleResource Name="AddNew">
+								<Value>Add product</Value>
+								<Children>
+                  <LocaleResource Name="BackToList">
+                    <Value>back to product list</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="BackToOrder">
+                    <Value>back to order details</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="Title1">
+                    <Value>Add a new product to order #{0}</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="Title2">
+                    <Value>Add product '{0}' to order #{1}</Value>
+                  </LocaleResource>
+									<LocaleResource Name="Note1">
+										<Value>Click on interested product variant</Value>
+									</LocaleResource>
+									<LocaleResource Name="Note2">
+										<Value>Do not to forget to update order totals after adding this product.</Value>
+									</LocaleResource>
+									<LocaleResource Name="Name">
+										<Value>Name</Value>
+									</LocaleResource>
+									<LocaleResource Name="SKU">
+										<Value>SKU</Value>
+									</LocaleResource>
+									<LocaleResource Name="UnitPriceInclTax">
+										<Value>Price (incl tax)</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Enter product price (incl tax).</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="UnitPriceExclTax">
+										<Value>Price (excl tax)</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Enter product price (excl tax).</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="Quantity">
+										<Value>Quantity</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Enter quantity.</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="SubTotalInclTax">
+										<Value>Total (incl tax)</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Enter total (incl tax).</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+									<LocaleResource Name="SubTotalExclTax">
+										<Value>Total (excl tax)</Value>
+										<Children>
+											<LocaleResource Name="Hint">
+												<Value>Enter total (excl tax).</Value>
+											</LocaleResource>
+										</Children>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
 							<LocaleResource Name="ProductName">
 								<Value>Product name</Value>
 							</LocaleResource>
@@ -7630,11 +7843,113 @@
 								</Children>
 							</LocaleResource>
 							<LocaleResource Name="ReturnRequests">
-								<Value>Return request(s): </Value>
+								<Value>Return request(s)</Value>
 							</LocaleResource>
-
+							<LocaleResource Name="GiftCards">
+								<Value>Gift cards(s)</Value>
+							</LocaleResource>
 						</Children>
 					</LocaleResource>
+					<LocaleResource Name="Report">
+						<Children>
+							<LocaleResource Name="Profit">
+								<Value>Profit</Value>
+							</LocaleResource>
+							<LocaleResource Name="Summary">
+								<Value>Summary</Value>
+							</LocaleResource>
+							<LocaleResource Name="Tax">
+								<Value>Tax</Value>
+							</LocaleResource>
+							<LocaleResource Name="Total">
+								<Value>Total</Value>
+							</LocaleResource>
+						</Children>
+					</LocaleResource>
+          <LocaleResource Name="Shipments">
+            <Value>Shipments</Value>
+            <Children>
+              <LocaleResource Name="Added">
+                <Value>The new shipment has been added successfully.</Value>
+              </LocaleResource>
+              <LocaleResource Name="AddNew">
+                <Value>Add shipment</Value>
+                <Children>
+                  <LocaleResource Name="Title">
+                    <Value>Add a new shipment to order #{0}</Value>
+                  </LocaleResource>
+                </Children>
+              </LocaleResource>
+              <LocaleResource Name="BackToOrder">
+                <Value>back to order details</Value>
+              </LocaleResource>
+              <LocaleResource Name="Deleted">
+                <Value>The shipment has been deleted successfully.</Value>
+              </LocaleResource>
+              <LocaleResource Name="DeliveryDate">
+                <Value>Date delivered</Value>
+                <Children>
+                  <LocaleResource Name="Button">
+                    <Value>Set as delivered</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="Hint">
+                    <Value>The date this shipment was delivered.</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="NotYet">
+                    <Value>Not yet</Value>
+                  </LocaleResource>
+                </Children>
+              </LocaleResource>
+              <LocaleResource Name="ID">
+                <Value>Shipment #</Value>
+              </LocaleResource>
+              <LocaleResource Name="NoProductsSelected">
+                <Value>No products selected</Value>
+              </LocaleResource>
+              <LocaleResource Name="PrintPackagingSlip">
+                <Value>Print packaging slip</Value>
+              </LocaleResource>
+              <LocaleResource Name="Products">
+                <Value>Products shipped</Value>
+                <Children>
+                  <LocaleResource Name="ProductName">
+                    <Value>Product</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="QtyOrdered">
+                    <Value>Qty ordered</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="QtyShipped">
+                    <Value>Qty shipped</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="QtyToShip">
+                    <Value>Qty to ship</Value>
+                  </LocaleResource>
+                </Children>
+              </LocaleResource>
+              <LocaleResource Name="ShippedDate">
+                <Value>Date shipped</Value>
+                <Children>
+                  <LocaleResource Name="Hint">
+                    <Value>The date this shipment was shipped.</Value>
+                  </LocaleResource>
+                </Children>
+              </LocaleResource>
+              <LocaleResource Name="TrackingNumber">
+                <Value>Tracking number</Value>
+                <Children>
+                  <LocaleResource Name="Hint">
+                    <Value>Set a tracking number of the current shipment.</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="Button">
+                    <Value>Set tracking number</Value>
+                  </LocaleResource>
+                </Children>
+              </LocaleResource>
+              <LocaleResource Name="ViewDetails">
+                <Value>View shipment details</Value>
+              </LocaleResource>
+            </Children>
+          </LocaleResource>
 					<LocaleResource Name="ShippingInfo">
 						<Value>Shipping info</Value>
 						<Children>
@@ -8315,6 +8630,37 @@
 							</LocaleResource>
 						</Children>
 					</LocaleResource>
+					<LocaleResource Name="NeverSold">
+						<Value>Products never purchased</Value>
+						<Children>
+							<LocaleResource Name="RunReport">
+								<Value>Run report</Value>
+							</LocaleResource>
+							<LocaleResource Name="StartDate">
+								<Value>Start date</Value>
+								<Children>
+									<LocaleResource Name="Hint">
+										<Value>The start date for the search.</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="EndDate">
+								<Value>End date</Value>
+								<Children>
+									<LocaleResource Name="Hint">
+										<Value>The end date for the search.</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="Fields">
+								<Children>
+									<LocaleResource Name="Name">
+										<Value>Name</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+						</Children>
+					</LocaleResource>
 				</Children>
 			</LocaleResource>
 			<LocaleResource Name="System">
@@ -8786,6 +9132,84 @@
 					</LocaleResource>
 					<LocaleResource Name="Warnings">
 						<Value>Warnings</Value>
+						<Children>
+							<LocaleResource Name="URL">
+								<Children>
+									<LocaleResource Name="Match">
+										<Value>Specified store URL matches this store URL</Value>
+									</LocaleResource>
+									<LocaleResource Name="NoMatch">
+										<Value>Specified store URL ({0}) doesn't match this store URL ({1})</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="ExchangeCurrency">
+								<Children>
+									<LocaleResource Name="Set">
+										<Value>Primary exchange rate currency is set</Value>
+									</LocaleResource>
+									<LocaleResource Name="Rate1">
+										<Value>Primary exchange rate currency. The rate should be set to 1.</Value>
+									</LocaleResource>
+									<LocaleResource Name="NotSet">
+										<Value>Primary exchange rate currency is not set</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="PrimaryCurrency">
+								<Children>
+									<LocaleResource Name="Set">
+										<Value>Primary store currency is set</Value>
+									</LocaleResource>
+									<LocaleResource Name="NotSet">
+										<Value>Primary store currency is not set</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="DefaultWeight">
+								<Children>
+									<LocaleResource Name="Set">
+										<Value>Default weight is set</Value>
+									</LocaleResource>
+									<LocaleResource Name="Ratio1">
+										<Value>Default weight. The ratio should be set to 1.</Value>
+									</LocaleResource>
+									<LocaleResource Name="NotSet">
+										<Value>Default weight is not set</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="DefaultDimension">
+								<Children>
+									<LocaleResource Name="Set">
+										<Value>Default dimension is set</Value>
+									</LocaleResource>
+									<LocaleResource Name="Ratio1">
+										<Value>Default dimension. The ratio should be set to 1.</Value>
+									</LocaleResource>
+									<LocaleResource Name="NotSet">
+										<Value>Default dimension is not set</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="Shipping">
+								<Children>
+									<LocaleResource Name="OnlyOneOffline">
+										<Value>Only one offline shipping rate computation method is recommended to use</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+							<LocaleResource Name="PaymentMethods">
+								<Children>
+									<LocaleResource Name="OK">
+										<Value>Payment methods are OK</Value>
+									</LocaleResource>
+									<LocaleResource Name="NoActive">
+										<Value>You don't have active payment methods</Value>
+									</LocaleResource>
+								</Children>
+							</LocaleResource>
+						</Children>
 					</LocaleResource>
 				</Children>
 			</LocaleResource>

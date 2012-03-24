@@ -456,7 +456,8 @@ namespace Nop.Admin.Infrastructure
             Mapper.CreateMap<ShippingSettings, ShippingSettingsModel>()
                 .ForMember(dest => dest.ShippingOriginAddress, mo => mo.Ignore());
             Mapper.CreateMap<ShippingSettingsModel, ShippingSettings>()
-                .ForMember(dest => dest.ActiveShippingRateComputationMethodSystemNames, mo => mo.Ignore());
+                .ForMember(dest => dest.ActiveShippingRateComputationMethodSystemNames, mo => mo.Ignore())
+                .ForMember(dest => dest.ReturnValidOptionsIfThereAreAny, mo => mo.Ignore());
             Mapper.CreateMap<CatalogSettings, CatalogSettingsModel>();
             Mapper.CreateMap<CatalogSettingsModel, CatalogSettings>()
                 .ForMember(dest => dest.DefaultViewMode, mo => mo.Ignore())
@@ -465,10 +466,11 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.ProductSearchTermMinimumLength, mo => mo.Ignore())
                 .ForMember(dest => dest.UseSmallProductBoxOnHomePage, mo => mo.Ignore())
                 .ForMember(dest => dest.IncludeFeaturedProductsInNormalLists, mo => mo.Ignore())
-                .ForMember(dest => dest.EnsureWeHaveFilterableSpecAttributes, mo => mo.Ignore())
                 .ForMember(dest => dest.DefaultCategoryPageSizeOptions, mo => mo.Ignore())
                 .ForMember(dest => dest.DefaultManufacturerPageSizeOptions, mo => mo.Ignore())
-                .ForMember(dest => dest.MaximumBackInStockSubscriptions, mo => mo.Ignore());
+                .ForMember(dest => dest.MaximumBackInStockSubscriptions, mo => mo.Ignore())
+                .ForMember(dest => dest.DisplayTierPricesWithDiscounts, mo => mo.Ignore())
+                .ForMember(dest => dest.FileUploadMaximumSizeBytes, mo => mo.Ignore());
             Mapper.CreateMap<RewardPointsSettings, RewardPointsSettingsModel>()
                 .ForMember(dest => dest.PrimaryStoreCurrencyCode, mo => mo.Ignore());
             Mapper.CreateMap<RewardPointsSettingsModel, RewardPointsSettings>();

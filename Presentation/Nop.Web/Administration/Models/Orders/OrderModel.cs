@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Nop.Admin.Models.Catalog;
 using Nop.Admin.Models.Common;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Tax;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Mvc;
+using Telerik.Web.Mvc;
 
 namespace Nop.Admin.Models.Orders
 {
@@ -17,7 +19,6 @@ namespace Nop.Admin.Models.Orders
             TaxRates = new List<TaxRate>();
             GiftCards = new List<GiftCard>();
             Items = new List<OrderProductVariantModel>();
-            OrderNotes = new List<OrderNote>();
         }
 
         //identifiers
@@ -98,7 +99,7 @@ namespace Nop.Admin.Models.Orders
         [NopResourceDisplayName("Admin.Orders.Fields.Edit.OrderTotal")]
         public decimal OrderTotalValue { get; set; }
 
-        //orderstatus
+        //order status
         [NopResourceDisplayName("Admin.Orders.Fields.OrderStatus")]
         public string OrderStatus { get; set; }
 
@@ -151,13 +152,8 @@ namespace Nop.Admin.Models.Orders
         public string BaseWeightIn { get; set; }
         [NopResourceDisplayName("Admin.Orders.Fields.ShippingMethod")]
         public string ShippingMethod { get; set; }
-        [NopResourceDisplayName("Admin.Orders.Fields.ShippedDate")]
-        public string ShippedDate { get; set; }
-        [NopResourceDisplayName("Admin.Orders.Fields.DeliveryDate")]
-        public string DeliveryDate { get; set; }
-        [NopResourceDisplayName("Admin.Orders.Fields.TrackingNumber")]
-        public string TrackingNumber { get; set; }
         public string ShippingAddressGoogleMapsUrl { get; set; }
+        public bool CanAddNewShipments { get; set; }
 
         //billing info
         [NopResourceDisplayName("Admin.Orders.Fields.BillingAddress")]
@@ -181,7 +177,6 @@ namespace Nop.Admin.Models.Orders
 
 
         //order notes
-        public IList<OrderNote> OrderNotes { get; set; }
         [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.AddOrderNoteDisplayToCustomer")]
         public bool AddOrderNoteDisplayToCustomer { get; set; }
         [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.AddOrderNoteMessage")]
@@ -189,7 +184,6 @@ namespace Nop.Admin.Models.Orders
         public string AddOrderNoteMessage { get; set; }
 
         public bool DisplayPdfInvoice { get; set; }
-        public bool DisplayPdfPackagingSlip { get; set; }
 
 
         //refund info
@@ -208,8 +202,11 @@ namespace Nop.Admin.Models.Orders
         public bool CanPartiallyRefundOffline { get; set; }
         public bool CanVoid { get; set; }
         public bool CanVoidOffline { get; set; }
-        public bool CanShip { get; set; }
-        public bool CanDeliver { get; set; }
+        
+        //aggergator proeprties
+        public string aggregatorprofit { get; set; }
+        public string aggregatortax { get; set; }
+        public string aggregatortotal { get; set; }
 
         #region Nested Classes
 
@@ -218,6 +215,7 @@ namespace Nop.Admin.Models.Orders
             public OrderProductVariantModel()
             {
                 ReturnRequestIds = new List<int>();
+                PurchasedGiftCardIds = new List<int>();
             }
             public int ProductVariantId { get; set; }
 
@@ -243,6 +241,7 @@ namespace Nop.Admin.Models.Orders
             public string AttributeInfo { get; set; }
             public string RecurringInfo { get; set; }
             public IList<int> ReturnRequestIds { get; set; }
+            public IList<int> PurchasedGiftCardIds { get; set; }
 
             public bool IsDownload { get; set; }
             public int DownloadCount { get; set; }
@@ -286,6 +285,130 @@ namespace Nop.Admin.Models.Orders
 
         }
 
+        public class AddOrderProductModel : BaseNopModel
+        {
+            public AddOrderProductModel()
+            {
+                AvailableCategories = new List<SelectListItem>();
+                AvailableManufacturers = new List<SelectListItem>();
+            }
+            public GridModel<ProductVariantModel> ProductVariants { get; set; }
+
+            [NopResourceDisplayName("Admin.Catalog.Products.List.SearchProductName")]
+            [AllowHtml]
+            public string SearchProductName { get; set; }
+            [NopResourceDisplayName("Admin.Catalog.Products.List.SearchCategory")]
+            public int SearchCategoryId { get; set; }
+            [NopResourceDisplayName("Admin.Catalog.Products.List.SearchManufacturer")]
+            public int SearchManufacturerId { get; set; }
+
+            public IList<SelectListItem> AvailableCategories { get; set; }
+            public IList<SelectListItem> AvailableManufacturers { get; set; }
+
+            public int OrderId { get; set; }
+
+            #region Nested classes
+            
+            public class ProductVariantLineModel : BaseNopEntityModel
+            {
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.Name")]
+                [AllowHtml]
+                public string Name { get; set; }
+
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.SKU")]
+                [AllowHtml]
+                public string Sku { get; set; }
+            }
+
+            public class ProductDetailsModel : BaseNopModel
+            {
+                public ProductDetailsModel()
+                {
+                    ProductVariantAttributes = new List<ProductVariantAttributeModel>();
+                    GiftCard = new GiftCardModel();
+                    Warnings = new List<string>();
+                }
+
+                public int ProductVariantId { get; set; }
+
+                public int OrderId { get; set; }
+
+                public string Name { get; set; }
+
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.UnitPriceInclTax")]
+                public decimal UnitPriceInclTax { get; set; }
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.UnitPriceExclTax")]
+                public decimal UnitPriceExclTax { get; set; }
+
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.Quantity")]
+                public int Quantity { get; set; }
+
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.SubTotalInclTax")]
+                public decimal SubTotalInclTax { get; set; }
+                [NopResourceDisplayName("Admin.Orders.Products.AddNew.SubTotalExclTax")]
+                public decimal SubTotalExclTax { get; set; }
+
+                //product attrbiutes
+                public IList<ProductVariantAttributeModel> ProductVariantAttributes { get; set; }
+                //gift card info
+                public GiftCardModel GiftCard { get; set; }
+
+                public List<string> Warnings { get; set; }
+
+            }
+
+            public class ProductVariantAttributeModel : BaseNopEntityModel
+            {
+                public ProductVariantAttributeModel()
+                {
+                    Values = new List<ProductVariantAttributeValueModel>();
+                }
+
+                public int ProductAttributeId { get; set; }
+
+                public string Name { get; set; }
+
+                public string TextPrompt { get; set; }
+
+                public bool IsRequired { get; set; }
+
+                public AttributeControlType AttributeControlType { get; set; }
+
+                public IList<ProductVariantAttributeValueModel> Values { get; set; }
+            }
+
+            public class ProductVariantAttributeValueModel : BaseNopEntityModel
+            {
+                public string Name { get; set; }
+
+                public bool IsPreSelected { get; set; }
+            }
+
+
+            public class GiftCardModel : BaseNopModel
+            {
+                public bool IsGiftCard { get; set; }
+
+                [NopResourceDisplayName("Products.GiftCard.RecipientName")]
+                [AllowHtml]
+                public string RecipientName { get; set; }
+                [NopResourceDisplayName("Products.GiftCard.RecipientEmail")]
+                [AllowHtml]
+                public string RecipientEmail { get; set; }
+                [NopResourceDisplayName("Products.GiftCard.SenderName")]
+                [AllowHtml]
+                public string SenderName { get; set; }
+                [NopResourceDisplayName("Products.GiftCard.SenderEmail")]
+                [AllowHtml]
+                public string SenderEmail { get; set; }
+                [NopResourceDisplayName("Products.GiftCard.Message")]
+                [AllowHtml]
+                public string Message { get; set; }
+
+                public GiftCardType GiftCardType { get; set; }
+            }
+            #endregion
+        }
 
         #endregion
     }

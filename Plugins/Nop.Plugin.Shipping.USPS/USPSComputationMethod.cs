@@ -21,6 +21,7 @@ using Nop.Services.Configuration;
 using Nop.Services.Directory;
 using Nop.Services.Localization;
 using Nop.Services.Shipping;
+using Nop.Services.Shipping.Tracking;
 
 namespace Nop.Plugin.Shipping.USPS
 {
@@ -107,7 +108,7 @@ namespace Nop.Plugin.Shipping.USPS
             if (usedMeasureDimension == null)
                 throw new NopException(string.Format("USPS shipping service. Could not load \"{0}\" measure dimension", MEASUREDIMENSIONSYSTEMKEYWORD));
 
-            var baseusedMeasureDimension = _measureService.GetMeasureWeightById(_measureSettings.BaseDimensionId);
+            var baseusedMeasureDimension = _measureService.GetMeasureDimensionById(_measureSettings.BaseDimensionId);
             if (usedMeasureDimension == null)
                 throw new NopException("Primary dimension can't be loaded");
 
@@ -546,14 +547,14 @@ namespace Nop.Plugin.Shipping.USPS
                         char tm = (char)174;
                         serviceCode = serviceCode.Replace("&lt;sup&gt;&amp;reg;&lt;/sup&gt;", tm.ToString());
 
-                        if (shippingOptions.Find((s) => s.Name == serviceCode) == null)
+                        ShippingOption shippingOption = shippingOptions.Find((s) => s.Name == serviceCode);
+                        if (shippingOption == null)
                         {
-                            var shippingOption = new ShippingOption();
-                            //TODO check whether we need to multiply rate by package quantity
-                            shippingOption.Rate = Convert.ToDecimal(postalRate, new CultureInfo("en-US"));
+                            shippingOption = new ShippingOption();
                             shippingOption.Name = serviceCode;
                             shippingOptions.Add(shippingOption);
                         }
+                        shippingOption.Rate += Convert.ToDecimal(postalRate, new CultureInfo("en-US"));
                     }
                 }
                 while (!tr.EOF);
@@ -714,6 +715,14 @@ namespace Nop.Plugin.Shipping.USPS
             {
                 return ShippingRateComputationMethodType.Realtime;
             }
+        }
+        
+        /// <summary>
+        /// Gets a shipment tracker
+        /// </summary>
+        public IShipmentTracker ShipmentTracker
+        {
+            get { return null; }
         }
 
         #endregion

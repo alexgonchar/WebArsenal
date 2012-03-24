@@ -37,7 +37,14 @@ namespace Nop.Services.Catalog
         /// <param name="productId">Product identifier</param>
         /// <returns>Product</returns>
         Product GetProductById(int productId);
-        
+
+        /// <summary>
+        /// Gets products by identifier
+        /// </summary>
+        /// <param name="productIds">Product identifiers</param>
+        /// <returns>Products</returns>
+        IList<Product> GetProductsByIds(int[] productIds);
+
         /// <summary>
         /// Inserts a product
         /// </summary>
@@ -66,14 +73,46 @@ namespace Nop.Services.Catalog
         /// <param name="orderBy">Order by</param>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageSize">Page size</param>
+        /// <param name="loadFilterableSpecificationAttributeOptionIds">A value indicating whether we should load the specification attribute option identifiers applied to loaded products (all pages)</param>
+        /// <param name="filterableSpecificationAttributeOptionIds">The specification attribute option identifiers applied to loaded products (all pages)</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Product collection</returns>
         IPagedList<Product> SearchProducts(int categoryId, int manufacturerId, bool? featuredProducts,
             decimal? priceMin, decimal? priceMax, int productTagId,
             string keywords, bool searchDescriptions, int languageId,
             IList<int> filteredSpecs, ProductSortingEnum orderBy,
-            int pageIndex, int pageSize, bool showHidden = false);
-        
+            int pageIndex, int pageSize,
+            bool loadFilterableSpecificationAttributeOptionIds, out IList<int> filterableSpecificationAttributeOptionIds,
+            bool showHidden = false);
+
+        /// <summary>
+        /// Search products
+        /// </summary>
+        /// <param name="categoryIds">Category identifiers</param>
+        /// <param name="manufacturerId">Manufacturer identifier; 0 to load all records</param>
+        /// <param name="featuredProducts">A value indicating whether loaded products are marked as featured (relates only to categories and manufacturers). 0 to load featured products only, 1 to load not featured products only, null to load all products</param>
+        /// <param name="priceMin">Minimum price; null to load all records</param>
+        /// <param name="priceMax">Maximum price; null to load all records</param>
+        /// <param name="productTagId">Product tag identifier; 0 to load all records</param>
+        /// <param name="keywords">Keywords</param>
+        /// <param name="searchDescriptions">A value indicating whether to search in descriptions</param>
+        /// <param name="languageId">Language identifier</param>
+        /// <param name="filteredSpecs">Filtered product specification identifiers</param>
+        /// <param name="orderBy">Order by</param>
+        /// <param name="pageIndex">Page index</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="loadFilterableSpecificationAttributeOptionIds">A value indicating whether we should load the specification attribute option identifiers applied to loaded products (all pages)</param>
+        /// <param name="filterableSpecificationAttributeOptionIds">The specification attribute option identifiers applied to loaded products (all pages)</param>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns>Product collection</returns>
+        IPagedList<Product> SearchProducts(IList<int> categoryIds, int manufacturerId, bool? featuredProducts,
+            decimal? priceMin, decimal? priceMax, int productTagId,
+            string keywords, bool searchDescriptions, int languageId,
+            IList<int> filteredSpecs, ProductSortingEnum orderBy,
+            int pageIndex, int pageSize,
+            bool loadFilterableSpecificationAttributeOptionIds, out IList<int> filterableSpecificationAttributeOptionIds,
+            bool showHidden = false);
+
         /// <summary>
         /// Update product review totals
         /// </summary>
@@ -262,13 +301,6 @@ namespace Nop.Services.Catalog
         /// <returns>Tier price</returns>
         TierPrice GetTierPriceById(int tierPriceId);
 
-        /// <summary>
-        /// Gets tier prices by product variant identifier
-        /// </summary>
-        /// <param name="productVariantId">Product variant identifier</param>
-        /// <returns>Tier price collection</returns>
-        IList<TierPrice> GetTierPricesByProductVariantId(int productVariantId);
-        
         /// <summary>
         /// Inserts a tier price
         /// </summary>

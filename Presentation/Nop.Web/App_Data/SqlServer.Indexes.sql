@@ -111,3 +111,27 @@ GO
 
 CREATE NONCLUSTERED INDEX [IX_Forums_Subscription_TopicId] ON [dbo].[Forums_Subscription] ([TopicId] ASC)
 GO
+
+CREATE NONCLUSTERED INDEX [IX_Product_Deleted_and_Published] ON [dbo].[Product] ([Published] ASC, [Deleted] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Product_Published] ON [dbo].[Product] ([Published] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_Product_ShowOnHomepage] ON [dbo].[Product] ([ShowOnHomepage] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_ProductVariant_ProductId_2] ON [dbo].[ProductVariant] ([ProductId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_PCM_Product_and_Category] ON [dbo].[Product_Category_Mapping] ([CategoryId] ASC, [ProductId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_PMM_Product_and_Manufacturer] ON [dbo].[Product_Manufacturer_Mapping] ([ManufacturerId] ASC, [ProductId] ASC)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_PSAM_AllowFiltering] ON [dbo].[Product_SpecificationAttribute_Mapping] ([AllowFiltering] ASC) INCLUDE ([ProductId],[SpecificationAttributeOptionId])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_PSAM_SpecificationAttributeOptionId_AllowFiltering] ON [dbo].[Product_SpecificationAttribute_Mapping] ([SpecificationAttributeOptionId] ASC, [AllowFiltering] ASC) INCLUDE ([ProductId])
+GO

@@ -236,12 +236,16 @@ namespace Nop.Admin.Controllers
             {
                 UsernamesEnabled = _customerSettings.UsernamesEnabled,
                 DateOfBirthEnabled = _customerSettings.DateOfBirthEnabled,
+                CompanyEnabled = _customerSettings.CompanyEnabled,
+                PhoneEnabled = _customerSettings.PhoneEnabled,
+                ZipPostalCodeEnabled = _customerSettings.ZipPostalCodeEnabled,
                 AvailableCustomerRoles = _customerService.GetAllCustomerRoles(true).ToList(),
                 SearchCustomerRoleIds = defaultRoleIds,
             };
 
             var customers = _customerService.GetAllCustomers(null, null, defaultRoleIds, null,
-                null, null, null, 0, 0, false, null, 0, _adminAreaSettings.GridPageSize);
+                null, null, null, 0, 0, null, null, null,
+                false, null, 0, _adminAreaSettings.GridPageSize);
             //customer list
             listModel.Customers = new GridModel<CustomerModel>
             {
@@ -277,11 +281,15 @@ namespace Nop.Admin.Controllers
             string searchCustomerMonthOfBirthStr = command.FilterDescriptors.GetValueFromAppliedFilters("searchCustomerMonthOfBirth");
             if (!String.IsNullOrEmpty(searchCustomerMonthOfBirthStr))
                 searchCustomerMonthOfBirth = Convert.ToInt32(searchCustomerMonthOfBirthStr);
+            string searchCustomerCompany = command.FilterDescriptors.GetValueFromAppliedFilters("searchCustomerCompany");
+            string searchCustomerPhone = command.FilterDescriptors.GetValueFromAppliedFilters("searchCustomerPhone");
+            string searchCustomerZipPostalCode = command.FilterDescriptors.GetValueFromAppliedFilters("searchCustomerZipPostalCode");
 
             var customers = _customerService.GetAllCustomers(null, null,
                 searchCustomerRoleIds.ToArray(), searchCustomerEmail, searchCustomerUsername,
                 searchCustomerFirstName, searchCustomerLastName,
                 searchCustomerDayOfBirth, searchCustomerMonthOfBirth,
+                searchCustomerCompany, searchCustomerPhone, searchCustomerZipPostalCode,
                 false, null, command.Page - 1, command.PageSize);
             var gridModel = new GridModel<CustomerModel>
             {
@@ -303,6 +311,9 @@ namespace Nop.Admin.Controllers
 
             model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
             model.DateOfBirthEnabled = _customerSettings.DateOfBirthEnabled;
+            model.CompanyEnabled = _customerSettings.CompanyEnabled;
+            model.PhoneEnabled = _customerSettings.PhoneEnabled;
+            model.ZipPostalCodeEnabled = _customerSettings.ZipPostalCodeEnabled;
 
             //convert to string because passing int[] to grid is no possible
             string searchCustomerRoleIdsStr = "";
@@ -320,6 +331,9 @@ namespace Nop.Admin.Controllers
             ViewData["searchCustomerLastName"] = model.SearchLastName;
             ViewData["searchCustomerDayOfBirth"] = model.SearchDayOfBirth;
             ViewData["searchCustomerMonthOfBirth"] = model.SearchMonthOfBirth;
+            ViewData["searchCustomerCompany"] = model.SearchCompany;
+            ViewData["searchCustomerPhone"] = model.SearchPhone;
+            ViewData["searchCustomerZipPostalCode"] = model.SearchZipPostalCode;
 
             //customer roles
             var customerRoles = _customerService.GetAllCustomerRoles(true);
@@ -337,6 +351,7 @@ namespace Nop.Admin.Controllers
                model.SearchCustomerRoleIds, model.SearchEmail, model.SearchUsername,
                model.SearchFirstName, model.SearchLastName,
                searchCustomerDayOfBirth, searchCustomerMonthOfBirth,
+               model.SearchCompany, model.SearchPhone, model.SearchZipPostalCode,
                false, null, 0, _adminAreaSettings.GridPageSize);
             //customer list
             model.Customers = new GridModel<CustomerModel>
@@ -1318,8 +1333,7 @@ namespace Nop.Admin.Controllers
                 Data = model
             };
         }
-
-
+        
         #endregion
 
         #region Reports
@@ -1498,15 +1512,16 @@ namespace Nop.Admin.Controllers
 
         #region Export / Import
 
-        public ActionResult ExportExcel()
+        public ActionResult ExportExcelAll()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageCustomers))
                 return AccessDeniedView();
 
             try
             {
-                var customers = _customerService.GetAllCustomers(null, null, null, null, 
-                    null, null, null, 0, 0, false, null, 0, int.MaxValue);
+                var customers = _customerService.GetAllCustomers(null, null, null, null,
+                    null, null, null, 0, 0, null, null, null, 
+                    false, null, 0, int.MaxValue);
 
                 string fileName = string.Format("customers_{0}_{1}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), CommonHelper.GenerateRandomDigitCode(4));
                 string filePath = string.Format("{0}content\\files\\ExportImport\\{1}", Request.PhysicalApplicationPath, fileName);
@@ -1523,15 +1538,40 @@ namespace Nop.Admin.Controllers
             }
         }
 
-        public ActionResult ExportXml()
+        public ActionResult ExportExcelSelected(string selectedIds)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCustomers))
+                return AccessDeniedView();
+
+            var customers = new List<Customer>();
+            if (selectedIds != null)
+            {
+                var ids = selectedIds
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => Convert.ToInt32(x))
+                    .ToArray();
+                customers.AddRange(_customerService.GetCustomersByIds(ids));
+            }
+
+            string fileName = string.Format("customers_{0}_{1}.xlsx", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), CommonHelper.GenerateRandomDigitCode(4));
+            string filePath = string.Format("{0}content\\files\\ExportImport\\{1}", Request.PhysicalApplicationPath, fileName);
+
+            _exportManager.ExportCustomersToXlsx(filePath, customers);
+
+            var bytes = System.IO.File.ReadAllBytes(filePath);
+            return File(bytes, "text/xls", fileName);
+        }
+
+        public ActionResult ExportXmlAll()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageCustomers))
                 return AccessDeniedView();
 
             try
             {
-                var customers = _customerService.GetAllCustomers(null, null, null, null, 
-                    null, null, null, 0, 0, false, null, 0, int.MaxValue);
+                var customers = _customerService.GetAllCustomers(null, null, null, null,
+                    null, null, null, 0, 0, null, null, null, 
+                    false, null, 0, int.MaxValue);
                 
                 var fileName = string.Format("customers_{0}.xml", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
                 var xml = _exportManager.ExportCustomersToXml(customers);
@@ -1542,6 +1582,26 @@ namespace Nop.Admin.Controllers
                 ErrorNotification(exc);
                 return RedirectToAction("List");
             }
+        }
+
+        public ActionResult ExportXmlSelected(string selectedIds)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCustomers))
+                return AccessDeniedView();
+
+            var customers = new List<Customer>();
+            if (selectedIds != null)
+            {
+                var ids = selectedIds
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => Convert.ToInt32(x))
+                    .ToArray();
+                customers.AddRange(_customerService.GetCustomersByIds(ids));
+            }
+
+            var fileName = string.Format("customers_{0}.xml", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
+            var xml = _exportManager.ExportCustomersToXml(customers);
+            return new XmlDownloadResult(xml, fileName);
         }
 
         #endregion

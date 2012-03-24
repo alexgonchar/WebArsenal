@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 using Autofac;
 using Autofac.Builder;
 using Autofac.Core;
@@ -211,7 +212,8 @@ namespace Nop.Web.Framework
 
             builder.RegisterType<EncryptionService>().As<IEncryptionService>().InstancePerHttpRequest();
             builder.RegisterType<FormsAuthenticationService>().As<IAuthenticationService>().InstancePerHttpRequest();
-            
+
+            builder.RegisterType<ShipmentService>().As<IShipmentService>().InstancePerHttpRequest();
             builder.RegisterType<ShippingService>().As<IShippingService>().InstancePerHttpRequest();
 
             builder.RegisterType<TaxCategoryService>().As<ITaxCategoryService>().InstancePerHttpRequest();

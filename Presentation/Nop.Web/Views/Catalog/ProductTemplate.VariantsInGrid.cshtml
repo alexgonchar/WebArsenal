@@ -51,21 +51,13 @@
         });
     </script>
 }
-@if (Model.DisplayProductAddedMessage)
-{
-    //display notification   
-    <script type="text/javascript">
-        $(document).ready(function () {
-            alert('@T("Products.ProductHasBeenAddedToTheCart").Text');
-        });
-    </script>
-}
 <!--product breadcrumb-->
 @Html.Action("ProductBreadcrumb", "Catalog", new { productId = Model.Id })
 <div class="clear">
 </div>
 <div class="product-details-page">
-    @using (Html.BeginRouteForm("Product", new { productId = Model.Id, SeName = Model.SeName }, FormMethod.Post))
+    @*we add enctype = "multipart/form-data" because "File upload" attribute control type requries it*@
+    @using (Html.BeginRouteForm("Product", new { productId = Model.Id, SeName = Model.SeName }, FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="product-essential">
             <div class="product-details-info">
@@ -107,7 +99,7 @@
                     }
                     <br />
                     @Html.Action("ProductEmailAFriendButton", "Catalog", new { productId = Model.Id })
-                    <text>&nbsp;</text>
+                    &nbsp;
                     @Html.Action("CompareProductsButton", "Catalog", new { productId = Model.Id })
                     <div class="clear">
                     </div>

@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Plugin.Shipping.Fedex.Domain;
 using Nop.Plugin.Shipping.Fedex.Models;
 using Nop.Services.Configuration;
+using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 
 namespace Nop.Plugin.Shipping.Fedex.Controllers
@@ -29,6 +30,8 @@ namespace Nop.Plugin.Shipping.Fedex.Controllers
             model.Password = _fedexSettings.Password;
             model.AccountNumber = _fedexSettings.AccountNumber;
             model.MeterNumber = _fedexSettings.MeterNumber;
+            model.DropoffType = Convert.ToInt32(_fedexSettings.DropoffType);
+            model.AvailableDropOffTypes = _fedexSettings.DropoffType.ToSelectList();
             model.UseResidentialRates = _fedexSettings.UseResidentialRates;
             model.ApplyDiscounts = _fedexSettings.ApplyDiscounts;
             model.AdditionalHandlingCharge = _fedexSettings.AdditionalHandlingCharge;
@@ -37,6 +40,9 @@ namespace Nop.Plugin.Shipping.Fedex.Controllers
             model.StateOrProvinceCode = _fedexSettings.StateOrProvinceCode;
             model.PostalCode = _fedexSettings.PostalCode;
             model.CountryCode = _fedexSettings.CountryCode;
+            model.PackingPackageVolume = _fedexSettings.PackingPackageVolume;
+            model.PackingType = Convert.ToInt32(_fedexSettings.PackingType);
+            model.PackingTypeValues = _fedexSettings.PackingType.ToSelectList();
             model.PassDimensions = _fedexSettings.PassDimensions;
 
 
@@ -57,7 +63,6 @@ namespace Nop.Plugin.Shipping.Fedex.Controllers
                     }
                 }
 
-
             return View("Nop.Plugin.Shipping.Fedex.Views.ShippingFedex.Configure", model);
         }
 
@@ -75,6 +80,7 @@ namespace Nop.Plugin.Shipping.Fedex.Controllers
             _fedexSettings.Password = model.Password;
             _fedexSettings.AccountNumber = model.AccountNumber;
             _fedexSettings.MeterNumber = model.MeterNumber;
+            _fedexSettings.DropoffType = (DropoffType)model.DropoffType;
             _fedexSettings.UseResidentialRates = model.UseResidentialRates;
             _fedexSettings.ApplyDiscounts = model.ApplyDiscounts;
             _fedexSettings.AdditionalHandlingCharge = model.AdditionalHandlingCharge;
@@ -83,6 +89,8 @@ namespace Nop.Plugin.Shipping.Fedex.Controllers
             _fedexSettings.StateOrProvinceCode = CommonHelper.EnsureMaximumLength(model.StateOrProvinceCode, 2);
             _fedexSettings.PostalCode = model.PostalCode;
             _fedexSettings.CountryCode = model.CountryCode;
+            _fedexSettings.PackingPackageVolume = model.PackingPackageVolume;
+            _fedexSettings.PackingType = (PackingType)model.PackingType;
             _fedexSettings.PassDimensions = model.PassDimensions;
 
 

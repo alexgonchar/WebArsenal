@@ -28,6 +28,7 @@ using Nop.Services.Shipping;
 using Nop.Services.Tax;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
+using Nop.Web.Framework.UI.Captcha;
 using Nop.Web.Models.Media;
 using Nop.Web.Models.ShoppingCart;
 
@@ -61,7 +62,7 @@ namespace Nop.Web.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IPermissionService _permissionService;
-        
+        private readonly IDownloadService _downloadService;
 
         private readonly MediaSettings _mediaSetting;
         private readonly ShoppingCartSettings _shoppingCartSettings;
@@ -69,6 +70,7 @@ namespace Nop.Web.Controllers
         private readonly OrderSettings _orderSettings;
         private readonly ShippingSettings _shippingSettings;
         private readonly TaxSettings _taxSettings;
+        private readonly CaptchaSettings _captchaSettings;
 
         #endregion
 
@@ -87,10 +89,12 @@ namespace Nop.Web.Controllers
             IOrderTotalCalculationService orderTotalCalculationService,
             ICheckoutAttributeService checkoutAttributeService, IPaymentService paymentService,
             IWorkflowMessageService workflowMessageService,
-            IPermissionService permissionService,
+            IPermissionService permissionService, 
+            IDownloadService downloadService,
             MediaSettings mediaSetting, ShoppingCartSettings shoppingCartSettings,
             CatalogSettings catalogSettings, OrderSettings orderSettings,
-            ShippingSettings shippingSettings,TaxSettings taxSettings)
+            ShippingSettings shippingSettings, TaxSettings taxSettings,
+            CaptchaSettings captchaSettings)
         {
             this._productService = productService;
             this._workContext = workContext;
@@ -116,6 +120,7 @@ namespace Nop.Web.Controllers
             this._paymentService = paymentService;
             this._workflowMessageService = workflowMessageService;
             this._permissionService = permissionService;
+            this._downloadService = downloadService;
 
             this._mediaSetting = mediaSetting;
             this._shoppingCartSettings = shoppingCartSettings;
@@ -123,6 +128,7 @@ namespace Nop.Web.Controllers
             this._orderSettings = orderSettings;
             this._shippingSettings = shippingSettings;
             this._taxSettings = taxSettings;
+            this._captchaSettings = captchaSettings;
         }
 
         #endregion
@@ -550,12 +556,40 @@ namespace Nop.Web.Controllers
                     productVariant, ShoppingCartType.ShoppingCart,
                     string.Empty, decimal.Zero, 1, true);
                 if (addToCartWarnings.Count == 0)
-                    return RedirectToRoute("ShoppingCart");
+                {
+                    //added to the cart
+                    if (_shoppingCartSettings.DisplayCartAfterAddingProduct)
+                    {
+                        //redirect to the shopping cart page
+                        return RedirectToRoute("ShoppingCart");
+                    }
+                    else
+                    {
+                        //TODO: URL referrer is null in IE 8. Fix it
+                        if (HttpContext.Request.UrlReferrer != null)
+                        {
+                            //redisplay the page with "Product has been added to the cart" notification message
+                            this.SuccessNotification(_localizationService.GetResource("Products.ProductHasBeenAddedToTheCart"), true);
+                            return Redirect(HttpContext.Request.UrlReferrer.PathAndQuery);
+                        }
+                        else
+                        {
+                            //redirect to the shopping cart page
+                            return RedirectToRoute("ShoppingCart");
+                        }       
+                    }
+                }
                 else
-                    return RedirectToRoute("Product", new { productId = product.Id, SeName = product.GetSeName() });
+                {
+                    //cannot be added to the cart
+                    return RedirectToRoute("Product", new {productId = product.Id, SeName = product.GetSeName()});
+                }
             }
             else
-                return RedirectToRoute("Product", new { productId = product.Id, SeName = product.GetSeName() });
+            {
+                //cannot be added to the cart
+                return RedirectToRoute("Product", new {productId = product.Id, SeName = product.GetSeName()});
+            }
         }
 
         [NopHttpsRequirement(SslRequirement.Yes)]
@@ -825,6 +859,39 @@ namespace Nop.Web.Controllers
                             {
                                 selectedAttributes = _checkoutAttributeParser.AddCheckoutAttribute(selectedAttributes,
                                     attribute, selectedDate.Value.ToString("D"));
+                            }
+                        }
+                        break;
+                    case AttributeControlType.FileUpload:
+                        {
+                            var httpPostedFile = this.Request.Files[controlId];
+                            if ((httpPostedFile != null) && (!String.IsNullOrEmpty(httpPostedFile.FileName)))
+                            {
+                                int fileMaxSize = _catalogSettings.FileUploadMaximumSizeBytes;
+                                if (httpPostedFile.ContentLength > fileMaxSize)
+                                {
+                                    //TODO display warning
+                                    //warnings.Add(string.Format(_localizationService.GetResource("ShoppingCart.MaximumUploadedFileSize"), (int)(fileMaxSize / 1024)));
+                                }
+                                else
+                                {
+                                    //save an uploaded file
+                                    var download = new Download()
+                                    {
+                                        DownloadGuid = Guid.NewGuid(),
+                                        UseDownloadUrl = false,
+                                        DownloadUrl = "",
+                                        DownloadBinary = httpPostedFile.GetDownloadBits(),
+                                        ContentType = httpPostedFile.ContentType,
+                                        Filename = System.IO.Path.GetFileNameWithoutExtension(httpPostedFile.FileName),
+                                        Extension = System.IO.Path.GetExtension(httpPostedFile.FileName),
+                                        IsNew = true
+                                    };
+                                    _downloadService.InsertDownload(download);
+                                    //save attribute
+                                    selectedAttributes = _checkoutAttributeParser.AddCheckoutAttribute(selectedAttributes,
+                                        attribute, download.DownloadGuid.ToString());
+                                }
                             }
                         }
                         break;
@@ -1461,44 +1528,51 @@ namespace Nop.Web.Controllers
 
             var model = new WishlistEmailAFriendModel()
             {
-                YourEmailAddress = _workContext.CurrentCustomer.Email
+                YourEmailAddress = _workContext.CurrentCustomer.Email,
+                DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnEmailWishlistToFriendPage
             };
             return View(model);
         }
 
         [HttpPost, ActionName("EmailWishlist")]
         [FormValueRequired("send-email")]
-        public ActionResult EmailWishlistSend(WishlistEmailAFriendModel model)
+        [CaptchaValidator]
+        public ActionResult EmailWishlistSend(WishlistEmailAFriendModel model, bool captchaValid)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.EnableWishlist) || !_shoppingCartSettings.EmailWishlistEnabled)
                 return RedirectToAction("Index", "Home");
-            
+
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnEmailWishlistToFriendPage && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptcha"));
+            }
+
             var cart = _workContext.CurrentCustomer.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist).ToList();
 
             if (cart.Count == 0)
                 return RedirectToAction("Index", "Home");
 
+            if (_workContext.CurrentCustomer.IsGuest())
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Wishlist.EmailAFriend.OnlyRegisteredUsers"));
+            }
+
             if (ModelState.IsValid)
             {
-                if (_workContext.CurrentCustomer.IsGuest())
-                {
-                    ModelState.AddModelError("", _localizationService.GetResource("Wishlist.EmailAFriend.OnlyRegisteredUsers"));
-                }
-                else
-                {
-                    //email
-                    _workflowMessageService.SendWishlistEmailAFriendMessage(_workContext.CurrentCustomer,
-                            _workContext.WorkingLanguage.Id, model.YourEmailAddress,
-                            model.FriendEmail, Core.Html.HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
+                //email
+                _workflowMessageService.SendWishlistEmailAFriendMessage(_workContext.CurrentCustomer,
+                        _workContext.WorkingLanguage.Id, model.YourEmailAddress,
+                        model.FriendEmail, Core.Html.HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
 
-                    model.SuccessfullySent = true;
-                    model.Result = _localizationService.GetResource("Wishlist.EmailAFriend.SuccessfullySent");
+                model.SuccessfullySent = true;
+                model.Result = _localizationService.GetResource("Wishlist.EmailAFriend.SuccessfullySent");
 
-                    return View(model);
-                }
+                return View(model);
             }
 
             //If we got this far, something failed, redisplay form
+            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnEmailWishlistToFriendPage;
             return View(model);
         }
 

@@ -13,6 +13,7 @@ namespace Nop.Web.Models.Order
             GiftCards = new List<GiftCard>();
             Items = new List<OrderProductVariantModel>();
             OrderNotes = new List<OrderNote>();
+            Shipments = new List<ShipmentBriefModel>();
         }
 
         public bool PrintMode { get; set; }
@@ -32,9 +33,7 @@ namespace Nop.Web.Models.Order
         public decimal OrderWeight { get; set; }
         public string BaseWeightIn { get; set; }
         public string ShippingMethod { get; set; }
-        public string ShippedDate { get; set; }
-        public string DeliveryDate { get; set; }
-        public string TrackingNumber { get; set; }
+        public IList<ShipmentBriefModel> Shipments { get; set; }
 
         public AddressModel BillingAddress { get; set; }
 
@@ -69,19 +68,12 @@ namespace Nop.Web.Models.Order
         public class OrderProductVariantModel : BaseNopEntityModel
         {
             public string Sku { get; set; }
-
             public int ProductId { get; set; }
-
             public string ProductName { get; set; }
-
             public string ProductSeName { get; set; }
-
             public string UnitPrice { get; set; }
-
             public string SubTotal { get; set; }
-
             public int Quantity { get; set; }
-            
             public string AttributeInfo { get; set; }
         }
 
@@ -101,6 +93,13 @@ namespace Nop.Web.Models.Order
         {
             public string Note { get; set; }
             public DateTime CreatedOn { get; set; }
+        }
+
+        public class ShipmentBriefModel : BaseNopEntityModel
+        {
+            public string TrackingNumber { get; set; }
+            public DateTime ShippedDate { get; set; }
+            public DateTime? DeliveryDate { get; set; }
         }
 		#endregion
     }

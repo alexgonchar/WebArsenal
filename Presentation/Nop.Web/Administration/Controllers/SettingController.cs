@@ -717,8 +717,11 @@ namespace Nop.Admin.Controllers
                 }
             model.SecuritySettings.HideAdminMenuItemsBasedOnPermissions = _securitySettings.HideAdminMenuItemsBasedOnPermissions;
             model.SecuritySettings.CaptchaEnabled = _captchaSettings.Enabled;
+            model.SecuritySettings.CaptchaShowOnLoginPage = _captchaSettings.ShowOnLoginPage;
             model.SecuritySettings.CaptchaShowOnRegistrationPage = _captchaSettings.ShowOnRegistrationPage;
             model.SecuritySettings.CaptchaShowOnContactUsPage = _captchaSettings.ShowOnContactUsPage;
+            model.SecuritySettings.CaptchaShowOnEmailWishlistToFriendPage = _captchaSettings.ShowOnEmailWishlistToFriendPage;
+            model.SecuritySettings.CaptchaShowOnEmailProductToFriendPage = _captchaSettings.ShowOnEmailProductToFriendPage;
             model.SecuritySettings.ReCaptchaPublicKey = _captchaSettings.ReCaptchaPublicKey;
             model.SecuritySettings.ReCaptchaPrivateKey = _captchaSettings.ReCaptchaPrivateKey;
 
@@ -792,8 +795,11 @@ namespace Nop.Admin.Controllers
             _securitySettings.HideAdminMenuItemsBasedOnPermissions = model.SecuritySettings.HideAdminMenuItemsBasedOnPermissions;
             _settingService.SaveSetting(_securitySettings);
             _captchaSettings.Enabled = model.SecuritySettings.CaptchaEnabled;
+            _captchaSettings.ShowOnLoginPage = model.SecuritySettings.CaptchaShowOnLoginPage;
             _captchaSettings.ShowOnRegistrationPage = model.SecuritySettings.CaptchaShowOnRegistrationPage;
             _captchaSettings.ShowOnContactUsPage = model.SecuritySettings.CaptchaShowOnContactUsPage;
+            _captchaSettings.ShowOnEmailWishlistToFriendPage = model.SecuritySettings.CaptchaShowOnEmailWishlistToFriendPage;
+            _captchaSettings.ShowOnEmailProductToFriendPage = model.SecuritySettings.CaptchaShowOnEmailProductToFriendPage;
             _captchaSettings.ReCaptchaPublicKey = model.SecuritySettings.ReCaptchaPublicKey;
             _captchaSettings.ReCaptchaPrivateKey = model.SecuritySettings.ReCaptchaPrivateKey;
             _settingService.SaveSetting(_captchaSettings);
@@ -871,7 +877,7 @@ namespace Nop.Admin.Controllers
             {
                 //MobileDevicesSupported setting has been changed
                 //restart application
-                _webHelper.RestartAppDomain("~/Admin/Setting/GeneralCommon");
+                _webHelper.RestartAppDomain();
             }
 
             SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
@@ -935,7 +941,8 @@ namespace Nop.Admin.Controllers
                 //update user information
                 //TODO optimization - load only users with PasswordFormat.Encrypted (don't filter them here)
                 var customers = _customerService.GetAllCustomers(null, null, null,
-                    null, null, null, null, 0, 0, false, null, 0, int.MaxValue)
+                    null, null, null, null, 0, 0, null, null, null, 
+                    false, null, 0, int.MaxValue)
                     .Where(u => u.PasswordFormat == PasswordFormat.Encrypted);
                 foreach (var customer in customers)
                 {

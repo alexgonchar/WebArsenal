@@ -66,6 +66,7 @@ namespace Nop.Web.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IOpenAuthenticationService _openAuthenticationService;
         private readonly IBackInStockSubscriptionService _backInStockSubscriptionService;
+        private readonly IDownloadService _downloadService;
 
         private readonly MediaSettings _mediaSettings;
         private readonly IWorkflowMessageService _workflowMessageService;
@@ -93,7 +94,8 @@ namespace Nop.Web.Controllers
             IPictureService pictureService, INewsLetterSubscriptionService newsLetterSubscriptionService,
             IForumService forumService, IShoppingCartService shoppingCartService,
             IOpenAuthenticationService openAuthenticationService, 
-            IBackInStockSubscriptionService backInStockSubscriptionService, MediaSettings mediaSettings,
+            IBackInStockSubscriptionService backInStockSubscriptionService, 
+            IDownloadService downloadService, MediaSettings mediaSettings,
             IWorkflowMessageService workflowMessageService, LocalizationSettings localizationSettings,
             CaptchaSettings captchaSettings, ExternalAuthenticationSettings externalAuthenticationSettings)
         {
@@ -124,6 +126,7 @@ namespace Nop.Web.Controllers
             this._shoppingCartService = shoppingCartService;
             this._openAuthenticationService = openAuthenticationService;
             this._backInStockSubscriptionService = backInStockSubscriptionService;
+            this._downloadService = downloadService;
 
             this._mediaSettings = mediaSettings;
             this._workflowMessageService = workflowMessageService;
@@ -178,12 +181,20 @@ namespace Nop.Web.Controllers
             var model = new LoginModel();
             model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
             model.CheckoutAsGuest = checkoutAsGuest.HasValue ? checkoutAsGuest.Value : false;
+            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnLoginPage;
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        [CaptchaValidator]
+        public ActionResult Login(LoginModel model, string returnUrl, bool captchaValid)
         {
+            //validate CAPTCHA
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnLoginPage && !captchaValid)
+            {
+                ModelState.AddModelError("", _localizationService.GetResource("Common.WrongCaptcha"));
+            }
+
             if (ModelState.IsValid)
             {
                 if (_customerSettings.UsernamesEnabled && model.Username != null)
@@ -215,6 +226,7 @@ namespace Nop.Web.Controllers
 
             //If we got this far, something failed, redisplay form
             model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
+            model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnLoginPage;
             return View(model);
         }
 
@@ -938,7 +950,7 @@ namespace Nop.Web.Controllers
                     Id = ear.Id,
                     Email = ear.Email,
                     ExternalIdentifier = ear.ExternalIdentifier,
-                    AuthMethodName = authMethod.PluginDescriptor.FriendlyName
+                    AuthMethodName = authMethod.GetLocalizedFriendlyName(_localizationService, _workContext.WorkingLanguage.Id)
                 });
             }
 
@@ -1251,26 +1263,29 @@ namespace Nop.Web.Controllers
             foreach (var returnRequest in returnRequests)
             {
                 var opv = _orderService.GetOrderProductVariantById(returnRequest.OrderProductVariantId);
-                var pv = opv.ProductVariant;
-
-                var itemModel = new CustomeReturnRequestsModel.ReturnRequestModel()
+                if (opv != null)
                 {
-                    Id = returnRequest.Id,
-                    ReturnRequestStatus = returnRequest.ReturnRequestStatus.GetLocalizedEnum(_localizationService, _workContext),
-                    ProductId = pv.ProductId,
-                    ProductSeName = pv.Product.GetSeName(),
-                    Quantity = returnRequest.Quantity,
-                    ReturnAction = returnRequest.RequestedAction,
-                    ReturnReason = returnRequest.ReasonForReturn,
-                    Comments = returnRequest.CustomerComments,
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(returnRequest.CreatedOnUtc, DateTimeKind.Utc),
-                };
-                model.Items.Add(itemModel);
+                    var pv = opv.ProductVariant;
 
-                if (!String.IsNullOrEmpty(pv.GetLocalized(x => x.Name)))
-                    itemModel.ProductName = string.Format("{0} ({1})", pv.Product.GetLocalized(x => x.Name), pv.GetLocalized(x => x.Name));
-                else
-                    itemModel.ProductName = pv.Product.GetLocalized(x => x.Name);
+                    var itemModel = new CustomeReturnRequestsModel.ReturnRequestModel()
+                    {
+                        Id = returnRequest.Id,
+                        ReturnRequestStatus = returnRequest.ReturnRequestStatus.GetLocalizedEnum(_localizationService, _workContext),
+                        ProductId = pv.ProductId,
+                        ProductSeName = pv.Product.GetSeName(),
+                        Quantity = returnRequest.Quantity,
+                        ReturnAction = returnRequest.RequestedAction,
+                        ReturnReason = returnRequest.ReasonForReturn,
+                        Comments = returnRequest.CustomerComments,
+                        CreatedOn = _dateTimeHelper.ConvertToUserTime(returnRequest.CreatedOnUtc, DateTimeKind.Utc),
+                    };
+                    model.Items.Add(itemModel);
+
+                    if (!String.IsNullOrEmpty(pv.GetLocalized(x => x.Name)))
+                        itemModel.ProductName = string.Format("{0} ({1})", pv.Product.GetLocalized(x => x.Name), pv.GetLocalized(x => x.Name));
+                    else
+                        itemModel.ProductName = pv.Product.GetLocalized(x => x.Name);
+                }
             }
 
             return View(model);
@@ -1312,10 +1327,10 @@ namespace Nop.Web.Controllers
                 else
                     itemModel.ProductName = item.ProductVariant.Product.GetLocalized(x => x.Name);
 
-                if (_orderProcessingService.IsDownloadAllowed(item))
+                if (_downloadService.IsDownloadAllowed(item))
                     itemModel.DownloadId = item.ProductVariant.DownloadId;
 
-                if (_orderProcessingService.IsLicenseDownloadAllowed(item))
+                if (_downloadService.IsLicenseDownloadAllowed(item))
                     itemModel.LicenseId = item.LicenseDownloadId.HasValue ? item.LicenseDownloadId.Value : 0;
             }
             
@@ -1478,7 +1493,7 @@ namespace Nop.Web.Controllers
                     {
                         int avatarMaxSize = _customerSettings.AvatarMaximumSizeBytes;
                         if (uploadedFile.ContentLength > avatarMaxSize)
-                            throw new NopException(string.Format("Maximum avatar size is {0} bytes", avatarMaxSize));
+                            throw new NopException(string.Format(_localizationService.GetResource("Account.Avatar.MaximumUploadedFileSize"), avatarMaxSize));
 
                         byte[] customerPictureBinary = uploadedFile.GetPictureBits();
                         if (customerAvatar != null)

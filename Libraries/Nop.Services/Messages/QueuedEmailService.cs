@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Data;
@@ -7,7 +8,7 @@ using Nop.Core.Events;
 
 namespace Nop.Services.Messages
 {
-    public partial class QueuedEmailService:IQueuedEmailService
+    public partial class QueuedEmailService : IQueuedEmailService
     {
         private readonly IRepository<QueuedEmail> _queuedEmailRepository;
         private readonly IEventPublisher _eventPublisher;
@@ -84,6 +85,31 @@ namespace Nop.Services.Messages
         }
 
         /// <summary>
+        /// Get queued emails by identifiers
+        /// </summary>
+        /// <param name="queuedEmailIds">queued email identifiers</param>
+        /// <returns>Queued emails</returns>
+        public virtual IList<QueuedEmail> GetQueuedEmailsByIds(int[] queuedEmailIds)
+        {
+            if (queuedEmailIds == null || queuedEmailIds.Length == 0)
+                return new List<QueuedEmail>();
+
+            var query = from qe in _queuedEmailRepository.Table
+                        where queuedEmailIds.Contains(qe.Id)
+                        select qe;
+            var queuedEmails = query.ToList();
+            //sort by passed identifiers
+            var sortedQueuedEmails = new List<QueuedEmail>();
+            foreach (int id in queuedEmailIds)
+            {
+                var queuedEmail = queuedEmails.Find(x => x.Id == id);
+                if (queuedEmail != null)
+                    sortedQueuedEmails.Add(queuedEmail);
+            }
+            return sortedQueuedEmails;
+        }
+
+        /// <summary>
         /// Gets all queued emails
         /// </summary>
         /// <param name="fromEmail">From Email</param>
@@ -92,11 +118,14 @@ namespace Nop.Services.Messages
         /// <param name="endTime">The end time</param>
         /// <param name="loadNotSentItemsOnly">A value indicating whether to load only not sent emails</param>
         /// <param name="maxSendTries">Maximum send tries</param>
+        /// <param name="loadNewest">A value indicating whether we should sort queued email descending; otherwise, ascending.</param>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>Email item list</returns>
-        public virtual IPagedList<QueuedEmail> SearchEmails(string fromEmail, string toEmail, DateTime? startTime, DateTime? endTime, 
-            bool loadNotSentItemsOnly, int maxSendTries, int pageIndex, int pageSize)
+        public virtual IPagedList<QueuedEmail> SearchEmails(string fromEmail, 
+            string toEmail, DateTime? startTime, DateTime? endTime, 
+            bool loadNotSentItemsOnly, int maxSendTries,
+            bool loadNewest, int pageIndex, int pageSize)
         {
             fromEmail = (fromEmail ?? String.Empty).Trim();
             toEmail = (toEmail ?? String.Empty).Trim();
@@ -113,7 +142,10 @@ namespace Nop.Services.Messages
             if (loadNotSentItemsOnly)
                 query = query.Where(qe => !qe.SentOnUtc.HasValue);
             query = query.Where(qe => qe.SentTries < maxSendTries);
-            query = query.OrderByDescending(qe => qe.Priority).ThenByDescending(qe => qe.CreatedOnUtc);
+            query = query.OrderByDescending(qe => qe.Priority);
+            query = loadNewest ? 
+                ((IOrderedQueryable<QueuedEmail>)query).ThenByDescending(qe => qe.CreatedOnUtc) :
+                ((IOrderedQueryable<QueuedEmail>)query).ThenBy(qe => qe.CreatedOnUtc);
 
             var queuedEmails = new PagedList<QueuedEmail>(query, pageIndex, pageSize);
             return queuedEmails;

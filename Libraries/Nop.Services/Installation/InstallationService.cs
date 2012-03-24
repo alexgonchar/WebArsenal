@@ -4286,9 +4286,9 @@ namespace Nop.Services.Installation
                                        },
                                    new MessageTemplate
                                        {
-                                           Name = "OrderDelivered.CustomerNotification",
+                                           Name = "ShipmentDelivered.CustomerNotification",
                                            Subject = "Your order from %Store.Name% has been delivered.",
-                                           Body = "<p><a href=\"%Store.URL%\"> %Store.Name%</a> <br /> <br /> Hello %Order.CustomerFullName%, <br /> Good news! You order has been delivered. <br /> Order Number: %Order.OrderNumber%<br /> Order Details: <a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a><br /> Date Ordered: %Order.CreatedOn%<br /> <br /> <br /> <br /> Billing Address<br /> %Order.BillingFirstName% %Order.BillingLastName%<br /> %Order.BillingAddress1%<br /> %Order.BillingCity% %Order.BillingZipPostalCode%<br /> %Order.BillingStateProvince% %Order.BillingCountry%<br /> <br /> <br /> <br /> Shipping Address<br /> %Order.ShippingFirstName% %Order.ShippingLastName%<br /> %Order.ShippingAddress1%<br /> %Order.ShippingCity% %Order.ShippingZipPostalCode%<br /> %Order.ShippingStateProvince% %Order.ShippingCountry%<br /> <br /> Shipping Method: %Order.ShippingMethod% <br /> <br /> %Order.Product(s)% </p>",
+                                           Body = "<p><a href=\"%Store.URL%\"> %Store.Name%</a> <br /> <br /> Hello %Order.CustomerFullName%, <br /> Good news! You order has been delivered. <br /> Order Number: %Order.OrderNumber%<br /> Order Details: <a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a><br /> Date Ordered: %Order.CreatedOn%<br /> <br /> <br /> <br /> Billing Address<br /> %Order.BillingFirstName% %Order.BillingLastName%<br /> %Order.BillingAddress1%<br /> %Order.BillingCity% %Order.BillingZipPostalCode%<br /> %Order.BillingStateProvince% %Order.BillingCountry%<br /> <br /> <br /> <br /> Shipping Address<br /> %Order.ShippingFirstName% %Order.ShippingLastName%<br /> %Order.ShippingAddress1%<br /> %Order.ShippingCity% %Order.ShippingZipPostalCode%<br /> %Order.ShippingStateProvince% %Order.ShippingCountry%<br /> <br /> Shipping Method: %Order.ShippingMethod% <br /> <br /> Delivered Products: <br /> <br /> %Shipment.Product(s)%</p>",
                                            IsActive = true,
                                            EmailAccountId = eaGeneral.Id,
                                        },
@@ -4310,9 +4310,9 @@ namespace Nop.Services.Installation
                                        },
                                    new MessageTemplate
                                        {
-                                           Name = "OrderShipped.CustomerNotification",
+                                           Name = "ShipmentSent.CustomerNotification",
                                            Subject = "Your order from %Store.Name% has been shipped.",
-                                           Body = "<p><a href=\"%Store.URL%\"> %Store.Name%</a> <br /><br />Hello %Order.CustomerFullName%!, <br />Good news! You order has been shipped. <br />Order Number: %Order.OrderNumber%<br />Order Details: <a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a><br />Date Ordered: %Order.CreatedOn%<br /><br /><br /><br />Billing Address<br />%Order.BillingFirstName% %Order.BillingLastName%<br />%Order.BillingAddress1%<br />%Order.BillingCity% %Order.BillingZipPostalCode%<br />%Order.BillingStateProvince% %Order.BillingCountry%<br /><br /><br /><br />Shipping Address<br />%Order.ShippingFirstName% %Order.ShippingLastName%<br />%Order.ShippingAddress1%<br />%Order.ShippingCity% %Order.ShippingZipPostalCode%<br />%Order.ShippingStateProvince% %Order.ShippingCountry%<br /><br />Shipping Method: %Order.ShippingMethod%<br /><br />%Order.Product(s)%</p>",
+                                           Body = "<p><a href=\"%Store.URL%\"> %Store.Name%</a> <br /><br />Hello %Order.CustomerFullName%!, <br />Good news! You order has been shipped. <br />Order Number: %Order.OrderNumber%<br />Order Details: <a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a><br />Date Ordered: %Order.CreatedOn%<br /><br /><br /><br />Billing Address<br />%Order.BillingFirstName% %Order.BillingLastName%<br />%Order.BillingAddress1%<br />%Order.BillingCity% %Order.BillingZipPostalCode%<br />%Order.BillingStateProvince% %Order.BillingCountry%<br /><br /><br /><br />Shipping Address<br />%Order.ShippingFirstName% %Order.ShippingLastName%<br />%Order.ShippingAddress1%<br />%Order.ShippingCity% %Order.ShippingZipPostalCode%<br />%Order.ShippingStateProvince% %Order.ShippingCountry%<br /><br />Shipping Method: %Order.ShippingMethod% <br /> <br /> Shipped Products: <br /> <br /> %Shipment.Product(s)%</p>",
                                            IsActive = true,
                                            EmailAccountId = eaGeneral.Id,
                                        },
@@ -4353,6 +4353,14 @@ namespace Nop.Services.Installation
                                            Name = "Wishlist.EmailAFriend",
                                            Subject = "%Store.Name%. Wishlist",
                                            Body = "<p><a href=\"%Store.URL%\"> %Store.Name%</a> <br /><br />%Wishlist.Email% was shopping on %Store.Name% and wanted to share a wishlist with you. <br /><br /><br />For more info click <a target=\"_blank\" href=\"%Wishlist.URLForCustomer%\">here</a> <br /><br /><br />%Wishlist.PersonalMessage%<br /><br />%Store.Name%</p>",
+                                           IsActive = true,
+                                           EmailAccountId = eaGeneral.Id,
+                                       },
+                                   new MessageTemplate
+                                       {
+                                           Name = "Customer.NewOrderNote",
+                                           Subject = "%Store.Name%. New order note has been added",
+                                           Body = "<p><a href=\"%Store.URL%\">%Store.Name%</a> <br /><br />Hello %Customer.FullName%, <br />New order note has been added to your account:<br />\"%Order.NewNoteText%\".<br /><a target=\"_blank\" href=\"%Order.OrderURLForCustomer%\">%Order.OrderURLForCustomer%</a></p>",
                                            IsActive = true,
                                            EmailAccountId = eaGeneral.Id,
                                        },
@@ -4493,6 +4501,7 @@ namespace Nop.Services.Installation
                     AllowProductSorting = true,
                     AllowProductViewModeChanging = true,
                     DefaultViewMode = "grid",
+                    ShowProductsFromSubcategories = false,
                     ShowCategoryProductNumber = false,
                     ShowCategoryProductNumberIncludingSubcategories = false,
                     CategoryBreadcrumbEnabled = true,
@@ -4520,6 +4529,7 @@ namespace Nop.Services.Installation
                     ProductsByTagPageSize = 4,
                     UseSmallProductBoxOnHomePage =  true,
                     IncludeFeaturedProductsInNormalLists = false,
+                    DisplayTierPricesWithDiscounts = true,
                     IgnoreTierPrices = false,
                     IgnoreDiscounts = false,
                     IgnoreFeaturedProducts = false,
@@ -4528,6 +4538,7 @@ namespace Nop.Services.Installation
                     ProductsByTagAllowCustomersToSelectPageSize = true,
                     ProductsByTagPageSizeOptions = "4, 2, 8, 12",
                     MaximumBackInStockSubscriptions = 200,
+                    FileUploadMaximumSizeBytes = 1024 * 200, //200KB
                 });
 
             EngineContext.Current.Resolve<IConfigurationProvider<LocalizationSettings>>()
@@ -4652,6 +4663,7 @@ namespace Nop.Services.Installation
                 .SaveSettings(new ShoppingCartSettings()
                 {
                     DisplayCartAfterAddingProduct = true,
+                    DisplayWishlistAfterAddingProduct = true,
                     MaximumShoppingCartItems = 1000,
                     MaximumWishlistItems = 1000,
                     ShowProductImagesOnShoppingCart = true,
@@ -4695,6 +4707,8 @@ namespace Nop.Services.Installation
                     FreeShippingOverXValue = decimal.Zero,
                     FreeShippingOverXIncludingTax = false,
                     EstimateShippingEnabled = true,
+                    DisplayShipmentEventsToCustomers = false,
+                    ReturnValidOptionsIfThereAreAny = true,
                 });
 
             EngineContext.Current.Resolve<IConfigurationProvider<PaymentSettings>>()
@@ -8275,6 +8289,7 @@ namespace Nop.Services.Installation
             };
             var downloadPokerFace1 = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 ContentType = "application/x-zip-co",
                 DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_PokerFace_1.zip"),
                 Extension = ".zip",
@@ -8284,6 +8299,7 @@ namespace Nop.Services.Installation
             downloadService.InsertDownload(downloadPokerFace1);
             var downloadPokerFace2 = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 ContentType = "text/plain",
                 DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_PokerFace_2.txt"),
                 Extension = ".txt",
@@ -8346,6 +8362,7 @@ namespace Nop.Services.Installation
             };
             var downloadSingleLadies1 = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 ContentType = "application/x-zip-co",
                 DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_SingleLadies_1.zip"),
                 Extension = ".zip",
@@ -8355,6 +8372,7 @@ namespace Nop.Services.Installation
             downloadService.InsertDownload(downloadSingleLadies1);
             var downloadSingleLadies2 = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 ContentType = "text/plain",
                 DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_SingleLadies_2.txt"),
                 Extension = ".txt",
@@ -8417,6 +8435,7 @@ namespace Nop.Services.Installation
             };
             var downloadBattleOfLa = new Download()
             {
+                DownloadGuid = Guid.NewGuid(),
                 ContentType = "application/x-zip-co",
                 DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_BattleOfLa_1.zip"),
                 Extension = ".zip",

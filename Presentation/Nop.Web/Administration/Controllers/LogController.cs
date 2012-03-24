@@ -154,27 +154,20 @@ namespace Nop.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        //TODO: currently, only records within current page are passed, 
-        //need to somehow pass all of the records
-        [HttpPost, ActionName("List")]
-        [FormValueRequired("delete-selected")]
-        public ActionResult DeleteSelected(LogListModel model, ICollection<int> checkedRecords)
+        [HttpPost]
+        public ActionResult DeleteSelected(ICollection<int> selectedIds)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageSystemLog))
                 return AccessDeniedView();
 
-            if (checkedRecords != null)
+            if (selectedIds != null)
             {
-                foreach (var logId in checkedRecords)
-                {
-                    var logRecord = _logger.GetLogById(logId);
-                    _logger.DeleteLog(logRecord);
-                }
+                var logItems = _logger.GetLogByIds(selectedIds.ToArray());
+                foreach (var logItem in logItems)
+                    _logger.DeleteLog(logItem);
             }
 
-            //return View(model);
-            //refresh page 
-            return List();
+            return Json(new { Result = true});
         }
     }
 }

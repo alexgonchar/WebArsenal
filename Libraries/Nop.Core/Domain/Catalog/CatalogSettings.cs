@@ -35,6 +35,11 @@ namespace Nop.Core.Domain.Catalog
         public string DefaultViewMode { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether a category details page should include products from subcategories
+        /// </summary>
+        public bool ShowProductsFromSubcategories { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether number of products should be displayed beside each category
         /// </summary>
         public bool ShowCategoryProductNumber { get; set; }
@@ -178,6 +183,11 @@ namespace Nop.Core.Domain.Catalog
         /// An option indicating whether products on category and manufacturer pages should include featured products as well
         /// </summary>
         public bool IncludeFeaturedProductsInNormalLists { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether tier prices should be displayed with applied discounts (if available)
+        /// </summary>
+        public bool DisplayTierPricesWithDiscounts { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to ignore tier prices (side-wide)
@@ -195,11 +205,6 @@ namespace Nop.Core.Domain.Catalog
         public bool IgnoreFeaturedProducts { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether we need to ensure that we have at least one filterable product specification attribute mapping before load 'filter by specs' box on category details page. Set it to 'True' if you don't use them. It can really improve your performance
-        /// </summary>
-        public bool EnsureWeHaveFilterableSpecAttributes { get; set; }
-
-        /// <summary>
         /// Gets or set the default value to use for Category page size options (for new Categories)
         /// </summary>
         public string DefaultCategoryPageSizeOptions { get; set; }
@@ -213,5 +218,10 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets a value indicating maximum number of 'back in stock' subscription
         /// </summary>
         public int MaximumBackInStockSubscriptions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a maximum file upload size in bytes for product attributes ('File Upload' type)
+        /// </summary>
+        public int FileUploadMaximumSizeBytes { get; set; }
     }
 }

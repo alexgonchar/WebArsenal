@@ -203,7 +203,7 @@ namespace Nop.Services.Common
 
                 //payment method
                 var paymentMethod = _paymentService.LoadPaymentMethodBySystemName(order.PaymentMethodSystemName);
-                string paymentMethodStr = paymentMethod != null ? paymentMethod.PluginDescriptor.FriendlyName : order.PaymentMethodSystemName;
+                string paymentMethodStr = paymentMethod != null ? paymentMethod.GetLocalizedFriendlyName(_localizationService, lang.Id) : order.PaymentMethodSystemName;
                 if (!String.IsNullOrEmpty(paymentMethodStr))
                 {
                     cell.AddElement(new Paragraph(" "));
@@ -300,7 +300,7 @@ namespace Nop.Services.Common
                     cell = new PdfPCell();
                     cell.AddElement(new Paragraph(name, font));
                     cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                    var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderProductVariant.AttributeDescription, true), attributesFont);
+                    var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderProductVariant.AttributeDescription, true, true), attributesFont);
                     cell.AddElement(attributesParagraph);
                     productsTable.AddCell(cell);
 
@@ -360,7 +360,7 @@ namespace Nop.Services.Common
                 if (!String.IsNullOrEmpty(order.CheckoutAttributeDescription))
                 {
                     doc.Add(new Paragraph(" "));
-                    string attributes = HtmlHelper.ConvertHtmlToPlainText(order.CheckoutAttributeDescription, true);
+                    string attributes = HtmlHelper.ConvertHtmlToPlainText(order.CheckoutAttributeDescription, true, true);
                     var pCheckoutAttributes = new Paragraph(attributes, font);
                     pCheckoutAttributes.Alignment = Element.ALIGN_RIGHT;
                     doc.Add(pCheckoutAttributes);
@@ -608,7 +608,7 @@ namespace Nop.Services.Common
                             notesTable.AddCell(cell);
 
                             cell = new PdfPCell();
-                            cell.AddElement(new Paragraph(HtmlHelper.ConvertHtmlToPlainText(HtmlHelper.FormatText(orderNote.Note, false, true, false, false, false, false), true), font));
+                            cell.AddElement(new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderNote.FormatOrderNoteText(), true, true), font));
                             cell.HorizontalAlignment = Element.ALIGN_LEFT;
                             notesTable.AddCell(cell);
                         }
@@ -630,12 +630,12 @@ namespace Nop.Services.Common
         /// <summary>
         /// Print packaging slips to PDF
         /// </summary>
-        /// <param name="orders">Orders</param>
+        /// <param name="shipments">Shipments</param>
         /// <param name="filePath">File path</param>
-        public virtual void PrintPackagingSlipsToPdf(IList<Order> orders, string filePath)
+        public virtual void PrintPackagingSlipsToPdf(IList<Shipment> shipments, string filePath)
         {
-            if (orders == null)
-                throw new ArgumentNullException("orders");
+            if (shipments == null)
+                throw new ArgumentNullException("shipments");
 
             if (String.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
@@ -658,15 +658,17 @@ namespace Nop.Services.Common
             var font = GetFont();
             var attributesFont = GetFont();
             attributesFont.SetStyle(Font.ITALIC);
-                        
-            int ordCount = orders.Count;
-            int ordNum = 0;
+            
+            int shipmentCount = shipments.Count;
+            int shipmentNum = 0;
 
-            foreach (var order in orders)
+            foreach (var shipment in shipments)
             {
+                var order = shipment.Order;
                 if (order.ShippingAddress != null)
                 {
-                    doc.Add(new Paragraph(String.Format("{0}# {1}", _localizationService.GetResource("PDFPackagingSlip.Order"), order.Id), titleFont));
+                    doc.Add(new Paragraph(String.Format(_localizationService.GetResource("PDFPackagingSlip.Shipment"), shipment.Id), titleFont));
+                    doc.Add(new Paragraph(String.Format(_localizationService.GetResource("PDFPackagingSlip.Order"), order.Id), titleFont));
 
                     if (!String.IsNullOrEmpty(order.ShippingAddress.Company))
                         doc.Add(new Paragraph(String.Format(_localizationService.GetResource("PDFPackagingSlip.Company"), order.ShippingAddress.Company), font));
@@ -708,10 +710,14 @@ namespace Nop.Services.Common
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     productsTable.AddCell(cell);
 
-                    foreach (var orderProductVariant in order.OrderProductVariants)
+                    foreach (var sopv in shipment.ShipmentOrderProductVariants)
                     {
                         //product name
-                        var pv = orderProductVariant.ProductVariant;
+                        var opv = _orderService.GetOrderProductVariantById(sopv.OrderProductVariantId);
+                        if (opv == null)
+                            continue;
+                        
+                        var pv = opv.ProductVariant;
                         string name = "";
                         if (!String.IsNullOrEmpty(pv.GetLocalized(x => x.Name)))
                             name = string.Format("{0} ({1})", pv.Product.GetLocalized(x => x.Name), pv.GetLocalized(x => x.Name));
@@ -720,13 +726,13 @@ namespace Nop.Services.Common
                         cell = new PdfPCell();
                         cell.AddElement(new Paragraph(name, font));
                         cell.HorizontalAlignment = Element.ALIGN_LEFT;
-                        var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderProductVariant.AttributeDescription, true), attributesFont);
+                        var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(opv.AttributeDescription, true, true), attributesFont);
                         cell.AddElement(attributesParagraph);
                         productsTable.AddCell(cell);
 
 
                         //qty
-                        cell = new PdfPCell(new Phrase(orderProductVariant.Quantity.ToString(), font));
+                        cell = new PdfPCell(new Phrase(sopv.Quantity.ToString(), font));
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         productsTable.AddCell(cell);
 
@@ -738,8 +744,8 @@ namespace Nop.Services.Common
                     doc.Add(productsTable);
                 }
 
-                ordNum++;
-                if (ordNum < ordCount)
+                shipmentNum++;
+                if (shipmentNum < shipmentCount)
                 {
                     doc.NewPage();
                 }

@@ -35,7 +35,8 @@
                     <br />
                     <span>@Html.Raw(attribute.Description)</span>
                 }
-                @if (attribute.AttributeControlType == AttributeControlType.TextBox)
+                @if (attribute.AttributeControlType == AttributeControlType.TextBox ||
+                    attribute.AttributeControlType == AttributeControlType.FileUpload)
                 {
                     <text>&nbsp;&nbsp;&nbsp;</text>
                 }
@@ -81,17 +82,22 @@
                         break;
                     case AttributeControlType.TextBox:
                         {
-                    <input name="@(controlId)" type="text" id="@(controlId)" class="textBox" style="width:300px;" />
+                    <input name="@(controlId)" type="text" id="@(controlId)" class="textBox" value="@attribute.TextValue" style="width:300px;" />
                         }
                         break;
                     case AttributeControlType.MultilineTextbox:
                         {
-                    <textarea cols="20" id="@(controlId)" name="@(controlId)" rows="2" style="Width: 300px; Height: 150px;"></textarea>
+                    <textarea cols="20" id="@(controlId)" name="@(controlId)" rows="2" style="Width: 300px; Height: 150px;">@attribute.TextValue</textarea>
                         }
                         break;
                     case AttributeControlType.Datepicker:
                         {
-                    @Html.DatePickerDropDowns(controlId + "_day", controlId + "_month", controlId + "_year", DateTime.Now.Year, DateTime.Now.Year + 1)
+                    @Html.DatePickerDropDowns(controlId + "_day", controlId + "_month", controlId + "_year", DateTime.Now.Year, DateTime.Now.Year + 1, attribute.SelectedDay, attribute.SelectedMonth, attribute.SelectedYear)
+                        }
+                        break;
+                    case AttributeControlType.FileUpload:
+                        {
+                    <input type="file" id="@(controlId)" name="@(controlId)"></input>
                         }
                         break;
                 }

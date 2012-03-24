@@ -111,7 +111,8 @@ namespace Nop.Services.Catalog
             var tierPrices = productVariant.TierPrices
                 .OrderBy(tp => tp.Quantity)
                 .ToList()
-                .FilterForCustomer(customer);
+                .FilterForCustomer(customer)
+                .RemoveDuplicatedQuantities();
 
             int previousQty = 1;
             decimal? previousPrice = null;
@@ -134,6 +135,42 @@ namespace Nop.Services.Catalog
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Gets a product variant with minimal price
+        /// </summary>
+        /// <param name="variants">Product variants</param>
+        /// <param name="customer">The customer</param>
+        /// <param name="includeDiscounts">A value indicating whether include discounts or not for final price computation</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="minPrice">Calcualted minimal price</param>
+        /// <returns>A product variant with minimal price</returns>
+        public virtual ProductVariant GetProductVariantWithMinimalPrice(IList<ProductVariant> variants,
+            Customer customer, bool includeDiscounts, int quantity, out decimal? minPrice)
+        {
+            minPrice = null;
+            if (variants == null)
+                throw new ArgumentNullException("variants");
+
+            if (variants.Count == 0)
+                return null;
+
+            ProductVariant minPriceVariant = null;
+            foreach (var variant in variants)
+            {
+                var finalPrice = GetFinalPrice(variant, customer, decimal.Zero, includeDiscounts, quantity);
+                if (!minPrice.HasValue || finalPrice < minPrice.Value)
+                {
+                    minPriceVariant = variant;
+                    minPrice = finalPrice;
+                }
+            }
+            return minPriceVariant;
+            //previous implementation (compares only Price property but much faster)
+            //var tmp1 = variants.ToList();
+            //tmp1.Sort(new GenericComparer<ProductVariant>("Price", GenericComparer<ProductVariant>.SortOrder.Ascending));
+            //return tmp1.Count > 0 ? tmp1[0] : null;
+        }
 
         /// <summary>
         /// Get product variant special price (is valid)
