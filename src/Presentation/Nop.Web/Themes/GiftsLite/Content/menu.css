@@ -1,0 +1,560 @@
+/*
+Item Name : CSS3 Mega Drop Down Menu
+Author URI : http://themeforest.net/user/Keliah
+Item URI : http://codecanyon.net/item/css3-mega-drop-down-menu/126387
+Version : 2.1
+*/
+
+/*
+
+TABLE OF CONTENTS
+
+01 MENU BAR
+02 DROP DOWN MENU
+03 CONTENT STYLINGS
+04 CONTACT FORM
+
+*/
+
+
+
+/*  _______________________________________
+
+	01 MENU BAR
+    _______________________________________  */
+.topmenu li {
+  border-bottom-style:none;
+  border-color:initial;
+  border-left-style:none;
+  border-right-style:none;
+  border-top-style:none;
+  border-width:initial;
+  float:left;
+  position:relative;
+  text-align:center;
+  margin-left:7px;
+}
+.topmenu li:hover {
+	z-index:2; 
+	background:#9E2023;
+	
+	
+}
+.topmenu ul li a {
+    color: #FFFFFF;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
+    outline: 0 none;
+    text-decoration: none;
+}
+.topmenu li:hover a {
+	color:#FFFFFF;
+	text-shadow: none;
+}
+
+/*Static*/
+.topmenu li.static a {
+    color: #FFFFFF;
+    font: bold 14px arial;
+    padding: 10px 10px 15px 10px;
+}
+.topmenu li.static a:hover {
+	z-index:2;
+	background:none;
+	border:none;
+	text-decoration:none;
+	
+}
+.topmenu li.static a:hover {
+	color: #FFFFFF !important;
+	text-shadow: none;
+}
+/*Static*/
+
+.topmenu li .drop {
+	padding:12px 0;
+	font:bold 14px arial;
+	color: #FFFFFF;
+}
+
+.topmenu li:hover .drop {
+	/*background:url("img/drop.png") no-repeat right 7px;*/
+	text-decoration:none;
+	color: #FFFFFF;
+}
+.topmenu li:hover div a {
+	color: #616161;
+}
+.topmenu li:hover div a:hover {
+	text-decoration:underline;
+}
+
+.topmenu li ul li a:hover {
+}
+
+/* Right aligned menu item */
+
+.topmenu .right {
+	float:right;
+	right:0;
+	margin-right:0px;
+}
+
+
+
+/*  _______________________________________
+
+	02 DROP DOWN MENU
+    _______________________________________  */
+
+
+
+/* Left & right aligned common styles */
+
+/*.topmenu .dropdown_1column, 
+.topmenu .dropdown_2columns, 
+.topmenu .dropdown_3columns, 
+.topmenu .dropdown_4columns,
+.topmenu .dropdown_5columns {
+	margin:4px auto;
+	left:-999em;
+	position:absolute;
+	border:1px solid #aaaaaa;
+	border-top:none;
+	padding:10px;
+	text-align:left;
+	
+	background: -moz-linear-gradient(top, #FFFFFF, #F8F8F3);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#F8F8F3));
+	background:#FFF;
+	
+}*/
+.topmenu .dropdown_1column, 
+.topmenu .dropdown_2columns, 
+.topmenu .dropdown_3columns, 
+.topmenu .dropdown_4columns,
+.topmenu .dropdown_5columns {
+	margin:4px auto;
+	left:-999em;
+	position:absolute;
+	border:1px solid #ccc;
+	border-top:none;
+	padding:10px;
+	text-align:left;
+	
+	background-color:#fff;
+	z-index:2;
+	box-shadow: 0 2px 2px #999;
+	-moz-box-shadow: 0 2px 2px #999;
+	-webkit-box-shadow: 0 2px 2px #999;
+	zoom: 1;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=90, Strength=2) 
+	progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=-90, Strength=2) 
+	progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=180, Strength=3);
+	
+}
+
+.topmenu .levels ul { /* First level drop down */
+	position:absolute;
+	z-index:500;
+	top:-10px;
+	left:100%;
+	display:none;
+	width:180px;
+	background:#FFF;
+	padding:10px 0px 0px 10px;
+	
+	
+	border:1px solid #ccc;
+	border-left:none;
+	text-align:left;
+	
+	background-color:#fff;
+	z-index:2;
+	box-shadow: 0 2px 2px #999;
+	-moz-box-shadow: 0 2px 2px #999;
+	-webkit-box-shadow: 0 2px 2px #999;
+	zoom: 1;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=90, Strength=2) 
+	progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=-90, Strength=2) 
+	progid:DXImageTransform.Microsoft.Shadow(color='#999999', Direction=180, Strength=3);
+}
+* html .topmenu .levels ul{background:#FFF;}
+* html .topmenu .dropdown_1column, 
+.topmenu .dropdown_2columns, 
+.topmenu .dropdown_3columns, 
+.topmenu .dropdown_4columns,
+.topmenu .dropdown_5columns{background:#FFF;}
+
+/* Drop Downs Sizes */
+
+.topmenu .dropdown_1column {width: 145px;}
+.topmenu .dropdown_2columns {width: 540px;}
+.topmenu .dropdown_3columns {width: 455px;}
+.topmenu .dropdown_4columns {width: 650px;}
+.topmenu .dropdown_5columns {width: 765px;}
+
+* html .topmenu .dropdown_2columns {width: 590px;}
+
+/* Showing Drop Down on Mouse Hover - Left aligned */
+
+.topmenu li:hover .dropdown_1column, 
+.topmenu li:hover .dropdown_2columns, 
+.topmenu li:hover .dropdown_3columns,
+.topmenu li:hover .dropdown_4columns,
+.topmenu li:hover .dropdown_5columns {
+	left:0;
+	top:37px;
+}
+
+/* Showing Drop Down on Mouse Hover - Right aligned */
+
+.topmenu li .align_right {
+}
+.topmenu li:hover .align_right {
+	left:auto;
+	right:-1px;
+	top:auto;
+}
+
+/* Columns Sizes */
+
+.topmenu .col_1,
+.topmenu .col_2,
+.topmenu .col_3,
+.topmenu .col_4,
+.topmenu .col_5,
+.topmenu .col_6 {
+	display:inline;
+	float: left;
+	position: relative;
+	margin-left: 10px;
+}
+.topmenu .col_1 {width:145px;}
+.topmenu .col_2 {width:300px;}
+.topmenu .col_3 {width:455px;}
+.topmenu .col_4 {width:610px;}
+.topmenu .col_5 {width:765px;}
+.topmenu .col_6 {width:920px;}
+
+/* IMPORTANT */
+
+/* Use the firstcolumn class for the items that stick to the left edge of the dropdown */
+.topmenu .firstcolumn {
+	margin-left: 0; /* Clearing margin & left */
+	clear: left;
+}
+
+/*  _______________________________________
+
+	03 CONTENT STYLINGS
+    _______________________________________  */
+
+.topmenu p,
+.topmenu ul,
+.topmenu li,
+.topmenu h2,
+.topmenu h3 {
+	font-size:14px; 
+	font-family:Arial, Helvetica, sans-serif;
+	line-height:17px;
+	text-align:left;
+}
+.topmenu p {
+	font-size:12px;
+	line-height:18px;
+	margin-bottom:10px;
+	text-shadow: 1px 1px 1px #FFFFFF;
+}
+.topmenu .strong {
+	font-weight:bold;
+}
+.topmenu .italic {
+	font-style:italic;
+}
+.topmenu h2 {
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:400;
+	letter-spacing:-1px;
+	font-size:21px;
+	line-height:21px;
+	margin-top:7px;
+	margin-bottom:14px;
+	padding-bottom:14px;
+	text-shadow: 1px 1px 1px #FFFFFF;
+	border-bottom:1px solid #666666;
+}
+.topmenu h3 {
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:600;
+	font-size:14px;
+	line-height:21px;
+	margin-top:5px;
+	padding-bottom:7px;
+	text-shadow: 1px 1px 1px #FFFFFF;
+}
+.topmenu .pusher { /* Use this pucher if you want to give more vertical spacing between your rows of content */
+	margin-top:18px;
+}
+
+/* Icon paragraphs */
+
+.topmenu .help,
+.topmenu .favorite,
+.topmenu .mail,
+.topmenu .print {
+	padding-left:36px;
+	margin-bottom:18px;
+}
+.topmenu .help {background:url("img/help.png") no-repeat 0px 2px;}
+.topmenu .favorite {background:url("img/favorite.png") no-repeat 0px 2px;}
+.topmenu .mail {background:url("img/mail.png") no-repeat 0px 2px;}
+.topmenu .print {background:url("img/print.png") no-repeat 0px 2px;}
+
+/* Images styles */
+
+.topmenu .imgshadow_dark{ /* Better style on dark background */
+	background:#FFFFFF;
+	padding:4px;
+	border:1px solid #333333;
+	margin-top:5px;
+	-moz-box-shadow:0px 0px 5px #000000;
+	-webkit-box-shadow:0px 0px 5px #000000;
+	box-shadow:0px 0px 5px #000000;
+}
+.topmenu .imgshadow_light { /* Better style on light background */
+	background:#FFFFFF;
+	padding:4px;
+	border:1px solid #777777;
+	margin-top:5px;
+	-moz-box-shadow:0px 0px 5px #666666;
+	-webkit-box-shadow:0px 0px 5px #666666;
+	box-shadow:0px 0px 5px #666666;
+}
+.topmenu .img_left { /* Image sticks to the left */
+	width:auto;
+	float:left;
+	margin:2px 15px 5px 0px;
+}
+.topmenu .img_right { /* Image sticks to the right */
+	width:auto;
+	float:right;
+	margin:2px 0px 5px 15px;
+}
+
+/* Box styles */
+
+.topmenu li .black_box {
+	background-color:#333333;
+	color: #eeeeee;
+	text-shadow: 1px 1px 1px #000;
+	padding:4px 6px 4px 6px;
+
+	-webkit-box-shadow:inset 0 0 3px #000000;
+	-moz-box-shadow:inset 0 0 3px #000000;
+	box-shadow:inset 0 0 3px #000000;
+}
+
+.topmenu li .dark_grey_box {
+	background-color:#555555;
+	color: #eeeeee;
+	text-shadow: 1px 1px 1px #000;
+	padding:4px 6px 4px 6px;
+
+	-webkit-box-shadow:inset 0 0 3px #111111;
+	-moz-box-shadow:inset 0 0 3px #111111;
+	box-shadow:inset 0 0 3px #111111;
+}
+
+/* Standard lists styles */
+
+.topmenu li ul {
+	list-style:none;
+	padding:0;
+	margin:0 0 12px 0;
+}
+.topmenu li ul li {
+	font-size:12px;
+	line-height:24px;
+	position:relative;
+	text-shadow: 1px 1px 1px #ffffff;
+	padding:0;
+	margin:0;
+	float:left;
+	text-align:left;
+	width:145px;
+}
+.topmenu li ul li:hover {
+	background:none;
+	/*background: #F4F4F4\9;*/
+	border:none;
+	padding:0;
+	margin:0;
+}
+
+/* Greybox lists styles */
+
+.topmenu li .greybox li {
+	background:#F4F4F4;
+	border:1px solid #bbbbbb;
+	margin:0px 0px 4px 0px;
+	padding:4px 6px 4px 6px;
+	width:131px;
+}
+.topmenu li .greybox li:hover {
+	background:#ffffff;
+	border:1px solid #aaaaaa;
+	padding:4px 6px 4px 6px;
+	margin:0px 0px 4px 0px;
+}
+
+/* Other lists styles */
+
+.topmenu li .plus li {
+	background: url("img/plus.png") left 6px no-repeat;
+	margin:0px 0px 4px 0px;
+	padding:0px 0px 0px 21px;
+	width:109px;
+}
+.topmenu li .plus li:hover {
+	background: url("img/plus.png") left 6px no-repeat;
+	padding:0px 0px 0px 21px;
+	margin:0px 0px 4px 0px;
+}
+
+/* Social Icons */
+
+.topmenu li ul.social {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.topmenu li ul.social li {
+	padding-top:5px;
+	margin:0 12px 12px 0;
+	float:left;
+	position:relative;
+	display:inline;
+	width:32px;
+}
+.topmenu li ul.social li:hover {
+	padding-top:5px;
+	margin:-1px 12px 12px 0;
+}
+.topmenu li ul.social li span {
+	display:none;
+}
+
+/* 2-Levels Drop Down */
+
+.topmenu .levels {
+	list-style:none;
+	margin:0;
+	padding:0;
+	width:auto;
+}
+.topmenu a.parent, .topmenu a.parent:hover {
+	background: url("img/drop2.png") right center no-repeat;
+}
+.topmenu .levels li li, .topmenu .levels li li:hover {
+	width:150px;
+	padding: 0px;
+	margin:0px 0px 0px 1px;
+}
+
+.topmenu .levels ul ul {
+    left: 100%;
+    margin: -1px 0 0;
+    top: -10px;
+    width: 180px;
+}
+.topmenu .levels li:hover {
+	cursor:pointer;
+	z-index:100;
+}
+.topmenu .levels li:hover ul ul,
+.topmenu .levels li li:hover ul ul
+{display:none;}
+
+.topmenu .levels li:hover ul,
+.topmenu .levels li li:hover ul
+{display:block;z-index:2;}
+
+/*  _______________________________________
+
+	04 CONTACT FORM
+    _______________________________________  */
+
+
+
+.topmenu form {
+	margin:0 0 12px 0;
+	padding:0px;
+}
+
+/* Labels & fieldsets stylings */
+
+.topmenu fieldset {
+	margin:0;
+	border:none;
+}		
+.topmenu form p {
+	margin:10px 0;
+	overflow:hidden;
+	width:270px;
+}
+
+.topmenu label {
+	float:left;
+	display:block;
+	text-align:left;
+	width:50px;
+}	
+.topmenu input,
+.topmenu textarea {	
+	margin:0;	
+	width:170px;
+	float:right;
+	color:#eeeeee;	
+	background-color:#333333;
+	border:1px solid #222222;
+	padding:3px 5px;	
+}		
+.topmenu textarea {
+	height:100px;
+	overflow:auto;
+}					
+
+/* Buttons stylings */
+
+.topmenu button {
+	float:right;
+	width:80px;
+	margin:0px;
+	margin-right:30px;
+	border:none;
+	padding: 2px 7px 2px 7px;
+	color:#eeeeee;	
+	background-color:#333333;
+	text-shadow: 1px 1px 1px #000;
+}
+
+/* Messages when sending email */
+
+.error, .sent {
+	font-size:12px;
+	line-height:18px;
+	padding:5px;
+	margin-bottom:10px;
+}
+.error {
+	background:#f3afa6;
+	border:#ef9588 solid 1px;
+	color:#992213;
+}
+.sent {
+	background:#bef08f;
+	border:#adec71 solid 1px;
+	color:#37620d;
+}

@@ -33,3 +33,7 @@ _ReSharper*/
 *.[Pp]ublish.xml
 Thumbs.db
 Nop.Web/Plugins/*
+src/UpgradeLog.XML
+_UpgradeReport_Files*/
+Thumbs*/
+src/Presentation/Nop.Web/Plugins/*

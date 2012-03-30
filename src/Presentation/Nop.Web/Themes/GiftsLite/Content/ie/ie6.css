@@ -1,0 +1,18 @@
+body {
+	/*behavior: url("csshover3.htc");*/
+	behavior: url("/csshover3.aspx");
+}
+.menu li .drop {
+	background:url("dropie.png") no-repeat right 5px;
+}
+.menu li:hover .drop {
+	background:url("dropiehover.png") no-repeat right 4px;
+}
+.dropdown_1column, 
+.dropdown_2columns, 
+.dropdown_3columns, 
+.dropdown_4columns,
+.dropdown_5columns 
+{
+    background:#F4F4F4;
+}

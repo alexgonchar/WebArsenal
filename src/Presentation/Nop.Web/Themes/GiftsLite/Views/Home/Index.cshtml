@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsThree.cshtml";
+}
+<script src="/Themes/GiftsLite/Content/nivoslider/JScripts/jquery.nivo.slider.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+    jQuery(window).load(function () {
+        jQuery('#slider').nivoSlider({
+            slices: 18,
+            animSpeed: 800, //Slide transition speed
+            pauseTime: 5000,
+            startSlide: 0 //Set starting Slide (0 index)
+        });
+    });
+</script>
+@Html.Action("TopicBlock", "Topic", new { systemName = "HomePageText" })
+<div class="clear">
+</div>
+@Html.Action("HomepageCategories", "Catalog")
+<div class="clear">
+</div>
+@Html.Action("HomepageProducts", "Catalog")
+<div class="clear">
+</div>
+@Html.Action("HomepageBestSellers", "Catalog")
+<div class="clear">
+</div>
+@Html.Action("HomePageNews", "News")
+<div class="clear">
+</div>
+@Html.Action("HomePagePolls", "Poll")
