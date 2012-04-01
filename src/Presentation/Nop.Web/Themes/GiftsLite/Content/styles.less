@@ -105,9 +105,9 @@ h2,h3{font-size:16px;}
 .header .ico-cart{padding-left:10px;padding-bottom:5px;}
 .header .ico-wishlist{padding-left:10px;padding-bottom:5px;}
 .header .ico-admin{padding-left:10px;padding-bottom:5px;}
-.header-logo{margin-top:15px;float:left;text-align:left;}
-a.logo	{background:url("images/logo.png") no-repeat scroll 0 0 transparent;display:block;height:65px;width: 350px;text-decoration:none;background-position: left bottom;}
-.header-selectors-wrapper{text-align:right;float:right;width:500px;margin-top:-20px;clear:both}
+.header-logo{margin-top:25px;float:left;text-align:left;}
+a.logo	{background:url("images/logo.png") no-repeat scroll 0 0 transparent;display:block;height:55px;width: 310px;text-decoration:none;background-position: left bottom;}
+.header-selectors-wrapper{text-align:right;float:right;width:500px;margin-top:-30px;clear:both}
 .header-currencyselector{float:right;}
 .header-languageselector{float:right;margin-right:5px}
 .header-taxDisplayTypeSelector{float:right;}
@@ -282,12 +282,14 @@ ul.languagelist li:hover{cursor:pointer;}
 .block{margin-bottom:15px;padding-bottom:5px;padding-left:0;}
 .block .title, .bestsellers .title, .filter-title
 {
-    font-size: 1em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding: 5px 10px 10px;
-    text-align: left;
-    text-transform: uppercase;
+	font-size: 1em;
+	font-weight: bold;
+	letter-spacing: 1px;
+	padding: 6px 10px 5px;
+	text-align: left;
+	background: #D9D9D9;
+	color: #333;
+	.radius(3px);
 }
 .block .listbox{font-size:11px;padding:5px 10px 10px;line-height:18px;margin:0;}
 .block .listbox ul{margin:0;padding:0 0 0 10px;color:#5C5B5B;background-color:inherit;}
@@ -1160,11 +1162,9 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 .csharpcode .lnum{color:#606060;}
 
 
-
 .master-wrapper-leftside-3 .block, .master-wrapper-rightside-3 .block, .master-wrapper-side-2 .block
 {
-    background:none repeat scroll 0 0 #F7F7F7 !important;
-	border: 2px solid #F5F5F5 !important;
+    
 }
 
 /*Added by N-Theme*/
@@ -1174,23 +1174,7 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 .product-details-info .fulldescription, .search-panel .search-input, .bestsellers, .product-filters,
 .master-wrapper-center-2, .product-essential .overview
 {
-    background:none repeat scroll 0 0 #FFF;
-    margin-bottom:10px;	
-	border: 2px solid #F7F7F7;    
-	
-	/*CSS3*/
-    border-radius: 4px;
-    -o-border-radius: 4px;
-    -icab-border-radius: 4px;
-    -khtml-border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    
-    /*box-shadow: 1px 1px 0px 0 rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 1px 1px 0px 0 rgba(0, 0, 0, 0.15);
-	-webkit-box-shadow: 1px 1px 0px 0 rgba(0, 0, 0, 0.15);*/
-    /*CSS3*/
+    margin-bottom: 10px;	
 }
 .block a:hover
 {
@@ -1413,7 +1397,7 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 .searchbox
 {
     float: left;
-    padding: 7px 0 0 250px;
+    padding: 7px 0 0 7px;
 }
 
 .searchbox ul
