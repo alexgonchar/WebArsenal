@@ -9,6 +9,7 @@
 @using Nop.Core.Infrastructure;
 @using Nop.Web.Framework.UI;
 @using Nop.Web.Models.Catalog;
+@using Nop.Web.Views
 <div class="recently-viewed-products">
     <div class="page-title">
         <h1>@T("Products.RecentlyViewedProducts")</h1>
@@ -20,7 +21,7 @@
     {
 @*grid mode*@
         <div class="product-grid">
-            @(Html.DataList<ProductModel>(Model, 2,
+            @(Html.DataList<ProductModel>(Model, ViewConstants.ProductColumns,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>

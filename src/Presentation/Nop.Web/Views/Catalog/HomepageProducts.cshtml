@@ -1,6 +1,7 @@
 ﻿@model HomePageProductsModel
 @using Nop.Web.Framework.UI;
 @using Nop.Web.Models.Catalog;
+@using Nop.Web.Views;
 @if (Model.Products.Count > 0)
 {
     <div class="product-grid home-page-product-grid">
@@ -11,7 +12,7 @@
         </div>
         @if (Model.UseSmallProductBox)
         {
-            @(Html.DataList<ProductModel>(Model.Products, 3,
+            @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
             @<div class="item-box">
                 @Html.Partial("_ProductSmallBox", @item)
             </div>
@@ -19,7 +20,7 @@
         }
         else
         {
-        @(Html.DataList<ProductModel>(Model.Products, 2,
+        @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
             @<div class="item-box">
                 @Html.Partial("_ProductBox", @item)
             </div>

@@ -319,6 +319,7 @@
     <Compile Include="Validators\Customer\RegisterValidator.cs" />
     <Compile Include="Validators\Customer\CustomerInfoValidator.cs" />
     <Compile Include="Validators\Common\ContactUsValidator.cs" />
+    <Compile Include="Views\ViewConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\SqlServer.StoredProcedures.sql" />
@@ -1256,6 +1257,7 @@
     <Content Include="Scripts\jquery.fancybox-1.3.4.pack.js" />
     <Content Include="Scripts\jquery.mobile-1.0.1.js" />
     <Content Include="Scripts\jquery.mobile-1.0.1.min.js" />
+    <Content Include="Scripts\less-1.3.0.min.js" />
     <Content Include="Scripts\onepagecheckout.js" />
     <Content Include="Scripts\public.js" />
     <Content Include="Scripts\slimbox2.js" />
@@ -1427,7 +1429,7 @@
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\pascal\readme.txt" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\pascal\ribbon.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\pascal\slider.png" />
-    <Content Include="Themes\GiftsLite\Content\styles.css" />
+    <None Include="Themes\GiftsLite\Content\styles.less" />
     <Content Include="Themes\GiftsLite\Content\zoom\featuredimagezoomer.js" />
     <Content Include="Themes\GiftsLite\Content\zoom\spinningred.gif" />
     <Content Include="Themes\GiftsLite\Demo.htm" />

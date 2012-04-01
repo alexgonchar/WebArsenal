@@ -36,4 +36,4 @@ Nop.Web/Plugins/*
 src/UpgradeLog.XML
 _UpgradeReport_Files*/
 Thumbs*/
-src/Presentation/Nop.Web/Plugins/*
+src/Presentation/Nop.Web/Plugins/**

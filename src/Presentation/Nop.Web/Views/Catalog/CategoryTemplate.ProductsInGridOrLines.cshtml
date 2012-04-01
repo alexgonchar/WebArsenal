@@ -20,6 +20,7 @@
 @using Nop.Web.Framework.UI;
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Extensions;
+@using Nop.Web.Views
 <div class="category-page">
 
     @*category breadcrumb*@
@@ -57,7 +58,7 @@
     @if (Model.SubCategories.Count > 0)
     {
         <div class="sub-category-grid">
-            @(Html.DataList<CategoryModel.SubCategoryModel>(Model.SubCategories, 3,
+            @(Html.DataList<CategoryModel.SubCategoryModel>(Model.SubCategories, 4,
                 @<div class="item-box">
                     <div class="sub-category-item">
                         <h2 class="category-title">
@@ -87,7 +88,7 @@
                 @T("Products.FeaturedProducts")
             </div>
             <div>
-                @(Html.DataList<ProductModel>(Model.FeaturedProducts, 2,
+                @(Html.DataList<ProductModel>(Model.FeaturedProducts, ViewConstants.ProductColumns,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>
@@ -173,7 +174,7 @@
         {
             @*grid mode*@
             <div class="product-grid">
-                @(Html.DataList<ProductModel>(Model.Products, 2,
+                @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>

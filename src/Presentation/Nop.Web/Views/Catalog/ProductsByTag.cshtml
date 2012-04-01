@@ -11,6 +11,7 @@
 @using Nop.Web.Framework.UI;
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Extensions;
+@using Nop.Web.Views
 
 <div class="producttag-page">
     <div class="page-title">
@@ -72,7 +73,7 @@
         {
             @*grid mode*@
             <div class="product-grid">
-                @(Html.DataList<ProductModel>(Model.Products, 2,
+                @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>
