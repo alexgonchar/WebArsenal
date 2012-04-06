@@ -1670,6 +1670,7 @@
     <Content Include="Views\Customer\MyAccount.cshtml" />
     <Content Include="Views\Catalog\HomepageProducts.Mobile.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
+    <Content Include="Themes\GiftsLite\Views\Catalog\_ProductBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
@@ -1897,7 +1898,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>60233</DevelopmentServerPort>
+          <DevelopmentServerPort>39753</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:2451/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
