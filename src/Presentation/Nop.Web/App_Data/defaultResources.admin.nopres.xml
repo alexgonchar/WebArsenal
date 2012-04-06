@@ -576,6 +576,12 @@
 									<LocaleResource Name="OldPrice">
 										<Value>Old price</Value>
 									</LocaleResource>
+                  <LocaleResource Name="ManageInventoryMethod">
+                    <Value>Manage inventory</Value>
+                  </LocaleResource>
+                  <LocaleResource Name="StockQuantity">
+                    <Value>Stock qty</Value>
+                  </LocaleResource>
 									<LocaleResource Name="Published">
 										<Value>Published</Value>
 									</LocaleResource>
@@ -1714,6 +1720,14 @@
 													</LocaleResource>
 												</Children>
 											</LocaleResource>
+                      <LocaleResource Name="AvailableForPreOrder">
+                        <Value>Available for pre-order</Value>
+                        <Children>
+                          <LocaleResource Name="Hint">
+                            <Value>Check if this item is available for Pre-Order. It also displays "Pre-order" button instead of "Add to cart".</Value>
+                          </LocaleResource>
+                        </Children>
+                      </LocaleResource>
 											<LocaleResource Name="AvailableStartDateTime">
 												<Value>Available start date</Value>
 												<Children>

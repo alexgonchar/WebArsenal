@@ -56,6 +56,7 @@ namespace Nop.Admin.Infrastructure
             
             //address
             Mapper.CreateMap<Address, AddressModel>()
+                .ForMember(dest => dest.AddressHtml, mo => mo.Ignore())
                 .ForMember(dest => dest.AvailableCountries, mo => mo.Ignore())
                 .ForMember(dest => dest.AvailableStates, mo => mo.Ignore())
                 .ForMember(dest => dest.FirstNameDisabled, mo => mo.Ignore())
@@ -210,7 +211,7 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.Deleted, mo => mo.Ignore());
             //logs
             Mapper.CreateMap<Log, LogModel>()
-                .ForMember(dest => dest.CustomerName, mo => mo.Ignore())
+                .ForMember(dest => dest.CustomerEmail, mo => mo.Ignore())
                 .ForMember(dest => dest.CreatedOn, mo => mo.Ignore());
             Mapper.CreateMap<LogModel, Log>()
                 .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore())
@@ -223,7 +224,7 @@ namespace Nop.Admin.Infrastructure
             Mapper.CreateMap<ActivityLogType, ActivityLogTypeModel>();
             Mapper.CreateMap<ActivityLog, ActivityLogModel>()
                 .ForMember(dest => dest.ActivityLogTypeName, mo => mo.MapFrom(src => src.ActivityLogType.Name))
-                .ForMember(dest => dest.CustomerName, mo => mo.MapFrom(src => src.Customer.Email))
+                .ForMember(dest => dest.CustomerEmail, mo => mo.MapFrom(src => src.Customer.Email))
                 .ForMember(dest => dest.CreatedOn, mo => mo.Ignore());
             //currencies
             Mapper.CreateMap<Currency, CurrencyModel>()
@@ -483,7 +484,8 @@ namespace Nop.Admin.Infrastructure
             Mapper.CreateMap<OrderSettingsModel, OrderSettings>()
                 .ForMember(dest => dest.OnePageCheckoutDisplayOrderTotalsOnPaymentInfoTab, mo => mo.Ignore())
                 .ForMember(dest => dest.ReturnRequestReasons, mo => mo.Ignore())
-                .ForMember(dest => dest.ReturnRequestActions, mo => mo.Ignore());
+                .ForMember(dest => dest.ReturnRequestActions, mo => mo.Ignore())
+                .ForMember(dest => dest.MinimumOrderPlacementInterval, mo => mo.Ignore());
             Mapper.CreateMap<ShoppingCartSettings, ShoppingCartSettingsModel>();
             Mapper.CreateMap<ShoppingCartSettingsModel, ShoppingCartSettings>()
                 .ForMember(dest => dest.RoundPricesDuringCalculation, mo => mo.Ignore());

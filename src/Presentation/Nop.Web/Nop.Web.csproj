@@ -59,8 +59,9 @@
     <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="FiftyOne.Foundation">
-      <HintPath>..\..\packages\51Degrees.mobi.1.2.0.5\lib\NET40\FiftyOne.Foundation.dll</HintPath>
+    <Reference Include="FiftyOne.Foundation, Version=2.1.2.11, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\51Degrees.mobi.2.1.2.11\lib\NET40\FiftyOne.Foundation.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=3.2.0.0, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -330,7 +331,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\SqlServer.Indexes.sql" />
-    <Content Include="App_Data\web_browsers_patch.xml" />
     <Content Include="Content\2012.1.214\Black\editor.png" />
     <Content Include="Content\2012.1.214\Black\imagebrowser.png" />
     <Content Include="Content\2012.1.214\Black\loading.gif" />
@@ -1548,8 +1548,9 @@
     <Content Include="Views\Catalog\BackInStockSubscribePopup.cshtml" />
     <Content Include="Views\Customer\BackInStockSubscriptions.cshtml" />
     <Content Include="App_Data\Pdf\FreeSerif.ttf" />
-    <Content Include="App_Data\51Degrees.mobi.config" />
-    <Content Include="App_Data\wurfl.xml.gz" />
+    <Content Include="App_Data\51Degrees.mobi.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\_Root.Mobile.cshtml" />
     <Content Include="Views\Home\Index.Mobile.cshtml" />
     <Content Include="Themes\Mobile\theme.config">
@@ -1730,6 +1731,7 @@
     <Content Include="Content\samples\product_PokerFace_1.zip" />
     <Content Include="Content\samples\product_SingleLadies_1.zip" />
     <Content Include="App_Data\GeoIP.dat" />
+    <Content Include="App_Data\51Degrees.mobi-Lite-2012.03.28.dat" />
     <None Include="App_Data\Resources.xsd">
       <SubType>Designer</SubType>
     </None>

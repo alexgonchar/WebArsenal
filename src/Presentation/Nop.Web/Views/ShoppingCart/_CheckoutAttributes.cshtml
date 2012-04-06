@@ -14,11 +14,11 @@
                 }
                 @if (!string.IsNullOrEmpty(attribute.TextPrompt))
                 {
-                    <span style="font-weight: bold">@attribute.TextPrompt</span>
+                    <span class="textprompt">@attribute.TextPrompt</span>
                 }
                 else
                 {
-                    <span style="font-weight: bold">@attribute.Name</span>
+                    <span class="textprompt">@attribute.Name</span>
                 }
                 @if (attribute.AttributeControlType == AttributeControlType.TextBox ||
                     attribute.AttributeControlType == AttributeControlType.FileUpload)
@@ -67,12 +67,12 @@
                         break;
                     case AttributeControlType.TextBox:
                         {
-                    <input name="@(controlId)" type="text" id="@(controlId)" class="textBox" style="width:300px;" @(!String.IsNullOrWhiteSpace(attribute.DefaultValue) ? " value=" + attribute.DefaultValue : null) />
+                    <input name="@(controlId)" type="text" class="textbox" id="@(controlId)" @(!String.IsNullOrWhiteSpace(attribute.DefaultValue) ? " value=" + attribute.DefaultValue : null) />
                         }
                         break;
                     case AttributeControlType.MultilineTextbox:
                         {
-                    <textarea cols="20" id="@(controlId)" name="@(controlId)" rows="2" style="Width: 300px; Height: 150px;">@(!String.IsNullOrWhiteSpace(attribute.DefaultValue) ? attribute.DefaultValue : null)</textarea>
+                    <textarea id="@(controlId)" name="@(controlId)">@(!String.IsNullOrWhiteSpace(attribute.DefaultValue) ? attribute.DefaultValue : null)</textarea>
                         }
                         break;
                     case AttributeControlType.Datepicker:

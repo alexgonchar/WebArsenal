@@ -4466,7 +4466,6 @@ namespace Nop.Services.Installation
                 {
                     UseSystemEmailForContactUsForm = true,
                     UseStoredProceduresIfSupported = true,
-                    EnableHttpCompression = true,
                     SitemapEnabled = true,
                     SitemapIncludeCategories = true,
                     SitemapIncludeManufacturers = true,
@@ -4690,6 +4689,7 @@ namespace Nop.Services.Installation
                     ReturnRequestActions = new List<string>() { "Repair", "Replacement", "Store Credit" },
                     ReturnRequestReasons = new List<string>() { "Received Wrong Product", "Wrong Product Ordered", "There Was A Problem With The Product" },
                     NumberOfDaysReturnRequestAvailable = 365,
+                    MinimumOrderPlacementInterval = 30,
                 });
 
             EngineContext.Current.Resolve<IConfigurationProvider<SecuritySettings>>()

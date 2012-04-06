@@ -82,14 +82,14 @@
                         }
                         @if (Model.ShowSku)
                         {
-                            <td style="white-space: nowrap;">
+                            <td class="nobr">
                                 @item.Sku
                             </td>
                         }
                         @if (Model.ShowProductImages)
                         {
                             <td class="productpicture">
-                                <img style="border-width: 0px;" alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
+                                <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
                             </td>
                         }
                         <td class="product">
@@ -118,20 +118,20 @@
                                 </div>
                             }
                         </td>
-                        <td style="white-space: nowrap;">
+                        <td class="nobr">
                             <span class="productPrice">@item.UnitPrice</span>
                         </td>
-                        <td style="white-space: nowrap;">
+                        <td class="nobr">
                             @if (Model.IsEditable)
                             {
-                                <input name="itemquantity@(item.Id)" type="text" value="@(item.Quantity)" id="itemquantity@(item.Id)" class="shoppingcartquantitytext" size="4" />
+                                <input name="itemquantity@(item.Id)" type="text" value="@(item.Quantity)" id="itemquantity@(item.Id)" class="qty-input" />
                             }
                             else
                             {
                                 <span>@item.Quantity</span>
                             }
                         </td>
-                        <td style="white-space: nowrap;" class="end">
+                        <td class="nobr end">
                             <span class="productPrice">@item.SubTotal</span>
                             @if (!String.IsNullOrEmpty(item.Discount))
                             {
@@ -277,7 +277,7 @@
                             <div class="coupon-box">
                                 <b>@T("ShoppingCart.DiscountCouponCode")</b>
                                 <br />@T("ShoppingCart.DiscountCouponCode.Tooltip")<br />
-                                <input name="discountcouponcode" type="text" id="discountcouponcode" style="width: 125px;" />&nbsp;
+                                <input name="discountcouponcode" type="text" id="discountcouponcode" class="discountcouponcode" />&nbsp;
                                 <input type="submit" name="applydiscountcouponcode" value="@T("ShoppingCart.DiscountCouponCode.Button")" id="applydiscountcouponcode" class="applycouponcodebutton" />
                                 @if (!String.IsNullOrEmpty(Model.DiscountMessage))
                                 {
@@ -307,7 +307,7 @@
                             <div class="giftcard-box">
                                 <b>@T("ShoppingCart.GiftCardCouponCode")</b>
                                 <br />@T("ShoppingCart.GiftCardCouponCode.Tooltip")<br />
-                                <input name="giftcardcouponcode" type="text" id="giftcardcouponcode" style="width: 125px;" />&nbsp;
+                                <input name="giftcardcouponcode" type="text" id="giftcardcouponcode" class="giftcardcouponcode" />&nbsp;
                                 <input type="submit" name="applygiftcardcouponcode" value="@T("ShoppingCart.GiftCardCouponCode.Button")" id="applygiftcardcouponcode" class="applycouponcodebutton" />
                                 @if (!String.IsNullOrEmpty(Model.GiftCardMessage))
                                 {
