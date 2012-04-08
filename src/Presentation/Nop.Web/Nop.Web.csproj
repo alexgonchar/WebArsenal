@@ -1345,6 +1345,7 @@
     <Content Include="Themes\GiftsLite\Content\images\bullet.gif" />
     <Content Include="Themes\GiftsLite\Content\images\cart_line_x.gif" />
     <Content Include="Themes\GiftsLite\Content\images\cart_line_y.gif" />
+    <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\center.png" />
     <Content Include="Themes\GiftsLite\Content\images\closelabel.gif" />
     <Content Include="Themes\GiftsLite\Content\images\delicious.png" />
     <Content Include="Themes\GiftsLite\Content\images\drop.png" />
@@ -1377,6 +1378,7 @@
     <Content Include="Themes\GiftsLite\Content\images\ico-pm.png" />
     <Content Include="Themes\GiftsLite\Content\images\ico-register.gif" />
     <Content Include="Themes\GiftsLite\Content\images\ico-wishlist.gif" />
+    <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\left.png" />
     <Content Include="Themes\GiftsLite\Content\images\loading.gif" />
     <Content Include="Themes\GiftsLite\Content\images\logo.gif" />
     <Content Include="Themes\GiftsLite\Content\images\logo.png" />
@@ -1389,6 +1391,7 @@
     <Content Include="Themes\GiftsLite\Content\images\print.png" />
     <Content Include="Themes\GiftsLite\Content\images\progress-step-active.gif" />
     <Content Include="Themes\GiftsLite\Content\images\progress-step-inactive.gif" />
+    <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\right.png" />
     <Content Include="Themes\GiftsLite\Content\images\rss.png" />
     <Content Include="Themes\GiftsLite\Content\images\SavedStar.png" />
     <Content Include="Themes\GiftsLite\Content\images\star_x_active.gif" />
@@ -1417,7 +1420,8 @@
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\arrows.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\bullets.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\loading.gif" />
-    <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\orman.css" />
+    <None Include="Themes\GiftsLite\Content\Global.less" />
+    <None Include="Themes\GiftsLite\Content\nivoslider\themes\orman\orman.less" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\readme.txt" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\ribbon.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\slider.png" />
@@ -1900,7 +1904,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>39753</DevelopmentServerPort>
+          <DevelopmentServerPort>32116</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:2451/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

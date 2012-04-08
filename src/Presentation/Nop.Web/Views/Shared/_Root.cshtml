@@ -1,9 +1,10 @@
 ﻿@using Nop.Core
 @using Nop.Core.Infrastructure
 @using Nop.Core.Infrastructure.DependencyManagement
+@using Nop.Web.Framework
 @{
     var displayMiniProfiler = EngineContext.Current.Resolve<Nop.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
-    
+
     //resources
     Html.AppendScriptParts(@Url.Content("~/Scripts/public.js"));
     Html.AppendScriptParts(@Url.Content("~/Scripts/MicrosoftMvcAjax.js"));
@@ -34,6 +35,7 @@
     {
         @MvcMiniProfiler.MiniProfiler.RenderIncludes();
     }
+
     <!--Powered by nopCommerce - http://www.nopCommerce.com-->
     <!--Copyright (c) 2008-2012-->
 </head>

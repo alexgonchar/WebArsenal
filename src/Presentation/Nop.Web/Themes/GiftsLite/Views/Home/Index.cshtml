@@ -12,7 +12,21 @@
         });
     });
 </script>
-@Html.Action("TopicBlock", "Topic", new { systemName = "HomePageText" })
+
+<div id="wrapper">
+    @{ Html.AddCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/nivoslider/themes/orman/orman.less")); }
+    <link href="/Themes/GiftsLite/Content/nivoslider/nivo-slider.css" media="screen" rel="stylesheet" type="text/css" />
+    <div class="theme-orman slider-wrapper">
+        <div class="ribbon"> </div>
+        <div class="nivoSlider" id="slider">
+            @*<img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/toystory_orman.jpg" />
+            <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/up_orman.jpg" title="This is an example of a caption" />
+            <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/walle_orman.jpg" />
+            <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/nemo_orman.jpg" />*@
+        </div>
+    </div>
+</div>
+
 <div class="clear">
 </div>
 @Html.Action("HomepageCategories", "Catalog")

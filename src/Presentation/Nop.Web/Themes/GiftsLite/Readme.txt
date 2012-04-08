@@ -38,7 +38,7 @@ add
 add html code:
 
 <div id="wrapper">
-    <link href="/Themes/GiftsLite/Content/nivoslider/themes/orman/orman.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/Themes/GiftsLite/Content/nivoslider/themes/orman/orman.less" media="screen" rel="stylesheet/less" type="text/css" />
     <link href="/Themes/GiftsLite/Content/nivoslider/nivo-slider.css" media="screen" rel="stylesheet" type="text/css" />
     <div class="slider-wrapper theme-orman">
         <div class="ribbon"> </div>
