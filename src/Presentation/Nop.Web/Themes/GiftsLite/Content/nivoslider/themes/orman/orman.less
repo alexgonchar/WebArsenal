@@ -5,7 +5,8 @@ Skin Type: fixed
 Description: A light and green skin for the Nivo Slider.
 Version: 1.0
 Author: Gilbert Pellegrom & Orman Clark
-Author URI: http://dev7studios.com */
+Author URI: http://dev7studios.com
+*/
 
 @column-width: 84px;
 @gutter-width: 12px;
@@ -14,44 +15,43 @@ Author URI: http://dev7studios.com */
 	width: @column-width * @columns-number + @gutter-width * (@columns-number - 1);
 }
 
-@red-main: #bf2c38;
-@red-second: #d12b38;
-
-@main-radius: 4px;
-
-.radius(@r: 4px) {
-	border-radius: @r;
-    -o-border-radius: @r;
-    -icab-border-radius: @r;
-    -khtml-border-radius: @r;
-    -moz-border-radius: @r;
-    -webkit-border-radius: @r;
-    -moz-border-radius: @r;
-}
-
-.gradient(@color-top, @color-bottom) {
-	background: @color-bottom; /* Old browsers */
-    background: -moz-linear-gradient(top, @color-top 0%, @color-bottom 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@color-top), color-stop(100%,@color-bottom)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, @color-top 0%,@color-bottom 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, @color-top 0%,@color-bottom 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, @color-top 0%,@color-bottom 100%); /* IE10+ */
-    background: linear-gradient(top, @color-top 0%,@color-bottom 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color-top', endColorstr='@color-bottom',GradientType=0 ); /* IE6-9 */
-}
-
 @font-family-main: myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif;
 
- .theme-orman.slider-wrapper {
-	z-index:1;
-	.width(6);
-	height:303px;
-	padding-top:18px;position:relative;margin:0 0 0 -30px;
+@left-border-width: 66px;
+@right-border-width: 66px;
 
-	background-image: url(left.png), url(right.png), url(center.png);
-	background-position: top left, top right, top;
-	background-repeat: no-repeat, no-repeat, repeat-x;
+.theme-orman.slider-wrapper {
+	z-index:1;
+	.width(8);
+	height:303px;
+	position:relative;margin:0 0 0 0px;
 }
+
+.theme-orman.slider-wrapper {
+	 .left-border {
+		width: @left-border-width;
+		height: 303px;
+		float: left;
+		background: url(left.png) top left no-repeat;
+	 }
+
+	 .right-border {
+		width: @right-border-width;
+		height: 303px;
+		float: left;
+		background: url(right.png) top right no-repeat;
+	 }
+
+	 .center {
+		float: left;
+		width: 620px;
+		height: 303px;
+		background: url(center.png) top repeat-x;
+		padding-top: 17px;
+	 }
+}
+
+left-border
 
 .theme-orman .nivoSlider{position:relative;width:485px;height:221px;margin-left:68px;background:url(loading.gif) no-repeat 50% 50%;}
 .theme-orman .nivoSlider img{position:absolute;top:0;left:0;display:none;width:515px;height:235px;}
