@@ -18,6 +18,13 @@ namespace Nop.Services.Catalog
         private readonly ICurrencyService _currencyService;
         private readonly ILocalizationService _localizationService;
         private readonly TaxSettings _taxSettings;
+        private static NumberFormatInfo nfi;
+
+        static PriceFormatter()
+        {
+            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberGroupSeparator = " ";    
+        }
 
         public PriceFormatter(IWorkContext workContext,
             ICurrencyService currencyService,
@@ -54,7 +61,9 @@ namespace Nop.Services.Catalog
         protected string GetCurrencyString(decimal amount,
             bool showCurrency, Currency targetCurrency)
         {
-            string result = string.Empty;
+            return amount.ToString("n", nfi).Replace(".00", ".-");
+
+            /*string result = string.Empty;
             if (!String.IsNullOrEmpty(targetCurrency.CustomFormatting))
             {
                 result = amount.ToString(targetCurrency.CustomFormatting);
@@ -74,7 +83,7 @@ namespace Nop.Services.Catalog
 
             if (showCurrency && _currencyService.GetAllCurrencies().Count > 1)
                 result = String.Format("{0} ({1})", result, targetCurrency.CurrencyCode);
-            return result;
+            return result;*/
         }
 
         #endregion

@@ -1261,6 +1261,8 @@
     <Content Include="Scripts\onepagecheckout.js" />
     <Content Include="Scripts\public.js" />
     <Content Include="Scripts\slimbox2.js" />
+    <Content Include="Scripts\wa\main.js" />
+    <Content Include="Scripts\wa\table.js" />
     <Content Include="StoreClosed.htm" />
     <Content Include="Themes\DarkOrange\Content\styles.rtl.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1323,6 +1325,7 @@
     <Content Include="Themes\DarkOrange\Content\styles.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Themes\GiftsLite\Content\bootstrap.css" />
     <Content Include="Themes\GiftsLite\Content\ie\dropie.png" />
     <Content Include="Themes\GiftsLite\Content\ie\dropiehover.png" />
     <Content Include="Themes\GiftsLite\Content\ie\ie6.css" />
@@ -1345,6 +1348,8 @@
     <Content Include="Themes\GiftsLite\Content\images\bullet.gif" />
     <Content Include="Themes\GiftsLite\Content\images\cart_line_x.gif" />
     <Content Include="Themes\GiftsLite\Content\images\cart_line_y.gif" />
+    <Content Include="Themes\GiftsLite\Content\images\shopping_cart.png" />
+    <Content Include="Themes\GiftsLite\Content\images\shopping_cart_w.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\center.png" />
     <Content Include="Themes\GiftsLite\Content\images\closelabel.gif" />
     <Content Include="Themes\GiftsLite\Content\images\delicious.png" />
@@ -1903,7 +1908,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>32116</DevelopmentServerPort>
+          <DevelopmentServerPort>17899</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:2451/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

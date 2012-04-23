@@ -55,5 +55,26 @@ namespace Nop.Web.Framework.UI
 
             return new HtmlString(sb.ToString());
         }
+
+        public static IHtmlString DataListOnDivs<T>(this HtmlHelper helper, IEnumerable<T> items, int minWidth, Func<T, HelperResult> template)
+            where T : class
+        {
+            if (items == null)
+                return new HtmlString("");
+
+            var sb = new StringBuilder();
+            sb.AppendFormat("<div class='flex-tbl' minWidth='{0}'>", minWidth);
+
+            foreach (T item in items)
+            {
+                sb.Append("<div class='tbl-item'");
+                sb.Append(template(item).ToHtmlString());
+                sb.Append("</div>");
+            }
+
+            sb.Append("</div>");
+
+            return new HtmlString(sb.ToString());
+        }
     }
 }

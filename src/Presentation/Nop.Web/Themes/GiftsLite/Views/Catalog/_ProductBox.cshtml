@@ -1,24 +1,37 @@
 ﻿@model Nop.Web.Models.Catalog.ProductModel
 <div class="product-item">
-    
     <div class="picture">
         <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
             <img style="border-width: 0px;" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
         </a>
     </div>
-    <h2 class="product-title">
-        <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name</a>
-    </h2>
+    <h2 class="product-title"><a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name
+                              </a></h2>
     <div class="add-info">
         <div class="prices">
             @Html.Partial("_ProductPrice", Model.ProductPrice)
         </div>
-        <div class="buttons">
-            @if (!Model.ProductPrice.DisableBuyButton)
-            {
-                <br />
-                <input type="button" value="@T("ShoppingCart.AddToCart")" class="productlistaddtocartbutton" onclick="setLocation('@Url.RouteUrl("AddProductToCart", new { productId = Model.Id })')" />
-            }
-        </div>
+        @if (!Model.ProductPrice.DisableBuyButton)
+        {
+            <div class="cart-button" onclick="setLocation('@Url.RouteUrl("AddProductToCart", new { productId = Model.Id })')">
+                <div class="cart-icon"></div>
+            </div>
+        }
     </div>
 </div>
+
+@*<div id="srItem_#{id}" class="srItem #{otherClass}">
+    <div class="srFile">#{saleIcon}#{flamesIcon}<a href="#{url.page}?st=#{searchToken}"><img
+        src="#{url.thumbnail}" class="e_loupe srThumbnail" id="thumbnail_#{id}" alt="#{title}" />
+        </a></div>
+    <div class="srMeta">
+        <div class="srIcons">#{fileTypeIcon}#{editorialIcon}#{exclusiveIcon}#{lightboxIcon}
+        </div>
+        <div><span class="srFileNumber"><a href="#{url.page}?st=#{searchToken}">##{id}</a></span>
+        </div>
+        <div class="srTitle trnct">#{title}</div>
+        <div class="srContributor trnct"><a href="/user_view.php?id=#{contributor.id}">#{contributor.username}
+            </a></div>
+        <div class="srDownload">Downloads: #{downloadCount}</div>
+    </div>
+</div>*@
