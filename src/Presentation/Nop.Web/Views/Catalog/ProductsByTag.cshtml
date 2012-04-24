@@ -14,18 +14,14 @@
 @using Nop.Web.Views
 
 <div class="producttag-page">
-    <div class="page-title">
+    <div class="row-fluid page-title">
         <h1>@String.Format(T("Products.Tags.ProductsTaggedWith").Text, Model.TagName)</h1>
     </div>
-    <div class="clear">
-    </div>
-        
-    
     
     @*view mode*@
     @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
     {
-        <div class="product-viewmode">
+        <div class="row-fluid product-viewmode">
             <span>@T("Categories.ViewMode")</span>
             @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
         </div>
@@ -35,7 +31,7 @@
     @*sorting*@
     @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
     {
-        <div class="product-sorting">
+        <div class="row-fluid product-sorting">
             <span>@T("Categories.OrderBy")</span>
             @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
         </div>
@@ -44,23 +40,20 @@
     @*page size*@
     @if (Model.PagingFilteringContext.AllowCustomersToSelectPageSize && Model.Products.Count > 0)
     {
-        <div class="product-page-size">
+        <div class="row-fluid product-page-size">
             <span>@T("Products.Tags.PageSize")</span>
             <span>@Html.DropDownList("products-pagesize", Model.PagingFilteringContext.PageSizeOptions, new { onchange = "setLocation(this.value);" })</span>
             <span>@T("Products.Tags.PageSize.PerPage")</span>
         </div>
     }    
-    <div class="clear">
-    </div>
     
-        
     @*product list*@
     @if (Model.Products.Count > 0)
     {
         if (Model.PagingFilteringContext.ViewMode == "list")
         {
             @*list mode*@
-            <div class="product-list">
+            <div class="row-fluid product-list">
             @foreach (var product in Model.Products)
             {
                 <div class="item-box">
@@ -72,7 +65,7 @@
         else
         {
             @*grid mode*@
-            <div class="product-grid">
+            <div class="row-fluid product-grid">
                 @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
@@ -82,10 +75,7 @@
         }
     }
     
-    <div class="clear">
-    </div>   
-    
-    <div class="pager">
+    <div class="row-fluid pager">
     @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
     </div>
 </div>

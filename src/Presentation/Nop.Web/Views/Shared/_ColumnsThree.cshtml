@@ -29,7 +29,7 @@
         currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
     }
 }
-<div class="master-wrapper-leftside-3">
+<div class="sidebar-nav left master-wrapper-leftside-3">
     @if (IsSectionDefined("left"))
     {
         @RenderSection("left")
@@ -57,14 +57,7 @@
         @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.AfterLeftSideColumn })
     }
 </div>
-<div class="master-wrapper-center-3">
-    <div class="master-wrapper-cph-3">        
-        @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.BeforeMainColumn })
-        @RenderBody()
-        @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.AfterMainColumn })
-    </div>
-</div>
-<div class="master-wrapper-rightside-3">
+<div class="sidebar-nav right master-wrapper-rightside-3">
     @if (IsSectionDefined("right"))
     {
         @RenderSection("right")
@@ -88,4 +81,11 @@
         </div>
         @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.AfterRightSideColumn })
     }
+</div>
+<div class="content fixed-fixed master-wrapper-center-3">
+    
+        @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.BeforeMainColumn })
+        @RenderBody()
+        @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.AfterMainColumn })
+    
 </div>

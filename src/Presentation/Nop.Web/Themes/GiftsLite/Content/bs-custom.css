@@ -1,0 +1,29 @@
+﻿.sidebar-nav {
+    padding: 9px 0;
+}
+
+.row-fluid > .sidebar-nav {
+    position: relative;
+    top: 0;
+    left:auto;
+    width: 192px;
+}
+
+.left {
+    float:left;
+}
+
+.right {
+    float:right;
+}
+
+.fixed-fluid {
+    margin-left: 192px;
+}
+.fluid-fixed {
+    margin-right: 192px;
+    margin-left:auto !important;
+}
+.fixed-fixed {
+    margin: 0 192px;
+}

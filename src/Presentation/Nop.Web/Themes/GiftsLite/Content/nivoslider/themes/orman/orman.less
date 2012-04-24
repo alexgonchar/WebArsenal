@@ -15,6 +15,14 @@ Author URI: http://dev7studios.com
 	width: @column-width * @columns-number + @gutter-width * (@columns-number - 1);
 }
 
+.min-width(@columns-number: 1) {
+	min-width: @column-width * @columns-number + @gutter-width * (@columns-number - 1);
+}
+
+.max-width(@columns-number: 1) {
+	max-width: @column-width * @columns-number + @gutter-width * (@columns-number - 1);
+}
+
 @font-family-main: myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif;
 
 @left-border-width: 66px;
@@ -22,7 +30,8 @@ Author URI: http://dev7studios.com
 
 .theme-orman.slider-wrapper {
 	z-index:1;
-	.width(8);
+	.min-width(6);
+	.max-width(8);
 	height:303px;
 	position:relative;margin:0 0 0 0px;
 }
@@ -44,7 +53,6 @@ Author URI: http://dev7studios.com
 
 	 .center {
 		float: left;
-		width: 620px;
 		height: 303px;
 		background: url(center.png) top repeat-x;
 		padding-top: 17px;

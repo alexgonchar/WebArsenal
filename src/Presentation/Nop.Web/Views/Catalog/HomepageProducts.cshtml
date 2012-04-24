@@ -8,8 +8,6 @@
         <div class="title">
             @T("HomePage.Products")
         </div>
-        <div class="clear">
-        </div>
         @if (Model.UseSmallProductBox)
         {
             @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,

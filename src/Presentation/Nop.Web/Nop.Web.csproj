@@ -1425,6 +1425,7 @@
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\arrows.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\bullets.png" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\loading.gif" />
+    <Content Include="Themes\GiftsLite\Content\bs-custom.css" />
     <None Include="Themes\GiftsLite\Content\nivoslider\themes\orman\orman.less" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\readme.txt" />
     <Content Include="Themes\GiftsLite\Content\nivoslider\themes\orman\ribbon.png" />
