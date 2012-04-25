@@ -26,7 +26,8 @@
     @*category breadcrumb*@
     @if (Model.DisplayCategoryBreadcrumb)
     {
-        <div class="breadcrumb">
+        <div class="row-fluid breadcrumb">
+            <div class="span12">
             <a href="@Url.RouteUrl("HomePage")">@T("Categories.Breadcrumb.Top")</a> /
             @for (int i = 0; i < Model.CategoryBreadcrumb.Count; i++)
             {
@@ -37,9 +38,8 @@
                     <text>/</text>
                 }
             }
-            <br />
-        </div>
-        <div class="clear">
+                <br />
+            </div>
         </div>
     }
     
@@ -48,8 +48,6 @@
     @*description*@
     <div class="category-description">
         @Html.Raw(Model.Description)
-    </div>
-    <div class="clear">
     </div>
 
 
@@ -100,8 +98,8 @@
     }
     
     
-    
-    
+    <div class="row-fluid">
+    <div class="span12">
     @*view mode*@
     @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
     {
@@ -130,7 +128,7 @@
             <span>@T("Categories.PageSize.PerPage")</span>
         </div>
     }
-    <div class="clear">
+    </div>
     </div>
     
     @*filtering*@
@@ -174,7 +172,7 @@
         {
             @*grid mode*@
             <div class="product-grid">
-                @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
+                @(Html.DataListOnDivs<ProductModel>(Model.Products, 100, 
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>

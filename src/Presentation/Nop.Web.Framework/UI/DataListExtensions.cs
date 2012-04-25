@@ -56,18 +56,18 @@ namespace Nop.Web.Framework.UI
             return new HtmlString(sb.ToString());
         }
 
-        public static IHtmlString DataListOnDivs<T>(this HtmlHelper helper, IEnumerable<T> items, int minWidth, Func<T, HelperResult> template)
+        public static IHtmlString DataListOnDivs<T>(this HtmlHelper helper, IEnumerable<T> items, int itemMinWidth, Func<T, HelperResult> template)
             where T : class
         {
             if (items == null)
                 return new HtmlString("");
 
             var sb = new StringBuilder();
-            sb.AppendFormat("<div class='flex-tbl' minWidth='{0}'>", minWidth);
+            sb.AppendFormat("<div class='row-fluid fluid-tbl' minWidth='{0}'>", itemMinWidth);
 
             foreach (T item in items)
             {
-                sb.Append("<div class='tbl-item'");
+                sb.Append("<div class='fluid-tbl-item'>");
                 sb.Append(template(item).ToHtmlString());
                 sb.Append("</div>");
             }

@@ -27,3 +27,7 @@
 .fixed-fixed {
     margin: 0 192px;
 }
+
+.content:first-child {
+    float: left;
+}
