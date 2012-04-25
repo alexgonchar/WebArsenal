@@ -187,15 +187,10 @@ namespace Nop.Web.Framework.UI
                 return "";
 
             var result = new StringBuilder();
-            const string lessExt = ".less";
             //use only distinct rows
             foreach (var cssPath in _cssParts[location].Distinct())
             {
-                var rel = cssPath.EndsWith(lessExt, StringComparison.InvariantCultureIgnoreCase) 
-                    ? "stylesheet/less"
-                    : "stylesheet";
-                
-                result.AppendFormat("<link href=\"{0}\" rel=\"{1}\" type=\"text/css\" />", cssPath, rel);
+                result.AppendFormat("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />", cssPath);
                 result.Append(Environment.NewLine);
             }
             return result.ToString();

@@ -1,3 +1,3 @@
 ﻿jQuery(function() {
-    initTables();
+    initTables(jQuery);
 });
