@@ -20,16 +20,28 @@
             var minWidth = parseInt($tbl.attr('minWidth'), 10);
             var width = $tbl.width();
             var columnsCount = calcColumnsCount(width, minWidth);
-            var newColumnClass = calcColumnClass(columnsCount);
-            var curColumnClass = $tbl.attr('columnClass');
-
             var $tblItems = $('.fluid-tbl-item', $tbl);
-            if (curColumnClass) {
-                $tblItems.removeClass(curColumnClass);
-            }
-            $tblItems.addClass(newColumnClass);
 
-            $tbl.attr('columnClass', newColumnClass);
+            setNewSizes($tbl, columnsCount, $tblItems);
+            setNewGutters(columnsCount, $tblItems);
+        });
+    }
+
+    function setNewSizes($tbl, columnsCount, $tblItems) {
+        var newColumnClass = calcColumnClass(columnsCount);
+        var curColumnClass = $tbl.attr('columnClass');
+        
+        if (curColumnClass) {
+            $tblItems.removeClass(curColumnClass);
+        }
+        $tblItems.addClass(newColumnClass);
+
+        $tbl.attr('columnClass', newColumnClass);
+    }
+
+    function setNewGutters(columnsCount, $tblItems) {
+        $tblItems.each(function (index) {
+            $(this).css('margin-left', index % columnsCount === 0 ? "0%" : styleConstants.gutterWidthFluidStr);
         });
     }
 
@@ -47,8 +59,7 @@
         return okCount;
 
         function widthForColumns(count) {
-            var gutterWidth = 24;
-            return (widthTotal - (count-1)*gutterWidth) / count;
+            return (widthTotal - (count - 1) * styleConstants.gutterWidth) / count;
         }
     }
 

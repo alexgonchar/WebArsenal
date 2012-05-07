@@ -4,25 +4,27 @@
 @using Nop.Web.Views;
 @if (Model.Products.Count > 0)
 {
-    <div class="product-grid home-page-product-grid">
+    <div class=" row-fluid product-grid home-page-product-grid">
+        <div class="span12">
         <div class="title">
             @T("HomePage.Products")
         </div>
         @if (Model.UseSmallProductBox)
         {
-            @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
-            @<div class="item-box">
-                @Html.Partial("_ProductSmallBox", @item)
-            </div>
-                ))
+            @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
+                                                     @<div class="item-box">
+                                                          @Html.Partial("_ProductSmallBox", @item)
+                                                      </div>
+                       ))
         }
         else
         {
-        @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
-            @<div class="item-box">
-                @Html.Partial("_ProductBox", @item)
-            </div>
-                ))
+            @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
+                                                     @<div class="item-box">
+                                                          @Html.Partial("_ProductBox", @item)
+                                                      </div>
+                       ))
         }
+    </div>
     </div>
 }

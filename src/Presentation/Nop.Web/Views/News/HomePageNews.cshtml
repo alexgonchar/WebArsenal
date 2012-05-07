@@ -5,7 +5,8 @@
 @using Nop.Web.Models.News
 @if (Model.NewsItems.Count > 0)
 {
-    <div class="newslist">
+    <div class="row-fluid newslist">
+        <div class="span12">
         <div class="page-title">
             <table style="width: 100%;">
                 <tr>
@@ -19,24 +20,25 @@
                 </tr>
             </table>
         </div>
-        <div class="newsitems">
-            @foreach (var item in Model.NewsItems)
-            {
-                <div class="item">
-                    <a class="newstitle" href="@Url.RouteUrl("NewsItem", new { newsItemId = item.Id, SeName = item.SeName })">
-                        @item.Title</a> <span class="newsdate">-
-                            @item.CreatedOn.ToString("D")
-                        </span>
-                    <div class="newsdetails">
-                        @Html.Raw(item.Short)
+            <div class="newsitems">
+                @foreach (var item in Model.NewsItems)
+                {
+                    <div class="item">
+                        <a class="newstitle" href="@Url.RouteUrl("NewsItem", new { newsItemId = item.Id, SeName = item.SeName })">
+                            @item.Title</a> <span class="newsdate">-
+                                                @item.CreatedOn.ToString("D")
+                                            </span>
+                        <div class="newsdetails">
+                            @Html.Raw(item.Short)
+                        </div>
+                        <a href="@Url.RouteUrl("NewsItem", new { newsItemId = item.Id, SeName = item.SeName })" class="readmore">
+                            @T("News.MoreInfo")</a>
                     </div>
-                    <a href="@Url.RouteUrl("NewsItem", new { newsItemId = item.Id, SeName = item.SeName })" class="readmore">
-                        @T("News.MoreInfo")</a>
+                }
+                <div class="viewall">
+                    <a href="@Url.RouteUrl("NewsArchive")">
+                        @T("News.ViewAll")</a>
                 </div>
-            }
-            <div class="viewall">
-                <a href="@Url.RouteUrl("NewsArchive")">
-                    @T("News.ViewAll")</a>
             </div>
         </div>
     </div>

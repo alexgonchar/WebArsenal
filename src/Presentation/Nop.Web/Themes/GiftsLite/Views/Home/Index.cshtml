@@ -1,7 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_ColumnsThree.cshtml";
 }
-<script src="/Themes/GiftsLite/Content/nivoslider/JScripts/jquery.nivo.slider.pack.js" type="text/javascript"></script>
+<script src="/Themes/GiftsLite/Content/nivoslider/JScripts/jquery.nivo.slider.pack.js"
+    type="text/javascript"></script>
 <script type="text/javascript">
     jQuery(window).load(function () {
         jQuery('#slider').nivoSlider({
@@ -13,26 +14,28 @@
     });
 </script>
 
-<div id="wrapper">
-    @{ Html.AddCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/nivoslider/themes/orman/orman.less")); }
-    <link href="/Themes/GiftsLite/Content/nivoslider/nivo-slider.css" media="screen" rel="stylesheet" type="text/css" />
-    <div class="theme-orman slider-wrapper">
-        <div class="ribbon"> </div>
-        <div class="left-border"></div>
-        <div class="center">
-            <div class="nivoSlider" id="slider">
-                <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/toystory_orman.jpg" />
-                <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/up_orman.jpg" title="This is an example of a caption" />
-                <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/walle_orman.jpg" />
-                <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/nemo_orman.jpg" />
+<div class="home-page">
+    <div id="wrapper">
+        @{ Html.AddCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/nivoslider/themes/orman/orman.less")); }
+        <link href="/Themes/GiftsLite/Content/nivoslider/nivo-slider.css" media="screen"
+            rel="stylesheet" type="text/css" />
+        <div class="theme-orman slider-wrapper">
+            <div class="ribbon"></div>
+            <div class="left-border"></div>
+            <div class="center">
+                <div class="nivoSlider" id="slider">
+                    <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/toystory_orman.jpg" />
+                    <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/up_orman.jpg" title="This is an example of a caption" />
+                    <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/walle_orman.jpg" />
+                    <img alt="" src="/Themes/GiftsLite/Content/nivoslider/images/nemo_orman.jpg" />
+                </div>
             </div>
+            <div class="right-border"></div>
         </div>
-        <div class="right-border"></div>
     </div>
+    @Html.Action("HomepageCategories", "Catalog")
+    @Html.Action("HomepageProducts", "Catalog")
+    @Html.Action("HomepageBestSellers", "Catalog")
+    @Html.Action("HomePageNews", "News")
+    @Html.Action("HomePagePolls", "Poll")
 </div>
-
-@Html.Action("HomepageCategories", "Catalog")
-@Html.Action("HomepageProducts", "Catalog")
-@Html.Action("HomepageBestSellers", "Catalog")
-@Html.Action("HomePageNews", "News")
-@Html.Action("HomePagePolls", "Poll")

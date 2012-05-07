@@ -28,7 +28,8 @@
         currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
     }
 }
-<div class="master-wrapper-side-2">
+
+<div class="sidebar-nav left master-wrapper-side-2">
     @if (IsSectionDefined("left"))
     {
         @RenderSection("left")
@@ -53,7 +54,7 @@
         @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.AfterLeftSideColumn })
     }
 </div>
-<div class="master-wrapper-center-2">
+<div class="content fixed-fluid master-wrapper-center-2">
     <div class="master-wrapper-cph-2">
         @Html.Action("WidgetsByZone", "Widget", new { widgetZone = Nop.Core.Domain.Cms.WidgetZone.BeforeMainColumn })
         @RenderBody()

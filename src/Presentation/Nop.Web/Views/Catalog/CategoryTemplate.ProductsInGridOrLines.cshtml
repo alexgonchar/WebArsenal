@@ -172,7 +172,7 @@
         {
             @*grid mode*@
             <div class="product-grid">
-                @(Html.DataListOnDivs<ProductModel>(Model.Products, 192, 
+                @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>
