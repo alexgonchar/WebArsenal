@@ -5,8 +5,10 @@
             <img style="border-width: 0px;" alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
         </a>
     </div>
-    <h2 class="product-title"><a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name
-                              </a></h2>
+    <div class="product-title">
+        <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name
+        </a>
+    </div>
     <div class="add-info">
         <div class="prices">
             @Html.Partial("_ProductPrice", Model.ProductPrice)
@@ -19,7 +21,6 @@
         }
     </div>
 </div>
-
 @*<div id="srItem_#{id}" class="srItem #{otherClass}">
     <div class="srFile">#{saleIcon}#{flamesIcon}<a href="#{url.page}?st=#{searchToken}"><img
         src="#{url.thumbnail}" class="e_loupe srThumbnail" id="thumbnail_#{id}" alt="#{title}" />
@@ -34,4 +35,4 @@
             </a></div>
         <div class="srDownload">Downloads: #{downloadCount}</div>
     </div>
-</div>*@
+</div>*@ 

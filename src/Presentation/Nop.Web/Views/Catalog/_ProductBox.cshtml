@@ -1,8 +1,8 @@
 ﻿@model Nop.Web.Models.Catalog.ProductModel
 <div class="product-item">
-    <h2 class="product-title">
+    <div class="product-title">
         <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name</a>
-    </h2>
+    </div>
     <div class="picture">
         <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
             <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" />
