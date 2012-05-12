@@ -44,6 +44,24 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@color-top', endColorstr='@color-bottom',GradientType=0 ); /* IE6-9 */
 }
 
+.skew(@horDeg: 0) {
+	-moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(@horDeg, 0deg);
+	-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(@horDeg, 0deg);
+	-o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(@horDeg, 0deg);
+	-ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(@horDeg, 0deg);
+	transform: scale(1) rotate(0deg) translate(0px, 0px) skew(@horDeg, 0deg);
+}
+
+.cartShadow {
+	-webkit-box-shadow: 1px 1px 3px 0 #757575;
+	-moz-box-shadow: 1px 1px 3px 0 #757575;
+	box-shadow: 1px 1px 3px 0 #757575;
+}
+
+.priceSkew {
+	.skew(-12deg);
+}
+
 @font-family-main: myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif;
 
 
@@ -580,16 +598,19 @@ ul.languagelist li:hover{cursor:pointer;}
 }
 
 .product-grid table tr{background: none repeat scroll 0 0 #FFFFFF;}
-.product-grid .item-box{padding-bottom:10px;text-align:center;vertical-align:text-top;}
-.product-grid .product-item{}
-.product-grid .product-item .product-title{padding: 0 5px;font-size: 1em;}
+.product-grid .item-box{text-align:center;vertical-align:text-top;}
+
+.product-grid .product-item {
+	height: 23em;
+}
+
+.product-grid .product-item .product-title{font-size: 1em;}
 .product-grid .product-item .product-title a {
 	display:block;
-	height:2em;
 	line-height:1.3em;
 	overflow:hidden hidden;
-	padding:4px 10px 8px 0;
 	color:#3A4045;
+	text-decoration: underline;
 }
 .bestsellers .product-title a{padding:0}
 .product-grid .product-item .picture{text-align:center;}
@@ -602,7 +623,8 @@ ul.languagelist li:hover{cursor:pointer;}
 	padding: .65em .6em .35em .6em;
 
 	.gradient(@red-second, @red-main);
-	.radius(4px);    
+	.radius(5px);
+	.priceSkew;
 }
 .product-grid .product-item .add-info .buttons{text-align: center;}
 .product-grid .product-item .add-info .prices .productPrice {
@@ -612,7 +634,7 @@ ul.languagelist li:hover{cursor:pointer;}
 }
 
 .product-grid .product-item .add-info .prices .oldproductPrice{color:#555;text-decoration:line-through;}
-.product-grid .item-box{padding-bottom:10px;text-align:center;vertical-align:text-top;}
+.product-grid .item-box{text-align:center;vertical-align:text-top;}
 .product-grid .small-product-item{text-align:center;margin:10px;width:150px;height:150px;}
 .product-grid .small-product-item .product-title{margin-bottom:5px;margin-top:5px;text-align:center;font-weight:700;font-size:12px;}
 .product-grid .small-product-item .picture{text-align:center;}
@@ -1242,7 +1264,6 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 }
 .home-page-product-grid .item-box, .product-grid .item-box
 {
-	padding: 5px;
 	text-align: center;
 	vertical-align: top;
 	height: 22em;
@@ -1258,7 +1279,6 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
     margin: 0;
     padding: 0;
     text-align: left;
-    .max-width(2);
 
 }
 .bestsellers .product-item{height: 210px !important;}
@@ -1272,17 +1292,15 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 .product-item .product-title a
 {
 	display: block;
-	height: 2em;
 	line-height: 1.2em;
 	overflow: hidden hidden;
-	padding: 4px 10px 8px 0px;
+	padding: 6px 0px 10px 0px;
     font-size: 13px;
 }
 
 .product-grid .product-item .picture, .featured-product-grid .product-item .picture, .home-page-product-grid .item .picture
 {
     background: none repeat scroll 0 0 #FFFFFF;
-    height: 150px;
     text-align: center;
 }
 .bestsellers .product-item .picture{border:none}
@@ -1297,7 +1315,6 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
 }
 .product-title
 {
-    height: 3em;
 }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
 
@@ -1902,9 +1919,10 @@ br{display:inline;}
 	margin: 0em .4em 0 .4em;
 	padding: .4em .6em .43em .9em;
 	cursor:pointer;
-	.radius(2px);
-
+	.radius(5px);
 	.gradient(#7DB72F, #4E7D0E);
+	.priceSkew;
+	.cartShadow;
 }
 
 .cart-icon {
