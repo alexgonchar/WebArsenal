@@ -615,25 +615,20 @@ ul.languagelist li:hover{cursor:pointer;}
 .bestsellers .product-title a{padding:0}
 .product-grid .product-item .picture{text-align:center;}
 .product-grid .product-item .description{margin:5px 5px 0;text-align:center;padding:10px 5px;color:#555;height:50px;}
-.product-grid .product-item .add-info .prices
+.product-grid .product-item .prices
 {
-	float: left;   
     text-align: left;
 	vertical-align: middle;
-	padding: .65em .6em .35em .6em;
-
-	.gradient(@red-second, @red-main);
-	.radius(5px);
-	.priceSkew;
+	
 }
-.product-grid .product-item .add-info .buttons{text-align: center;}
-.product-grid .product-item .add-info .prices .productPrice {
+.product-grid .product-item .buttons{text-align: center;}
+.product-grid .product-item .prices .productPrice {
 	color: white;
 	font-size: 1.9em;
 	font-weight: 700;
 }
 
-.product-grid .product-item .add-info .prices .oldproductPrice{color:#555;text-decoration:line-through;}
+.product-grid .product-item .prices .oldproductPrice{color:#555;text-decoration:line-through;}
 .product-grid .item-box{text-align:center;vertical-align:text-top;}
 .product-grid .small-product-item{text-align:center;margin:10px;width:150px;height:150px;}
 .product-grid .small-product-item .product-title{margin-bottom:5px;margin-top:5px;text-align:center;font-weight:700;font-size:12px;}
@@ -646,7 +641,6 @@ ul.languagelist li:hover{cursor:pointer;}
 .product-list .product-item .product-title a{}
 .product-list .product-item .picture{}
 .product-list .product-item .description{}
-.product-list .product-item .add-info{}
 .product-list .product-item .prices{}
 .product-list .product-item .prices .productPrice{color: #B80709;font-size: 1.1em;font-weight: 700;}
 .product-list .product-item .prices .oldproductPrice{text-decoration: line-through;}
@@ -661,10 +655,10 @@ ul.languagelist li:hover{cursor:pointer;}
 .featured-product-grid .product-item .picture{text-align:center;margin-top:10px;}
 .featured-product-grid .product-item .description{margin:5px 5px 0;text-align:center;padding:10px 5px;border-top:solid 1px #E8E6D2;color:#555;height:50px;}
 .featured-product-grid .product-item .add-info{vertical-align:bottom;text-align:right;width:250px;height:85px;position:relative;}
-.featured-product-grid .product-item .add-info .prices{text-align:right;vertical-align:middle;position:absolute;bottom:15px;right:10px;}
-.featured-product-grid .product-item .add-info .buttons{vertical-align:middle;position:absolute;bottom:15px;left:10px;text-align:left;}
-.featured-product-grid .product-item .add-info .prices .productPrice{color:green;}
-.featured-product-grid .product-item .add-info .prices .oldproductPrice{color:#B80709;text-decoration:line-through;}
+.featured-product-grid .product-item .prices{text-align:right;vertical-align:middle;position:absolute;bottom:15px;right:10px;}
+.featured-product-grid .product-item .buttons{vertical-align:middle;position:absolute;bottom:15px;left:10px;text-align:left;}
+.featured-product-grid .product-item .prices .productPrice{color:green;}
+.featured-product-grid .product-item .prices .oldproductPrice{color:#B80709;text-decoration:line-through;}
 /* PAGES */
 .home-page, .category-page,.manufacturerlist-page,.manufacturer-page,.producttag-page{width:100%; float:left; margin-bottom:15px;padding:0;}
 .category-page .page-title,.manufacturerlist-page .page-title,.manufacturer-page .page-title,.producttag-page .page-title{border-bottom:0 none;}
@@ -1374,10 +1368,31 @@ pre{white-space:pre-wrap;/* css-3 */white-space:0;/* Mozilla, since 1999 */white
     padding: 5px 0;
     text-align: left;
 }
+
+.old-price-section {
+	overflow: hidden;
+	margin-bottom: -.9em;
+	margin-top: .2em;
+}
+
+.old-price-section .old-price-holder {
+	z-index: 2;
+	overflow: hidden;
+	margin: 0 .75em 0 .25em;
+	padding: .1em .5em .8em;
+	background: #E6E6E6;
+	float: left;
+
+	.radius(5px);
+	.priceSkew;
+}
+
 .oldProductPrice {
     color: #5C5B5B !important;
     text-decoration: line-through;
 }
+
+
  a.orderdetailsprintbutton, a.orderdetailsprintbutton:hover 
  {
      text-decoration:none;
@@ -1625,6 +1640,16 @@ table tr td{font-size: 12px;vertical-align: top;}
     color: #B80709;
     font-size: 1em;
 }
+
+.product-price-holder {
+	float: left;
+	padding: .65em .6em .35em .6em;
+	
+	.gradient(@red-second, @red-main);
+	.radius(5px);
+	.priceSkew;
+}
+
 .product-details-info .fulldescription
 {
     clear: both;
@@ -1700,7 +1725,7 @@ table tr td{font-size: 12px;vertical-align: top;}
 	-webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
-.add-info .productvariantaddtocartbutton, .product-variant-line .productvariantaddtocartbutton 
+.productvariantaddtocartbutton, .product-variant-line .productvariantaddtocartbutton 
 {    
     border: 0 none;
     color: #FFFFFF;

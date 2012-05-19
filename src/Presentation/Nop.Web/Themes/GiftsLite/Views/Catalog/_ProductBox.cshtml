@@ -9,18 +9,33 @@
         <a href="@Url.RouteUrl("Product", new { productId = Model.Id, SeName = Model.SeName })">@Model.Name
         </a>
     </div>
-    <div class="add-info">
+
+    
+        
         <div class="prices">
-            @Html.Partial("_ProductPrice", Model.ProductPrice)
-        </div>
-        @if (!Model.ProductPrice.DisableBuyButton)
-        {
-            <div class="cart-button" onclick="setLocation('@Url.RouteUrl("AddProductToCart", new { productId = Model.Id })')">
-                <div class="cart-icon"></div>
+            @if (!String.IsNullOrEmpty(Model.ProductPrice.OldPrice))
+            {
+                <div class="old-price-section">
+                    <div class="old-price-holder">
+                        <span class="oldproductPrice">@Model.ProductPrice.OldPrice</span>
+                    </div>
+                </div>
+            }
+            <div class="product-price-holder">
+                <span class="productPrice">@Model.ProductPrice.Price</span>
             </div>
-        }
-        <div class="clear"></div>
-    </div>
+            @if (!Model.ProductPrice.DisableBuyButton)
+            {
+                <div class="buy">
+                    <div class="cart-button" onclick="setLocation('@Url.RouteUrl("AddProductToCart", new { productId = Model.Id })')">
+                        <div class="cart-icon"></div>
+                    </div>
+                </div>
+            }
+            <div class="clear"></div>
+        </div>
+
+
 </div>
 @*<div id="srItem_#{id}" class="srItem #{otherClass}">
     <div class="srFile">#{saleIcon}#{flamesIcon}<a href="#{url.page}?st=#{searchToken}"><img
