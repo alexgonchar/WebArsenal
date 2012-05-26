@@ -22,36 +22,38 @@
 @using Nop.Web.Extensions;
 @using Nop.Web.Views
 <div class="category-page">
-
     @*category breadcrumb*@
     @if (Model.DisplayCategoryBreadcrumb)
     {
-        <div class="row-fluid breadcrumb">
+        <div class="row-fluid show-grid">
             <div class="span12">
-            <a href="@Url.RouteUrl("HomePage")">@T("Categories.Breadcrumb.Top")</a> /
-            @for (int i = 0; i < Model.CategoryBreadcrumb.Count; i++)
-            {
-                var catBr = Model.CategoryBreadcrumb[i];
-                <a href="@Url.RouteUrl("Category", new { categoryId = catBr.Id, SeName = catBr.SeName })">@catBr.Name</a>
-                if (i != Model.CategoryBreadcrumb.Count - 1)
-                {
-                    <text>/</text>
-                }
-            }
-                <br />
+                <div class="breadcrumbWrap">
+                    <ul class="breadcrumb">
+                        <li><a href="@Url.RouteUrl("HomePage")">@T("Categories.Breadcrumb.Top")</a></li>
+                        <li class="breadcrumb-sep"></li>
+                        @for (int i = 0; i < Model.CategoryBreadcrumb.Count - 1; i++)
+                        {
+                            var catBr = Model.CategoryBreadcrumb[i];
+                        
+                            <li><a href="@Url.RouteUrl("Category", new { categoryId = catBr.Id, SeName = catBr.SeName })">@catBr.Name
+                            </a></li>
+                            <li class="breadcrumb-sep"></li>
+                        }
+                    </ul>
+                    <header>
+                        <h1 class="breadcrumb-current">@Model.CategoryBreadcrumb.Last().Name</h1>
+                    </header>
+                </div>
             </div>
         </div>
     }
     
 
 
-    @*description*@
+@*description*@
     <div class="category-description">
         @Html.Raw(Model.Description)
     </div>
-
-
-    
     @*subcategories*@
     @if (Model.SubCategories.Count > 0)
     {
@@ -59,10 +61,8 @@
             @(Html.DataList<CategoryModel.SubCategoryModel>(Model.SubCategories, 4,
                 @<div class="item-box">
                     <div class="sub-category-item">
-                        <h2 class="category-title">
-                            <a href="@Url.RouteUrl("Category", new { categoryId = item.Id, SeName = item.SeName })" title="@item.PictureModel.Title">
-                                @item.Name</a>
-                        </h2>
+                        <h2 class="category-title"><a href="@Url.RouteUrl("Category", new { categoryId = item.Id, SeName = item.SeName })" title="@item.PictureModel.Title">
+                            @item.Name</a></h2>
                         <div class="picture">
                             <a href="@Url.RouteUrl("Category", new { categoryId = item.Id, SeName = item.SeName })" title="@item.PictureModel.Title">
                                 <img alt="@item.PictureModel.AlternateText" src="@item.PictureModel.ImageUrl"
@@ -78,7 +78,7 @@
 
 
     
-    @*featured products*@
+@*featured products*@
     @if (Model.FeaturedProducts.Count > 0)
     {
         <div class="featured-product-grid">
@@ -96,49 +96,42 @@
         <div class="clear">
         </div>
     }
+    <div class="row-fluid show-grid">
+        <div class="span12">
+            @*view mode*@
+            @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
+            {
+                <div class="product-viewmode">
+                    <span>@T("Categories.ViewMode")</span>
+                    @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
+                </div>
+            }   
     
     
-    <div class="row-fluid">
-    <div class="span12">
-    @*view mode*@
-    @if (Model.PagingFilteringContext.AllowProductViewModeChanging && Model.Products.Count > 0)
-    {
-        <div class="product-viewmode">
-            <span>@T("Categories.ViewMode")</span>
-            @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);"})
+@*sorting*@
+            @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
+            {
+                <div class="product-sorting">
+                    <span>@T("Categories.OrderBy")</span>
+                    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+                </div>
+            }
+    
+@*page size*@
+            @if (Model.PagingFilteringContext.AllowCustomersToSelectPageSize && Model.Products.Count > 0)
+            {
+                <div class="product-page-size">
+                    <span>@T("Categories.PageSize")</span><span>@Html.DropDownList("products-pagesize", Model.PagingFilteringContext.PageSizeOptions, new { onchange = "setLocation(this.value);" })
+                    </span><span>@T("Categories.PageSize.PerPage")</span>
+                </div>
+            }
         </div>
-    }   
-    
-    
-    @*sorting*@
-    @if (Model.PagingFilteringContext.AllowProductSorting && Model.Products.Count > 0)
-    {
-        <div class="product-sorting">
-            <span>@T("Categories.OrderBy")</span>
-            @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
-        </div>
-    }
-    
-    @*page size*@
-    @if (Model.PagingFilteringContext.AllowCustomersToSelectPageSize && Model.Products.Count > 0)
-    {
-        <div class="product-page-size">
-            <span>@T("Categories.PageSize")</span>
-            <span>@Html.DropDownList("products-pagesize", Model.PagingFilteringContext.PageSizeOptions, new { onchange = "setLocation(this.value);" })</span>
-            <span>@T("Categories.PageSize.PerPage")</span>
-        </div>
-    }
     </div>
-    </div>
-    
     @*filtering*@
     @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled ||
         Model.PagingFilteringContext.SpecificationFilter.Enabled)
     {
         <div class="product-filters">
-            <div class="filter-title">
-                <span>@T("Filtering.FilterResults")</span>
-            </div>
             <div class="filter-item">
                 @Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())
             </div>
@@ -153,38 +146,36 @@
     
     
     
-    @*product list*@
+@*product list*@
     @if (Model.Products.Count > 0)
     {
         if (Model.PagingFilteringContext.ViewMode == "list")
         {
-            @*list mode*@
-            <div class="product-list">
+@*list mode*@
+        <div class="product-list">
             @foreach (var product in Model.Products)
             {
                 <div class="item-box">
                     @Html.Partial("_ProductBox", product)
                 </div>
             }
-            </div>       
+        </div>       
         }
         else
         {
-            @*grid mode*@
-            <div class="product-grid">
-                @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
+@*grid mode*@
+        <div class="product-grid row-fluid show-grid">
+            @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>
                 ))
-            </div>
+        </div>
         }
     }
-    
     <div class="clear">
-    </div> 
-    
+    </div>
     <div class="pager">
-    @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
+        @Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber")
     </div>
 </div>

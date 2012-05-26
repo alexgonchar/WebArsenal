@@ -43,7 +43,7 @@
                 @T("Products.FeaturedProducts")
             </div>
             <div>
-                @(Html.DataList<ProductModel>(Model.FeaturedProducts, ViewConstants.ProductColumns,
+                @(Html.DataListOnDivs<ProductModel>(Model.FeaturedProducts, ViewConstants.ColumnMinWidth,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>
@@ -92,9 +92,6 @@
     @if (Model.PagingFilteringContext.PriceRangeFilter.Enabled)
     {
         <div class="product-filters">
-            <div class="filter-title">
-                <span>@T("Filtering.FilterResults")</span>
-            </div>
             <div class="filter-item">
                 @Html.Partial("_FilterPriceBox", Model.PagingFilteringContext.PriceRangeFilter, new ViewDataDictionary())
             </div>
@@ -125,7 +122,7 @@
         {
             @*grid mode*@
             <div class="product-grid">
-                @(Html.DataList<ProductModel>(Model.Products, ViewConstants.ProductColumns,
+                @(Html.DataListOnDivs<ProductModel>(Model.Products, ViewConstants.ColumnMinWidth,
                     @<div class="item-box">
                         @Html.Partial("_ProductBox", @item)
                     </div>

@@ -11,21 +11,23 @@
 @using Nop.Web.Models.Catalog;
 @using Nop.Web.Views
 <div class="recently-viewed-products">
-    <div class="page-title">
-        <h1>@T("Products.RecentlyViewedProducts")</h1>
-    </div>
-    <div class="clear">
+    <div class="row-fluid show-grid">
+        <div class="span12">
+            <div class="page-title">
+                <h1>@T("Products.RecentlyViewedProducts")</h1>
+            </div>
+        </div>
     </div>
     @*product list*@
     @if (Model.Count > 0)
     {
 @*grid mode*@
-        <div class="product-grid">
-            @(Html.DataList<ProductModel>(Model, ViewConstants.ProductColumns,
-                    @<div class="item-box">
-                        @Html.Partial("_ProductBox", @item)
-                    </div>
-                ))
+        <div class="row-fluid show-grid product-grid">
+            @(Html.DataListOnDivs<ProductModel>(Model, ViewConstants.ProductColumns,
+                                   @<div class="item-box">
+                                       @Html.Partial("_ProductBox", @item)
+                                   </div>
+           ))
         </div>
         
     }

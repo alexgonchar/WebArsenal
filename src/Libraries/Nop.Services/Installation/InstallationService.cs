@@ -4532,10 +4532,10 @@ namespace Nop.Services.Installation
                     IgnoreTierPrices = false,
                     IgnoreDiscounts = false,
                     IgnoreFeaturedProducts = false,
-                    DefaultCategoryPageSizeOptions = "4, 2, 8, 12",
-                    DefaultManufacturerPageSizeOptions = "4, 2, 8, 12",
+                    DefaultCategoryPageSizeOptions = "30",
+                    DefaultManufacturerPageSizeOptions = "30",
                     ProductsByTagAllowCustomersToSelectPageSize = true,
-                    ProductsByTagPageSizeOptions = "4, 2, 8, 12",
+                    ProductsByTagPageSizeOptions = "30",
                     MaximumBackInStockSubscriptions = 200,
                     FileUploadMaximumSizeBytes = 1024 * 200, //200KB
                 });

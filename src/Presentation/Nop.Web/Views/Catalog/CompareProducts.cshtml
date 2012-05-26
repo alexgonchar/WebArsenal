@@ -30,23 +30,24 @@
     }
 }
 <div class="compare-products">
-    <div class="page-title">
-        <h1>@T("Products.Compare.Title")</h1>
-    </div>
-    <div class="clear">
+    <div class="row-fluid show-grid">
+        <div class="span12">
+            <div class="page-title">
+                <h1>@T("Products.Compare.Title")</h1>
+            </div>
+        </div>
     </div>
     <div class="body">
         @if (Model.Count > 0)
         {
-            <a href="#" onclick="setLocation('@Url.RouteUrl("ClearCompareList")')">@T("Products.Compare.Clear")</a>
+            <a href="#" onclick="setLocation('@Url.RouteUrl("ClearCompareList")')">@T("Products.Compare.Clear")
+            </a>
             <br />
             <br />
             <table cellpadding="0" cellspacing="0" border="0" class="compare-products-table">
                 <tbody>
                     <tr>
-                        <td>
-                            &nbsp;
-                        </td>
+                        <td>&nbsp; </td>
                         @foreach (var product in Model)
                         {
                             <td style="width: @columnWidth;" class="a-center">
@@ -62,14 +63,11 @@
                         }
                     </tr>
                     <tr class="product-name">
-                        <td>
-                            &nbsp;
-                        </td>
+                        <td>&nbsp; </td>
                         @foreach (var product in Model)
                         {
-                            <td style="width: @columnWidth;" class="a-center">
-                                <a class="link" href="@Url.RouteUrl("Product", new { productId = product.Id, SeName = product.SeName })">@product.Name</a>
-                            </td>
+                            <td style="width: @columnWidth;" class="a-center"><a class="link" href="@Url.RouteUrl("Product", new { productId = product.Id, SeName = product.SeName })">@product.Name
+                                </a></td>
                         }
                     </tr>
                     <tr class="productPrice">
@@ -100,7 +98,7 @@
                                     }
                                     else
                                     {
-                                    <text>&nbsp;</text>
+                                        <text>&nbsp;</text>
                                     }
                                 </td>
                             }

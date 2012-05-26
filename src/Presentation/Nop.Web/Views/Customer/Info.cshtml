@@ -13,38 +13,40 @@
 @if (Model.CountryEnabled && Model.StateProvinceEnabled)
 {
     <script type="text/javascript">
-     $(function() {
-            $("#@Html.FieldIdFor(model => model.CountryId)").change(function() {
-                var selectedItem = $(this).val();
-                var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvinceId)");
-                var statesProgress = $("#states-loading-progress");
-                statesProgress.show();
-                $.ajax({
-                    cache:false,
-                    type: "GET",
-                    url: "@(Url.Action("GetStatesByCountryId", "Country"))",
-                    data: { "countryId": selectedItem, "addEmptyStateIfRequired": "true" },
-                    success: function (data) {
-                        ddlStates.html('');
-                        $.each(data, function(id, option) {
-                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
-                        });
-                        statesProgress.hide();
-                    },
-                    error:function (xhr, ajaxOptions, thrownError){
-                        alert('Failed to retrieve states.');
-                        statesProgress.hide();
-                    }  
+    $(function() {
+        $("#@Html.FieldIdFor(model => model.CountryId)").change(function() {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvinceId)");
+            var statesProgress = $("#states-loading-progress");
+            statesProgress.show();
+            $.ajax({
+                cache:false,
+                type: "GET",
+                url: "@(Url.Action("GetStatesByCountryId", "Country"))",
+                data: { "countryId": selectedItem, "addEmptyStateIfRequired": "true" },
+            success: function (data) {
+                ddlStates.html('');
+                $.each(data, function(id, option) {
+                    ddlStates.append($('<option></option>').val(option.id).html(option.name));
                 });
-            });
+                statesProgress.hide();
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+                alert('Failed to retrieve states.');
+                statesProgress.hide();
+            }  
         });
-</script>
+    });
+    });
+    </script>
 }
 <div class="account-page">
-    <div class="page-title">
-        <h1>@T("Account.MyAccount") - @T("Account.CustomerInfo")</h1>
-    </div>
-    <div class="clear">
+    <div class="row-fluid show-grid">
+        <div class="span12">
+            <div class="page-title">
+                <h1>@T("Account.MyAccount") - @T("Account.CustomerInfo")</h1>
+            </div>
+        </div>
     </div>
     <div class="body">
         <div class="section-body">
@@ -69,20 +71,19 @@
                                 {
                                     <tr class="row">
                                         <td class="item-name">
-                                            @Html.LabelFor(model => model.Gender):
-                                        </td>
+                                            @Html.LabelFor(model => model.Gender): </td>
                                         <td class="item-value">
                                             @Html.RadioButton("Gender", "M", (Model.Gender == "M"), new { id = "Gender_Male" })
                                             <label class="forcheckbox" for="Gender_Male">@T("Account.Fields.Gender.Male")</label>
                                             @Html.RadioButton("Gender", "F", (Model.Gender == "F"), new { id = "Gender_Female" })
-                                            <label class="forcheckbox" for="Gender_Female">@T("Account.Fields.Gender.Female")</label>
+                                            <label class="forcheckbox" for="Gender_Female">@T("Account.Fields.Gender.Female")
+                                            </label>
                                         </td>
                                     </tr>
                                 }
                                 <tr class="row">
                                     <td class="item-name">
-                                        @Html.LabelFor(model => model.FirstName):
-                                    </td>
+                                        @Html.LabelFor(model => model.FirstName): </td>
                                     <td class="item-value">
                                         @Html.EditorFor(model => model.FirstName)
                                         @Html.ValidationMessageFor(model => model.FirstName)
@@ -90,8 +91,7 @@
                                 </tr>
                                 <tr class="row">
                                     <td class="item-name">
-                                        @Html.LabelFor(model => model.LastName):
-                                    </td>
+                                        @Html.LabelFor(model => model.LastName): </td>
                                     <td class="item-value">
                                         @Html.EditorFor(model => model.LastName)
                                         @Html.ValidationMessageFor(model => model.LastName)
@@ -99,29 +99,27 @@
                                 </tr>
                                 @if (Model.DateOfBirthEnabled)
                                 {
-                                <tr class="row">
-                                    <td class="item-name">
-                                        @Html.LabelFor(model => model.DateOfBirthDay):
-                                    </td>
-                                    <td class="item-value">
-                                        @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
-                                        Html.FieldNameFor(x => x.DateOfBirthMonth),
-                                        Html.FieldNameFor(x => x.DateOfBirthYear),
-                                        DateTime.Now.Year - 110,
-                                        DateTime.Now.Year,
-                                        Model.DateOfBirthDay,
-                                        Model.DateOfBirthMonth,
-                                        Model.DateOfBirthYear)
-                                        @Html.ValidationMessageFor(model => model.DateOfBirthDay)
-                                        @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
-                                        @Html.ValidationMessageFor(model => model.DateOfBirthYear)
-                                    </td>
-                                </tr>
+                                    <tr class="row">
+                                        <td class="item-name">
+                                            @Html.LabelFor(model => model.DateOfBirthDay): </td>
+                                        <td class="item-value">
+                                            @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                                Html.FieldNameFor(x => x.DateOfBirthMonth),
+                                Html.FieldNameFor(x => x.DateOfBirthYear),
+                                DateTime.Now.Year - 110,
+                                DateTime.Now.Year,
+                                Model.DateOfBirthDay,
+                                Model.DateOfBirthMonth,
+                                Model.DateOfBirthYear)
+                                            @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                                            @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                                            @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                                        </td>
+                                    </tr>
                                 }
                                 <tr class="row">
                                     <td class="item-name">
-                                        @Html.LabelFor(model => model.Email):
-                                    </td>
+                                        @Html.LabelFor(model => model.Email): </td>
                                     <td class="item-value">
                                         @Html.EditorFor(model => model.Email)
                                         @Html.ValidationMessageFor(model => model.Email)
@@ -131,45 +129,41 @@
                                 {
                                     if (Model.AllowUsersToChangeUsernames)
                                     {
-                                        <tr class="row">
-                                            <td class="item-name">
-                                                @Html.LabelFor(model => model.Username):
-                                            </td>
-                                            <td class="item-value">
-                                                @Html.EditorFor(model => model.Username)
-                                                @Html.ValidationMessageFor(model => model.Username)
-                                            </td>
-                                        </tr>
+                                    <tr class="row">
+                                        <td class="item-name">
+                                            @Html.LabelFor(model => model.Username): </td>
+                                        <td class="item-value">
+                                            @Html.EditorFor(model => model.Username)
+                                            @Html.ValidationMessageFor(model => model.Username)
+                                        </td>
+                                    </tr>
                                         if (Model.CheckUsernameAvailabilityEnabled)
                                         {
-                                            <tr class="row">
-                                                <td class="item-name">
-                                                </td>
-                                                <td class="item-value">
-                                                    @Html.Partial("_CheckUsernameAvailability")
-                                                </td>
-                                            </tr>
+                                    <tr class="row">
+                                        <td class="item-name"></td>
+                                        <td class="item-value">
+                                            @Html.Partial("_CheckUsernameAvailability")
+                                        </td>
+                                    </tr>
                                         }
                                     }
                                     else
                                     {
                                     <tr class="row">
                                         <td class="item-name">
-                                            @Html.LabelFor(model => model.Username):
-                                        </td>
+                                            @Html.LabelFor(model => model.Username): </td>
                                         <td class="item-value">
                                             @Model.Username
                                         </td>
                                     </tr>
                                     }
                                 }
-                                @*Associated external authentication records*@
+@*Associated external authentication records*@
                                 @if (Model.AssociatedExternalAuthRecords.Count > 0)
                                 {
                                     <tr class="row">
                                         <td class="item-name">
-                                            @Html.LabelFor(model => model.AssociatedExternalAuthRecords):
-                                        </td>
+                                            @Html.LabelFor(model => model.AssociatedExternalAuthRecords): </td>
                                         <td class="item-value">
                                             <table class="data-table">
                                                 <col />
@@ -227,8 +221,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.Company):
-                                            </td>
+                                                @Html.LabelFor(model => model.Company): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.Company)
                                                 @Html.ValidationMessageFor(model => model.Company)
@@ -239,16 +232,13 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.VatNumber):
-                                            </td>
+                                                @Html.LabelFor(model => model.VatNumber): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.VatNumber)&nbsp;&nbsp;&nbsp;@Model.VatNumberStatusNote
                                             </td>
                                         </tr>
                                         <tr class="row">
-                                            <td colspan="2">
-                                                <i>@T("Account.Fields.VatNumber.Note")</i>
-                                            </td>
+                                            <td colspan="2"><i>@T("Account.Fields.VatNumber.Note")</i></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -258,10 +248,10 @@
                         </div>
                     }
                     @if (Model.StreetAddressEnabled ||
-                        Model.StreetAddress2Enabled ||
-                        Model.ZipPostalCodeEnabled ||
-                        Model.CityEnabled ||
-                        Model.CountryEnabled)
+                       Model.StreetAddress2Enabled ||
+                       Model.ZipPostalCodeEnabled ||
+                       Model.CityEnabled ||
+                       Model.CountryEnabled)
                     {
                         <div class="section-title">
                             @T("Account.YourAddress")
@@ -275,8 +265,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.StreetAddress):
-                                            </td>
+                                                @Html.LabelFor(model => model.StreetAddress): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.StreetAddress)
                                                 @Html.ValidationMessageFor(model => model.StreetAddress)
@@ -287,8 +276,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.StreetAddress2):
-                                            </td>
+                                                @Html.LabelFor(model => model.StreetAddress2): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.StreetAddress2)
                                                 @Html.ValidationMessageFor(model => model.StreetAddress2)
@@ -299,8 +287,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.ZipPostalCode):
-                                            </td>
+                                                @Html.LabelFor(model => model.ZipPostalCode): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.ZipPostalCode)
                                                 @Html.ValidationMessageFor(model => model.ZipPostalCode)
@@ -311,8 +298,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.City):
-                                            </td>
+                                                @Html.LabelFor(model => model.City): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.City)
                                                 @Html.ValidationMessageFor(model => model.City)
@@ -323,8 +309,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.CountryId):
-                                            </td>
+                                                @Html.LabelFor(model => model.CountryId): </td>
                                             <td class="item-value">
                                                 @Html.DropDownList("CountryId", Model.AvailableCountries)
                                             </td>
@@ -334,14 +319,12 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.StateProvinceId):
-                                            </td>
+                                                @Html.LabelFor(model => model.StateProvinceId): </td>
                                             <td class="item-value">
                                                 @Html.DropDownList("StateProvinceId", Model.AvailableStates)
                                                 <span id="states-loading-progress" style="display: none;">@T("Common.Wait...")
                                                     <img src='@Url.Content("~/Content/Images/ajax_loader_small.gif")' alt="@T("Common.Wait...")" />
-                                                </span>
-                                            </td>
+                                                </span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -364,8 +347,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.Phone):
-                                            </td>
+                                                @Html.LabelFor(model => model.Phone): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.Phone)
                                                 @Html.ValidationMessageFor(model => model.Phone)
@@ -376,8 +358,7 @@
                                     {                                    
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.Fax):
-                                            </td>
+                                                @Html.LabelFor(model => model.Fax): </td>
                                             <td class="item-value">
                                                 @Html.EditorFor(model => model.Fax)
                                                 @Html.ValidationMessageFor(model => model.Fax)
@@ -402,8 +383,7 @@
                                 <tbody>
                                     <tr class="row">
                                         <td class="item-name">
-                                            @Html.LabelFor(model => model.Newsletter):
-                                        </td>
+                                            @Html.LabelFor(model => model.Newsletter): </td>
                                         <td class="item-value">
                                             @Html.EditorFor(model => model.Newsletter)
                                             @Html.ValidationMessageFor(model => model.Newsletter)
@@ -429,8 +409,7 @@
                                     {
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.TimeZoneId):
-                                            </td>
+                                                @Html.LabelFor(model => model.TimeZoneId): </td>
                                             <td class="item-value">
                                                 @Html.DropDownList("TimeZoneId", Model.AvailableTimeZones)
                                                 @Html.ValidationMessageFor(model => model.TimeZoneId)
@@ -441,8 +420,7 @@
                                     {                                    
                                         <tr class="row">
                                             <td class="item-name">
-                                                @Html.LabelFor(model => model.Signature):
-                                            </td>
+                                                @Html.LabelFor(model => model.Signature): </td>
                                             <td class="item-value">
                                                 @Html.TextAreaFor(model => model.Signature, new { @class = "accountsignaturetext" })
                                             </td>
