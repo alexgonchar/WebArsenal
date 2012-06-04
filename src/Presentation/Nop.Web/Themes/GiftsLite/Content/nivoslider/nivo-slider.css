@@ -10,7 +10,13 @@
   edited replaced from style.css */
 
 .theme-default #slider{width:920px;height:350px;margin:0 auto;}
-.theme-pascal.slider-wrapper, .theme-orman.slider-wrapper, .slider-wrapper.theme-default{position:relative;margin-top:20px;z-index:1;}
+.theme-pascal.slider-wrapper, .theme-orman.slider-wrapper, .slider-wrapper.theme-default {
+    position: relative;
+    left: 50%;
+    margin-left: -309px;
+    margin-top:20px;
+    z-index:1;
+}
 
 /*==================== === Other Styles === ==================== */
 .clear{clear:both;}

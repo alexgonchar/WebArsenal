@@ -1,0 +1,10 @@
+Segoe UI,Tahoma,Arial,Verdana,sans-serif
+
+RED COLORS:
+cc2626
+cd3333
+About colors: http://www.creativepro.com/article/how-use-color-effectively-your-designs
+
+My Colors:
+Red: cd3333
+Gray: d9d9d9

@@ -140,6 +140,7 @@
     <Compile Include="Themes\ThemeableRazorViewEngine.cs" />
     <Compile Include="Themes\ThemeProvider.cs" />
     <Compile Include="Themes\ThemeContext.cs" />
+    <Compile Include="UI\BootstrapLayoutExt.cs" />
     <Compile Include="UI\Captcha\CaptchaSettings.cs" />
     <Compile Include="UI\Captcha\HtmlExtensions.cs" />
     <Compile Include="UI\Captcha\CaptchaValidatorAttribute.cs" />

@@ -7,19 +7,22 @@
 {
     <div class="row-fluid show-grid newslist">
         <div class="span12">
-        <div class="page-title">
-            <table style="width: 100%;">
-                <tr>
-                    <td class="title">
-                        @T("News")
-                    </td>
-                    <td class="rss">
-                        <a href="@Url.RouteUrl("NewsRSS", new { languageId = Model.WorkingLanguageId })">
-                            <img title="@T("News.RSS.Hint")" src="@Url.Content("~/content/images/icon_rss.gif")" alt="@T("News.RSS")" /></a>
-                    </td>
-                </tr>
-            </table>
-        </div>
+            
+            <div class="page-title">
+                <div class="title left">
+                    @T("News")
+                </div>
+                <div class="rss right">
+                    <a href="@Url.RouteUrl("NewsRSS", new { languageId = Model.WorkingLanguageId })">
+                        <img title="@T("News.RSS.Hint")" src="@Url.Content("~/content/images/icon_rss.gif")" alt="@T("News.RSS")" /></a>
+                </div>
+                
+                <div class="clear">
+                </div>
+            </div>
+            
+            
+            
             <div class="newsitems">
                 @foreach (var item in Model.NewsItems)
                 {
@@ -27,7 +30,7 @@
                         <a class="newstitle" href="@Url.RouteUrl("NewsItem", new { newsItemId = item.Id, SeName = item.SeName })">
                             @item.Title</a> <span class="newsdate">-
                                                 @item.CreatedOn.ToString("D")
-                                            </span>
+                            </span>
                         <div class="newsdetails">
                             @Html.Raw(item.Short)
                         </div>

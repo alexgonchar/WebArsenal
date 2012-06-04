@@ -11,7 +11,7 @@
         </div>
         <div class="clear">
         </div>
-        @(Html.DataList<ProductModel>(Model, ViewConstants.ProductColumns,
+        @(Html.DataListOnDivs<ProductModel>(Model, ViewConstants.ColumnMinWidth,
             @<div class="item-box">
                 <div class="item">
                     <div class="product-title">
