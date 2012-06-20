@@ -224,6 +224,11 @@ namespace Nop.Web.Framework
             monthsList.Attributes.Add("name", monthName);
             yearsList.Attributes.Add("name", yearName);
 
+            const string miniClass = "input-small";
+            daysList.AddCssClass(miniClass);
+            monthsList.AddCssClass(miniClass);
+            yearsList.AddCssClass(miniClass);
+
             var days = new StringBuilder();
             var months = new StringBuilder();
             var years = new StringBuilder();

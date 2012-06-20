@@ -8,7 +8,7 @@
         Selected = x.Id.Equals(Model.CurrentCurrency.Id)
     });
     
-    @Html.DropDownList("customerCurrency", currencies)
+    @Html.DropDownList("customerCurrency", currencies, new { @class = "input-small" })
     
     <script type="text/javascript">
         $(document).ready(function () {

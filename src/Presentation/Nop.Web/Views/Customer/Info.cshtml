@@ -54,16 +54,10 @@
             {
                 @Html.AntiForgeryToken()
                 <div class="customer-info-box">
-                    <div class="message-error">
-                        @Html.ValidationSummary(true)
-                    </div>
-                    <div class="clear">
-                    </div>
-                    <div class="section-title">
-                        @T("Account.YourPersonalDetails")
-                    </div>
-                    <div class="clear">
-                    </div>
+                    @Html.Row(@<text>@Html.ValidationSummary(true)</text>, @<div class="message-error">@item</div>)
+
+                    @formGroupTitle("Account.YourPersonalDetails")
+
                     <div class="section-body">
                         <table class="table-container">
                             <tbody>

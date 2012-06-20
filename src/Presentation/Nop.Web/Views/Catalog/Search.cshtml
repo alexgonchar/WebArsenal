@@ -32,7 +32,7 @@
 
 </script>
 <div class="search-panel">
-    @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get))
+    @using (Html.BeginRouteForm("ProductSearch", FormMethod.Get, new { @class = "well form-search form-horizontal" }))
     {
         <div class="row-fluid show-grid">
             <div class="span12">
@@ -41,89 +41,82 @@
                 </div>
             </div>
         </div>
-    
-        <div class="search-input">
-            <table class="basic-search">
-                <tbody>
-                    <tr>
-                        <td class="title">
-                            @Html.LabelFor(model => model.Q): </td>
-                        <td class="data">
-                            @Html.TextBoxFor(model => model.Q, new { @class = "searchtext" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title" colspan="2">
-                            @Html.CheckBoxFor(model => model.As)
-                            @Html.LabelFor(model => model.As)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <table class="adv-search" id="pnl-advanced-search">
-                                <tbody>
-                                    @if (Model.AvailableCategories.Count > 0)
-                                    {
-                                        <tr>
-                                            <td class="title">
-                                                @Html.LabelFor(model => model.Cid): </td>
-                                            <td class="data">
-                                                @Html.DropDownListFor(model => model.Cid, Model.AvailableCategories)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="data" colspan="2">
-                                                @Html.CheckBoxFor(model => model.Isc)
-                                                @Html.LabelFor(model => model.Isc)
-                                            </td>
-                                        </tr>
-                                    }
-                                    @if (Model.AvailableManufacturers.Count > 0)
-                                    {
-                                        <tr>
-                                            <td class="title">
-                                                @Html.LabelFor(model => model.Mid): </td>
-                                            <td class="data">
-                                                @Html.DropDownListFor(model => model.Mid, Model.AvailableManufacturers)
-                                            </td>
-                                        </tr>
-                                    }
-                                    <tr>
-                                        <td class="title">
-                                            @T("Search.PriceRange"): </td>
-                                        <td class="data">
-                                            @T("Search.PriceRange.From")
-                                            @Html.TextBoxFor(model => model.Pf, new { @class = "price-from" })
-                                            @T("Search.PriceRange.To")
-                                            @Html.TextBoxFor(model => model.Pt, new { @class = "price-to" })
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="data" colspan="2">
-                                            @Html.CheckBoxFor(model => model.Sid)
-                                            @Html.LabelFor(model => model.Sid)
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="buttons">
-                            <input type="submit" id="btnsearch" name="btnsearch" class="searchbutton" value="@T("Search")" />
-                        </td>
-                    </tr>
+        
+        <div class="row-fluid show-grid">
+            <div class="span12">
+
+                <fieldset>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Q, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Q, new { @class = "searchtext search-query" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            @Html.MyCheckBoxFor(m => m.As)
+                        </div>
+                    </div>
+
+                    <div id="pnl-advanced-search">
+                        @if (Model.AvailableCategories.Count > 0)
+                        {
+                            <div class="control-group">
+                                @Html.LabelFor(model => model.Cid, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.Cid, Model.AvailableCategories)
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    @Html.MyCheckBoxFor(m => m.Isc)
+                                </div>
+                            </div>
+                        }
+                        @if (Model.AvailableManufacturers.Count > 0)
+                        {
+                            <div class="control-group">
+                                @Html.LabelFor(model => model.Mid, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.Mid, Model.AvailableManufacturers)
+                                </div>
+                            </div>
+                        }
+                        <div class="control-group">
+                            <label class="control-label">@T("Search.PriceRange")</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Pf, new { @class = "price-from", @placeholder = T("Search.PriceRange.From") })
+                                @Html.TextBoxFor(model => model.Pt, new { @class = "price-to", @placeholder = T("Search.PriceRange.To") })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                @Html.MyCheckBoxFor(m => m.Sid)
+                            </div>
+                        </div>
+
+                    </div>
+
                     @if (!String.IsNullOrEmpty(Model.Warning))
                     {
-                        <tr>
-                            <td colspan="2"><span class="warning">
-                                @Model.Warning
-                            </span></td>
-                        </tr>
+                        <div class="control-group">
+                            <div class="controls">
+                                <span class="warning">
+                                    @Model.Warning
+                                </span>
+                            </div>
+                        </div>
                     }
-                </tbody>
-            </table>
+
+                    <div class="form-actions">
+                        <button id="btnsearch" name="btnsearch" type="submit" class="btn btn-primary">@T("Search")</button>
+                    </div>
+                </fieldset>
+
+
+            </div>
         </div>
+        
         <div class="clear">
         </div>
         <div class="search-results">

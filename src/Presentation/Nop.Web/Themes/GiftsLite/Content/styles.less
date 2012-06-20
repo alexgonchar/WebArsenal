@@ -65,7 +65,7 @@
 	.skew(-12deg);
 }
 
-@font-family-main: "myriad-pro- 1", "myriad-pro- 2", Helvetica, Arial, sans-serif;
+@font-family-main: "Helvetica Neue", Helvetica, Arial, sans-serif; // "myriad-pro- 1", "myriad-pro- 2", Helvetica, Arial, sans-serif;
 
 .secondColInLV {
 	padding-left: 180px;
@@ -75,15 +75,9 @@
 
 
 /* HTML GENERAL */
-body,h1,h2,h3,h4,h5,h6,address,blockquote,dd,dl,hr,form,input{margin:0;padding:0;}
-body{
-    color: #3A4045;
-    font: 12px/16px @font-family-main;
-    text-align: center;
-}
-
 h1 {
 	font-size: 2.3em;
+	line-height: 36px;
 	font-weight: bold;
 	color: @red-main;
 	.priceSkew;
@@ -200,7 +194,7 @@ a.logo	{background:url("images/logo.png") no-repeat scroll 0 0 transparent;displ
 .header-languageselector{float:right;margin-right:5px}
 .header-taxDisplayTypeSelector{float:right;}
 .header-links-wrapper{float:right;text-align:right;}
-.header-links{display: inline-table;float: right;margin: 10px;}
+.header-links{display: inline-table;float: right;margin: 10px 0 10px 10px;}
 .header-links ul{padding:0;margin:0;}
 .header-links ul li{display: inline;list-style: none outside none; margin-left: 10px;}
 .header-links a{color: #AF0304;text-decoration: none;}
@@ -232,7 +226,7 @@ a.logo	{background:url("images/logo.png") no-repeat scroll 0 0 transparent;displ
 .searchbox{}
 .searchbox ul{}
 .searchbox ul li{padding:0;}
-.headermenu ul.topmenu{text-align:right;}
+.headermenu ul.topmenu{text-align:right; margin-left: 20px; }
 .footer {
     background: none repeat scroll 0 0 #FFFFFF;
     border-top: 2px solid #666666;
@@ -254,7 +248,6 @@ a.logo	{background:url("images/logo.png") no-repeat scroll 0 0 transparent;displ
 }
 .footer-storetheme{float:right;margin:0 100px 0 10px;font-size:11px;}
 /* MISC. CLASSES */
-.page-title{width:95%;}
 .page-title h1,.page-title h2{padding:5px 5px 5px 0;}
 td{vertical-align:middle;}
 td.fieldname{font-size:12px;}
@@ -285,7 +278,6 @@ a.linkButton:hover{}
 .sitemap-page .entity{margin:5px 0 30px;}
 .sitemap-page .topic-box,.sitemap-page .manufacturer-box,.sitemap-page .category-box,.sitemap-page .product-box{text-align:center;vertical-align:bottom;}
 .sitemap-page .topic-box .item,.sitemap-page .manufacturer-box .item,.sitemap-page .category-box .item,.sitemap-page .product-box .item{text-align:left;margin:3px 10px;width:150px;border-bottom:1px dotted #ADACAC;}
-checkbox,input,radio,select,button{font-family:@font-family-main;font-size:11px;}
 /* fix ie button padding bug - apply to all buttons to reduce extra padding applied by ie!
 input
 {
@@ -319,7 +311,6 @@ textarea{width:95%;font-family:@font-family-main;font-size:11px;}
 .deletepostlinkbutton{padding-right:5px;padding-left:18px;background:url(images/ico-delete.gif) no-repeat;}
 .quotepostlinkbutton,.postlink{color:#555;float:right;padding:1px 3px;border:solid 1px #ccc;line-height:15px;font-size:11px;}
 .postlink{padding:1px 3px;margin-right:5px;border:none;}
-.searchboxbutton{margin-bottom:2px;}
 
 .product-grid .productlistproductdetailbutton{margin-bottom: 3px;margin-top: 10px;padding: 2px 20px !important;float:left;
 }
@@ -381,7 +372,7 @@ ul.languagelist li:hover{cursor:pointer;}
 .block .title : first-child {
 	//.priceSkew;
 }
-.block .listbox{font-size:14px;padding:5px 10px 10px;line-height:18px;margin:0;}
+.block .listbox{font-size:14px;padding:5px 0px 10px 10px;line-height:18px;margin:0;}
 .block .listbox ul{margin:0;padding:0px;color:#5C5B5B;background-color:inherit;}
 .block a.items
 {
@@ -674,7 +665,7 @@ ul.languagelist li:hover{cursor:pointer;}
 .featured-product-grid .product-item .prices .oldProductPrice{color:#B80709;text-decoration:line-through;}
 /* PAGES */
 .home-page, .category-page,.manufacturerlist-page,.manufacturer-page,.producttag-page,
-.recently-added-products, .account-page, .recently-viewed-products, compare-products, .topicpage {
+.recently-added-products, .account-page, .recently-viewed-products, compare-products, .topicpage, .registration-page {
 	width:100%; 
 	float:left; 
 	margin-bottom: @gutter-width; 
@@ -747,7 +738,17 @@ ul.languagelist li:hover{cursor:pointer;}
 .compare-products-table .remove-button{margin:0 0 5px;margin-right:5px;margin-top:5px;}
 .compare-products-table tr.product-name{background-color:#CCC;font-weight:700;}
 .compare-products-table td{border-width:1px;border-color:#BFBFBF;border-style:solid;padding:3px;}
-.login-page{margin-bottom:15px;padding-bottom:5px;padding-left:0;}
+.login-page {
+	.form-horizontal .control-label {
+		width: 70px;
+	}
+	.form-horizontal .controls {
+		margin-left: 90px;
+	}
+	input[type="text"], input[type="password"] {
+		width: 190px;
+	}
+}
 .login-page .page-title{border-bottom:0 none;}
 .login-page .wrapper{font-size:11px;color:#555;}
 .login-page .wrapper .new-wrapper { }
@@ -778,7 +779,6 @@ ul.languagelist li:hover{cursor:pointer;}
 .external-auth-association{text-align:center;border:solid 1px #E8E6D2;vertical-align:top;width:95%;}
 .external-auth-association .identifier{}
 .external-auth-association .remove{color:#5C5B5B;}
-.registration-page{margin-bottom:15px;padding-bottom:5px;padding-left:0;}
 .registration-page .page-title{border-bottom:0 none;}
 .registration-page .body{margin:0;padding:0;font-size:11px;color:#555;background-color:inherit;}
 .registration-page .section-title{padding:10px 10px 5px 0;font-weight:700;clear:both;font-size:12px;}
@@ -847,7 +847,7 @@ ul.languagelist li:hover{cursor:pointer;}
 
 .newslist{margin-bottom:15px;padding-bottom:5px;padding-left:0;}
 .newslist .page-title { margin-bottom: 10px; }
-.newslist .rss{ margin-top: 24px; text-align:right; }
+.newslist .rss{ margin-top: 2px; text-align:right; }
 .newslist .newsitems{ margin:0px;padding:0; }
 .newslist .newsitems .item{border-bottom:dashed 1px #C4C6C8;margin-bottom:10px;padding-bottom:10px;}
 .newslist .newsitems .newsdate{color:#9a9a9a;font-style:italic;}
@@ -1547,24 +1547,7 @@ a:hover
 }
 .searchboxbutton
 {   
-    background: none repeat scroll 0 0 #F6F6F4;
-    border: 1px solid #D3D3D3;
-    color: #353434;
-    cursor: pointer;
-    font-size: 12px;
-    margin-bottom: 2px;
-    padding: 4px;
-    width: 70px;
-    
-        /*CSS3*/
-    border-radius: 2px;
-    -o-border-radius: 2px;
-    -icab-border-radius: 2px;
-    -khtml-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    /*CSS3*/
+    width: 170px;
 }
 
 .searchtext
@@ -1577,12 +1560,8 @@ a:hover
 
 .searchboxtext
 {
-    border: 1px solid #E3E3E3;
-    font-size: 12px;
-    padding: 5px;
     width: 300px;
 }
-* html .searchboxtext{height:25px}
 .footer-menu-1{margin-left:0;float: left;text-align: left;}
 .footer-menu
 {
@@ -2007,7 +1986,6 @@ br{display:inline;}
 	border-right: medium none !important;
     color: #3A4045;
     font-weight: bold;
-    margin: 20px 0 5px;
     padding: 0;
     text-align: left;
 	font-size: 18px;
@@ -2031,6 +2009,12 @@ br{display:inline;}
 	fieldset {
 		border: none;
 	} 
+}
+
+.block-newsletter {
+	input[type="text"] {
+		width: 160px;
+	}
 }
 
 // Custom bootstrap layout
