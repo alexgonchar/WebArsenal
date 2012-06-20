@@ -159,6 +159,7 @@
     <Compile Include="UI\Paging\BasePageableModel.cs" />
     <Compile Include="UI\Paging\IPageableModel.cs" />
     <Compile Include="UI\Paging\Pager.cs" />
+    <Compile Include="UI\FormLayoutExt.cs" />
     <Compile Include="UrlHelperExtensions.cs" />
     <Compile Include="Validators\ValidatorExtensions .cs" />
     <Compile Include="Validators\CreditCardPropertyValidator.cs" />

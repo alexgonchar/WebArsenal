@@ -7,12 +7,6 @@
     //title
     Html.AddTitleParts(T("PageTitle.Register").Text);
 
-    Func<dynamic, object> formGroupTitle = @<text><div class="control-group">
-                                                      <div class="controls">
-                                                          <h4>@T(@item)</h4>
-                                                      </div>
-                                                  </div>
-                                            </text>;
 }
 @if (Model.CountryEnabled && Model.StateProvinceEnabled)
 {
@@ -53,8 +47,7 @@
 
 
         <div class="body">
-            @Html.Row(@<text>@Html.ValidationSummary(true)</text>, @<div class="message-error">@item
-            </div>)
+            @Html.Row(@<text>@Html.ValidationSummary(true)</text>, @<div class="message-error">@item</div>)
             @Html.Row(@<text>@Html.Partial("_ExternalAuthentication.AssociateMessage")</text>)
 
             <div class="row-fluid show-grid">
@@ -62,7 +55,7 @@
 
                     <fieldset>
 
-                        @formGroupTitle("Account.YourPersonalDetails")
+                        @this.GroutTitle("Account.YourPersonalDetails")
 
                         @if (Model.GenderEnabled)
                         {
@@ -150,7 +143,7 @@
 
                         @if (Model.CompanyEnabled || Model.DisplayVatNumber)
                         {
-                            @formGroupTitle("Account.CompanyDetails")
+                            @this.GroutTitle("Account.CompanyDetails")
                             
                             if (Model.CompanyEnabled)
                             {
@@ -184,7 +177,7 @@
                        Model.CityEnabled ||
                        Model.CountryEnabled)
                         {
-                            @formGroupTitle("Account.YourAddress")
+                            @this.GroutTitle("Account.YourAddress")
                             
                             if (Model.StreetAddressEnabled)
                             {
@@ -253,7 +246,7 @@
                         }
                         @if (Model.PhoneEnabled || Model.FaxEnabled)
                         {
-                            @formGroupTitle("Account.YourContactInformation")
+                            @this.GroutTitle("Account.YourContactInformation")
 
                             if (Model.PhoneEnabled)
                             {
@@ -279,7 +272,7 @@
                         }
                         @if (Model.NewsletterEnabled)
                         {
-                            @formGroupTitle("Account.Options")
+                            @this.GroutTitle("Account.Options")
                             
                             <div class="control-group">
                                 <div class="controls">
@@ -291,7 +284,7 @@
                         }
                         @if (Model.AllowCustomersToSetTimeZone)
                         {
-                            @formGroupTitle("Account.Preferences")
+                            @this.GroutTitle("Account.Preferences")
                         
                             <div class="control-group">
                                 @Html.LabelFor(model => model.TimeZoneId, new { @class = "control-label" })
@@ -304,7 +297,7 @@
                             <hr />
                         }
                         
-                        @formGroupTitle("Account.YourPassword")
+                        @this.GroutTitle("Account.YourPassword")
 
                         <div class="control-group">
                             @Html.LabelFor(model => model.Password, new { @class = "control-label" })

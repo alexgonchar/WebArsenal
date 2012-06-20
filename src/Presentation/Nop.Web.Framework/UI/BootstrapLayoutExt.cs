@@ -76,19 +76,5 @@ namespace Nop.Web.Framework.UI
 
             return new MvcHtmlString(labelText);
         }
-
-        /*public static MvcHtmlString MyCheckBox(this HtmlHelper htmlHelper,
-            IDictionary<string, object> htmlLabelAttributes = null, IDictionary<string, object> htmlCheckBoxAttributes = null)
-        {
-            var checkbox = htmlHelper.CheckBox(htmlCheckBoxAttributes);
-
-            var labelTag = new TagBuilder("label");
-            var checkboxName = ExpressionHelper.GetExpressionText(expression);
-            labelTag.AddCssClass("checkbox");
-            labelTag.MergeAttributes(HtmlHelper.AnonymousObjectToHtmlAttributes(htmlLabelAttributes));
-            labelTag.InnerHtml = checkbox.ToString() + LabelHelper(ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData), checkboxName);
-
-            return new MvcHtmlString(labelTag.ToString());
-        }*/
     }
 }
