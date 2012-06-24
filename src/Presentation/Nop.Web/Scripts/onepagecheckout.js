@@ -11,7 +11,8 @@ var Checkout = {
     init: function (failureUrl) {
         this.loadWaiting = false;
         this.failureUrl = failureUrl;
-        this.steps = ['billing', 'shipping', 'shipping_method', 'payment_method', 'payment_info', 'confirm_order'];
+    	//this.steps = ['billing', 'shipping', 'shipping_method', 'payment_method', 'payment_info', 'confirm_order'];
+        this.steps = ['shipping_method', 'shipping', 'payment_method', 'payment_info', 'confirm_order'];
 
         Accordion.disallowAccessToNextSections = true;
     },

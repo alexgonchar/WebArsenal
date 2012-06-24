@@ -116,13 +116,18 @@
                                 @Html.MyCheckBoxFor(m => m.RememberMe)
                             </div>
                         </div>
-                        <div class="control-group">
-                            <div class="controls">
-                                @Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
-                            </div>
-                        </div>
-
-                        @if (Model.DisplayCaptcha)
+						<div class="control-group">
+							<div class="controls">
+								@Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls">
+								<button class="btn btn-primary" type="submit">@T("Account.Login.LoginButton")</button>
+							</div>
+						</div>
+						
+						@if (Model.DisplayCaptcha)
                         {
                             <div class="control-group">
                                 @Html.Raw(Html.GenerateCaptcha())
@@ -139,7 +144,6 @@
                 </div>
             </div>
         </div>
-        @Html.Row(@<button class="btn btn-primary" type="submit">@T("Account.Login.LoginButton")</button>)
     }
     @Html.Row(@<text>@Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })</text>)
 </div>

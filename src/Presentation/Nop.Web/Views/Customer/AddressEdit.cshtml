@@ -1,37 +1,33 @@
 ﻿@model Nop.Web.Models.Customer.CustomerAddressEditModel
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+	Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
-    //title
-    Html.AddTitleParts(T("PageTitle.Account").Text);
+	//title
+	Html.AddTitleParts(T("PageTitle.Account").Text);
 }
 @using Nop.Web.Framework;
 @section left
 {
-    @Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
+	@Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
 }
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "well form-search form-horizontal" }))
 {
-    <div class="account-page">
-        <div class="page-title">
-            <h1>@T("Account.MyAccount") - @T("Account.CustomerAddresses.Edit")</h1>
-        </div>
-        <div class="clear">
-        </div>
-        <div class="body">
-            @{
-                var dataDictAddress = new ViewDataDictionary();
-                //Merge ModelState (required for validation)
-                dataDictAddress.ModelState.Merge(ViewData.ModelState);
-                dataDictAddress.TemplateInfo.HtmlFieldPrefix = "Address";
-                @Html.Partial("_CreateOrUpdateAddress", Model.Address, dataDictAddress)          
-            }
-            <div class="clear">
-            </div>
-            <div class="save-button">
-                <input type="submit" class="saveaddressbutton" value="@T("Common.Save")" />                       
-            </div>
-        </div>
-    </div>
+	@Html.Row(@<div class="page-title">
+		<h1>@T("Account.MyAccount") - @T("Account.CustomerAddresses.Edit")</h1>
+	</div>)
+
+	@Html.Row(
+	@<text>
+	@{
+		var dataDictAddress = new ViewDataDictionary();
+		//Merge ModelState (required for validation)
+		dataDictAddress.ModelState.Merge(ViewData.ModelState);
+		dataDictAddress.TemplateInfo.HtmlFieldPrefix = "Address";
+		@Html.Partial("_CreateOrUpdateAddress", Model.Address, dataDictAddress)
+	}</text>)
+
+        
+	<div class="form-actions">
+		<button id="send-email" name="send-email" type="submit" class="btn btn-primary">@T("Common.Save")</button>
+	</div>
 }

@@ -1,0 +1,8 @@
+Domain Name:	webarsenal.dp.ua
+reCAPTCHA will only work on this domain and subdomains. If you have more than one domain (or a staging server), you can create a new set of keys.
+
+Public Key:	6LcbItMSAAAAAJoqoGF28YU08lHzBkhxsJvLF2Q-
+Use this in the JavaScript code that is served to your users
+
+Private Key:	6LcbItMSAAAAAPGMNr8rTti5NWqsYdqctTPpM0-V
+Use this when communicating between your server and our server. Be sure to keep it a secret.

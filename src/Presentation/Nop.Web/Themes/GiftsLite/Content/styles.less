@@ -87,8 +87,6 @@ h1 {
 a{color:#5C5B5B;text-decoration:none;}
 a img{border:0;}
 img{border:none;}
-h1,h2,h3,h4,h5,h6{font-family: @font-family-main;}
-h2,h3{font-size:16px;}
 /* MASTER PAGE WRAPPERS */
 .master-wrapper-page
 {
@@ -665,7 +663,7 @@ ul.languagelist li:hover{cursor:pointer;}
 .featured-product-grid .product-item .prices .oldProductPrice{color:#B80709;text-decoration:line-through;}
 /* PAGES */
 .home-page, .category-page,.manufacturerlist-page,.manufacturer-page,.producttag-page,
-.recently-added-products, .account-page, .recently-viewed-products, compare-products, .topicpage, .registration-page {
+.recently-added-products, .account-page, .recently-viewed-products, compare-products, .topicpage, .registration-page, contact-form {
 	width:100%; 
 	float:left; 
 	margin-bottom: @gutter-width; 
@@ -755,7 +753,7 @@ ul.languagelist li:hover{cursor:pointer;}
 .login-page .wrapper .new-wrapper .register-title{text-align:center;margin:0 10px;font-weight:700;}
 .login-page .wrapper .new-wrapper .register-block
 {   border: 2px solid #F7F7F7;
-    height: 200px;
+    height: 250px;
     padding: 15px 5px 5px;
     text-align: center;
     vertical-align: top;}
@@ -766,7 +764,7 @@ ul.languagelist li:hover{cursor:pointer;}
 .login-page .wrapper .returning-wrapper .login-title, .externalauthentication .login-title {text-align:center;margin:0 10px;font-weight:700;}
 .login-page .wrapper .returning-wrapper .login-block, .externalauthentication .login-block
 {   border: 2px solid #F7F7F7;
-    height: 200px;
+    height: 250px;
     padding: 15px 5px 5px;
     text-align: left;}
 .login-page .wrapper .returning-wrapper .buttons{float:right;margin-bottom:5px;margin-top:5px;text-align:center;clear:both;}
@@ -807,9 +805,6 @@ ul.languagelist li:hover{cursor:pointer;}
 .search-panel table.basic-search td.title,.search-panel table.adv-search td.title{padding:4px;text-align:left;vertical-align:middle;width:130px;}
 .search-panel table.basic-search td.data,.search-panel table.adv-search td.data{padding:4px;text-align:left;vertical-align:middle;white-space:nowrap;}
 .search-input .warning{text-decoration:underline;}
-.contact-form{padding:10px}
-.contact-form .button{text-align:right;}
-.contact-form .send-email{}
 
 .breadcrumbWrap {
 	color: @blue-main;
@@ -2051,4 +2046,8 @@ br{display:inline;}
 
 .show-grid {
 	margin-bottom: @gutter-width;
+}
+
+.content.master-wrapper-center-2 {
+	padding-right: 0px !important;
 }
