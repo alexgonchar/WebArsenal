@@ -127,7 +127,7 @@ var Billing = {
     },
 
     resetSelectedAddress: function () {
-        var selectElement = $('#billing-address-select')
+	    var selectElement = $('#billing-address-select');
         if (selectElement) {
             selectElement.value = '';
         }

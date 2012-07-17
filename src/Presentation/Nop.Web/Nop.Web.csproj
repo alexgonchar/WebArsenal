@@ -15,7 +15,7 @@
     <AssemblyName>Nop.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -236,6 +236,7 @@
     <Compile Include="Models\Checkout\CheckoutPaymentInfoModel.cs" />
     <Compile Include="Models\Checkout\CheckoutConfirmModel.cs" />
     <Compile Include="Models\Checkout\CheckoutCompletedModel.cs" />
+    <Compile Include="Models\Checkout\FastCheckoutModel.cs" />
     <Compile Include="Models\Checkout\OnePageCheckoutModel.cs" />
     <Compile Include="Models\Checkout\UpdateSectionJsonModel.cs" />
     <Compile Include="Models\Common\AddressModel.cs" />
@@ -306,6 +307,12 @@
     <Compile Include="Models\ShoppingCart\ShoppingCartModel.cs" />
     <Compile Include="Models\Topics\TopicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\libs\knockout-2.1.0.debug.js" />
+    <Content Include="Scripts\libs\knockout.validation.js" />
+    <Content Include="Scripts\libs\knockout.validation.min.v0.9.js" />
+    <Content Include="Scripts\wa\basket\ChechoutService.js" />
+    <Content Include="Scripts\wa\basket\map.js" />
+    <Content Include="Scripts\wa\basket\Template.htm" />
     <Compile Include="Validators\Blogs\BlogPostValidator.cs" />
     <Compile Include="Validators\Boards\EditForumPostValidator.cs" />
     <Compile Include="Validators\Boards\EditForumTopicValidator.cs" />
@@ -1260,9 +1267,13 @@
     <Content Include="Scripts\jquery.fancybox-1.3.4.pack.js" />
     <Content Include="Scripts\jquery.mobile-1.0.1.js" />
     <Content Include="Scripts\jquery.mobile-1.0.1.min.js" />
+    <Content Include="Scripts\libs\knockout-2.1.0.js" />
     <Content Include="Scripts\onepagecheckout.js" />
     <Content Include="Scripts\public.js" />
     <Content Include="Scripts\slimbox2.js" />
+    <Content Include="Scripts\wa\basket\CheckoutVM.js" />
+    <Content Include="Scripts\wa\Ajax.js" />
+    <Content Include="Scripts\wa\BootstrapValidation.js" />
     <Content Include="Scripts\wa\main.js" />
     <Content Include="Scripts\wa\table.js" />
     <Content Include="StoreClosed.htm" />
@@ -1683,6 +1694,7 @@
     <Content Include="Views\Catalog\HomepageProducts.Mobile.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Themes\GiftsLite\Views\Catalog\_ProductBox.cshtml" />
+    <Content Include="Views\Checkout\FastCheckout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\bin\" />
@@ -1909,11 +1921,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>57783</DevelopmentServerPort>
+          <DevelopmentServerPort>12468</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2451/</IISUrl>
+          <IISUrl>http://localhost/Nop.Web</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost/webarsenal</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

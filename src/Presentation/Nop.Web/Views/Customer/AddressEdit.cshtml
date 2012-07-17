@@ -10,7 +10,7 @@
 {
 	@Html.Partial("MyAccountNavigation", Model.NavigationModel, new ViewDataDictionary())
 }
-@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "well form-search form-horizontal" }))
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-search form-horizontal" }))
 {
 	@Html.Row(@<div class="page-title">
 		<h1>@T("Account.MyAccount") - @T("Account.CustomerAddresses.Edit")</h1>

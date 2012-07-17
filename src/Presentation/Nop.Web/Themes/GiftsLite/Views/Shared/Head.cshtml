@@ -3,8 +3,10 @@
     Html.AppendCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/bs-custom.css"));
     Html.AppendCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/styles.less"));
     Html.AppendCssFileParts(@Url.Content("~/Themes/GiftsLite/Content/bootstrap.css"));
-    Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/table.js"));
-    Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/main.js"));
+	Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/main.js"));
+	Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/basket/ChechoutService.js"));
+	Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/table.js"));
+	Html.AppendScriptParts(ResourceLocation.Foot, @Url.Content("~/Scripts/wa/Ajax.js"));
 }
 
 @*<link href="@Html.ResolveUrl("~/Themes/GiftsLite/Content/menu.css")" rel="stylesheet" type="text/css" />*@
