@@ -101,8 +101,9 @@
 
 			<div class="form-actions">
 				<button type="submit" id="save-info-button" name="save-info-button" class="btn btn-primary"
-					data-bind="click: submit, enable: isValid()">
+						data-bind="click: submit, enable: isValid() && checkoutStatus() == 'gatheringInfo'">
 					Оформить заказ</button>
+				<span data-bind="visible: checkoutStatus() == 'pending'">Заказ обрабатывается...</span>
 			</div>
 		</div>
 	</div>

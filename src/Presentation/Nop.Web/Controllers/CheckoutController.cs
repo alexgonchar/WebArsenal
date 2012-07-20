@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Nop.Core;
+using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
@@ -22,6 +25,7 @@ using Nop.Services.Payments;
 using Nop.Services.Shipping;
 using Nop.Services.Tax;
 using Nop.Web.Extensions;
+using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Checkout;
@@ -865,10 +869,10 @@ namespace Nop.Web.Controllers
 			return View("FastCheckout", model);
 
 			/*var model = new OnePageCheckoutModel()
-            {
-                ShippingRequired = cart.RequiresShipping()
-            };
-            return View(model);*/
+			{
+				ShippingRequired = cart.RequiresShipping()
+			};
+			return View(model);*/
 		}
 
 		[ChildActionOnly]
@@ -1497,31 +1501,116 @@ namespace Nop.Web.Controllers
 			}, JsonRequestBehavior.AllowGet);
 		}
 
-		public JsonResult ConfirmFastCheckout()
+		[HandlesExceptions]
+		public ActionResult ConfirmFastCheckout(CheckoutDTO checkoutInfo)
 		{
+			var customer = _workContext.CurrentCustomer;
+
 			#region validation
 			//validation
-			var cart = _workContext.CurrentCustomer.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart).ToList();
+			var cart = customer.ShoppingCartItems.Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart).ToList();
 			if (cart.Count == 0)
 				throw new Exception("Your cart is empty");
 
 			if (!UseOnePageCheckout())
 				throw new Exception("One page checkout is disabled");
 
-			if ((_workContext.CurrentCustomer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed))
+			if ((customer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed))
 				throw new Exception("Anonymous checkout is not allowed");
 
 			//prevent 2 orders being placed within an X seconds time frame
-			if (!IsMinimumOrderPlacementIntervalValid(_workContext.CurrentCustomer))
+			if (!IsMinimumOrderPlacementIntervalValid(customer))
 				throw new Exception(_localizationService.GetResource("Checkout.MinOrderPlacementInterval"));
 			#endregion
 
-			ProcessPaymentRequest processPaymentRequest = _httpContext.Session["OrderPaymentInfo"] as ProcessPaymentRequest;
-			processPaymentRequest.CustomerId = _workContext.CurrentCustomer.Id;
-			processPaymentRequest.PaymentMethodSystemName = _workContext.CurrentCustomer.SelectedPaymentMethodSystemName;
+			// 1. SaveBilling
+			customer.SetBillingAddress(null);
+
+			// 2. Shipping Address
+			if (checkoutInfo.ShippingMethod == ShippingType.Couries)
+			{
+				Address addressForShipping;
+
+				string addr = checkoutInfo.Address.Trim();
+				Address existingAddress = customer.Addresses.FirstOrDefault(a => a.Address1.Trim().Equals(addr, StringComparison.CurrentCultureIgnoreCase));
+
+				if (existingAddress == null)
+				{
+					addressForShipping = new Address
+					{
+						CreatedOnUtc = DateTime.UtcNow,
+						Address1 = checkoutInfo.Address,
+						PhoneNumber = checkoutInfo.MobilePhone
+					};
+					customer.AddAddress(addressForShipping);
+				}
+				else
+				{
+					addressForShipping = existingAddress;
+				}
+				customer.SetShippingAddress(addressForShipping);
+			}
+
+			//3. Shipping method
+			var shippingOptions = _shippingService.GetShippingOptions(cart, _workContext.CurrentCustomer.ShippingAddress, "Shipping.FixedRate");
+			var shippingMethod = checkoutInfo.ShippingMethod == ShippingType.Couries ? shippingOptions.ShippingOptions[1] : shippingOptions.ShippingOptions[0];
+			_customerService.SaveCustomerAttribute<ShippingOption>(customer, SystemCustomerAttributeNames.LastShippingOption, shippingMethod);
+
+			// 4. Payment method
+			string paymentMethodSysName = "Payments.CashOnDelivery";
+			customer.SelectedPaymentMethodSystemName = paymentMethodSysName;
+
+
+			_customerService.UpdateCustomer(_workContext.CurrentCustomer);
+
+			// Ordering...
+
+			IPaymentMethod paymentMethod = _paymentService.LoadPaymentMethodBySystemName(paymentMethodSysName);
+			var paymentControllerType = paymentMethod.GetControllerType();
+			var paymentController = DependencyResolver.Current.GetService(paymentControllerType) as BaseNopPaymentController;
+
+			var processPaymentRequest = paymentController.GetPaymentInfo(new FormCollection());
+
+			processPaymentRequest.CustomerId = customer.Id;
+			processPaymentRequest.PaymentMethodSystemName = customer.SelectedPaymentMethodSystemName;
+
 			var placeOrderResult = _orderProcessingService.PlaceOrder(processPaymentRequest);
+			if (placeOrderResult.Success)
+			{
+				var postProcessPaymentRequest = new PostProcessPaymentRequest()
+					{
+						Order = placeOrderResult.PlacedOrder
+					};
+				_paymentService.PostProcessPayment(postProcessPaymentRequest);
+			}
+			else
+			{
+				throw new Exception("Не удалось создать заказ.");
+			}
+
+			return new JsonNetResult
+			{
+				Data = new
+				{
+					redirectUrl = Url.Action("Completed")
+				}
+			};
 		}
 
 		#endregion
+	}
+
+	public enum ShippingType
+	{
+		FromStore = 0,
+		Couries = 1
+	}
+
+	public class CheckoutDTO
+	{
+		public string MobilePhone;
+		public string Address;
+		public string Comments;
+		public ShippingType ShippingMethod;
 	}
 }

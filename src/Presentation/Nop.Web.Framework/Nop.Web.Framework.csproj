@@ -55,6 +55,9 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Recaptcha">
       <HintPath>..\..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
     </Reference>
@@ -87,6 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckAffiliateAttribute.cs" />
+    <Compile Include="HandlesExceptionsAttribute.cs" />
+    <Compile Include="JsonNetResult.cs" />
     <Compile Include="Mvc\Routes\GuidConstraint.cs" />
     <Compile Include="StoreClosedAttribute.cs" />
     <Compile Include="StoreLastVisitedPageAttribute.cs" />

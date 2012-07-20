@@ -5,6 +5,7 @@
 	this.address = ko.observable('').extend({ forCourierRequired: { shippingType: this.shippingType } });
 	this.selectedAddress = ko.observable('');
 	this.note = ko.observable('');
+	this.checkoutStatus = ko.observable('gatheringInfo'); // values: gatheringInfo, pending, done
 	
 	// validation
 	//this.mobilePhone.extend({ required: true });
@@ -15,9 +16,30 @@
 	var self = this;
 
 	this.submit = function () {
-		
+		self.checkoutStatus('pending');
+
+		var checkoutInfo = {
+			shippingType: self.shippingType(),
+			mobilePhone: self.mobilePhone(),
+			address: self.address(),
+			note: self.note()
+		};
+		checkoutService.confirmFastCheckout(checkoutInfo)
+			.done(checkoutCompleted)
+			.fail(checkoutFailed);
 	};
 
+	function checkoutCompleted(result) {
+		self.checkoutStatus('done');
+		window.location.href = result.redirectUrl;
+	}
+	
+	function checkoutFailed(rowRes) {
+		self.checkoutStatus('gatheringInfo');
+		var res = JSON.parse(rowRes.responseText);
+		alert('Не удалось обработать заказ: ' + res.errors);
+	}
+	
 	function setMobilPhone(value) {
 		if (!self.mobilePhone()) {
 			self.mobilePhone(value);

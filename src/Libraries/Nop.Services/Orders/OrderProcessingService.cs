@@ -455,7 +455,7 @@ namespace Nop.Services.Orders
 
                 //billing address
                 Address billingAddress = null;
-                if (!processPaymentRequest.IsRecurringPayment)
+                /*if (!processPaymentRequest.IsRecurringPayment)
                 {
                     if (customer.BillingAddress == null)
                         throw new NopException("Billing address is not provided");
@@ -477,7 +477,7 @@ namespace Nop.Services.Orders
                     billingAddress = (Address)initialOrder.BillingAddress.Clone();
                     if (billingAddress.Country != null && !billingAddress.Country.AllowsBilling)
                         throw new NopException(string.Format("Country '{0}' is not allowed for billing", billingAddress.Country.Name));
-                }
+                }*/
                 
                 //load and validate customer shopping cart
                 IList<ShoppingCartItem> cart = null;
