@@ -1,4 +1,6 @@
-﻿var CheckoutVM = function (first, last) {
+﻿var CheckoutVM = function (subTotal, courierShippingRate) {
+	var self = this;
+	
 	this.shippingType = ko.observable('fromStore'); // courier or fromStore
 	this.existingAddresses = [];
 	this.mobilePhone = ko.observable('').extend({ minLength: 8, required: true });
@@ -7,23 +9,29 @@
 	this.note = ko.observable('');
 	this.checkoutStatus = ko.observable('gatheringInfo'); // values: gatheringInfo, pending, done
 	
-	// validation
-	//this.mobilePhone.extend({ required: true });
-	//this.address = ko.observable('');
-	//this.selectedAddress = ko.observable('');
-	//this.note = ko.observable('');
+	this.courierPrice = courierShippingRate || 50;
+	
 
-	var self = this;
+	this.shippingPrice = ko.computed(function() {
+		return self.shippingType() == 'fromStore' ? 0 : self.courierPrice;
+	});
+
+	this.totalPrice = ko.computed(function() {
+		return subTotal + self.shippingPrice();
+	});
+	
+	
 
 	this.submit = function () {
 		self.checkoutStatus('pending');
 
 		var checkoutInfo = {
-			shippingType: self.shippingType(),
-			mobilePhone: self.mobilePhone(),
-			address: self.address(),
-			note: self.note()
+			ShippingMethodStr: self.shippingType(),
+			MobilePhone: self.mobilePhone(),
+			Address: self.address(),
+			Comments: self.note()
 		};
+
 		checkoutService.confirmFastCheckout(checkoutInfo)
 			.done(checkoutCompleted)
 			.fail(checkoutFailed);

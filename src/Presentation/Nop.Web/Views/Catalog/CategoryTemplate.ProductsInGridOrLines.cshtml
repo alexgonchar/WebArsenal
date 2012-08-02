@@ -103,7 +103,7 @@
             {
                 <div class="product-viewmode">
                     <span>@T("Categories.ViewMode")</span>
-                    @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);" })
+                    @Html.DropDownList("products-viewmode", Model.PagingFilteringContext.AvailableViewModes, new { onchange = "setLocation(this.value);", @class = "input-small" })
                 </div>
             }   
     
@@ -113,7 +113,7 @@
             {
                 <div class="product-sorting">
                     <span>@T("Categories.OrderBy")</span>
-                    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);" })
+                    @Html.DropDownList("products-orderby", Model.PagingFilteringContext.AvailableSortOptions, new { onchange = "setLocation(this.value);", @class = "input-medium" })
                 </div>
             }
     

@@ -6,6 +6,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Nop.Core;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -30,6 +32,7 @@ using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Security;
 using Nop.Web.Models.Checkout;
 using Nop.Web.Models.Common;
+using Nop.Web.Models.ShoppingCart;
 
 namespace Nop.Web.Controllers
 {
@@ -865,7 +868,34 @@ namespace Nop.Web.Controllers
 			if ((_workContext.CurrentCustomer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed))
 				return new HttpUnauthorizedResult();
 
-			var model = new FastCheckoutModel();
+
+
+			//subtotal
+			decimal orderSubTotalDiscountAmountBase = decimal.Zero;
+			Discount orderSubTotalAppliedDiscount = null;
+			decimal subTotalWithoutDiscountBase = decimal.Zero;
+			decimal subTotalWithDiscountBase = decimal.Zero;
+
+			_orderTotalCalculationService.GetShoppingCartSubTotal(
+				cart,
+				out orderSubTotalDiscountAmountBase,
+				out orderSubTotalAppliedDiscount,
+				out subTotalWithoutDiscountBase,
+				out subTotalWithDiscountBase
+			);
+
+			// courier shipping rate
+			var shippingOptions = _shippingService.GetShippingOptions(cart, _workContext.CurrentCustomer.ShippingAddress, "Shipping.FixedRate");
+			var shippingMethod = shippingOptions.ShippingOptions[1];
+			decimal r = shippingMethod.Rate;
+
+			// create model
+			var model = new FastCheckoutModel
+				{
+					SubTotal = subTotalWithoutDiscountBase,
+					CourierShippingRate = r
+				};
+
 			return View("FastCheckout", model);
 
 			/*var model = new OnePageCheckoutModel()
@@ -1501,9 +1531,12 @@ namespace Nop.Web.Controllers
 			}, JsonRequestBehavior.AllowGet);
 		}
 
+		[HttpPost]
 		[HandlesExceptions]
 		public ActionResult ConfirmFastCheckout(CheckoutDTO checkoutInfo)
 		{
+			checkoutInfo.UpdateShippingMethod();
+
 			var customer = _workContext.CurrentCustomer;
 
 			#region validation
@@ -1527,7 +1560,7 @@ namespace Nop.Web.Controllers
 			customer.SetBillingAddress(null);
 
 			// 2. Shipping Address
-			if (checkoutInfo.ShippingMethod == ShippingType.Couries)
+			if (checkoutInfo.ShippingMethod == ShippingType.courier)
 			{
 				Address addressForShipping;
 
@@ -1553,7 +1586,7 @@ namespace Nop.Web.Controllers
 
 			//3. Shipping method
 			var shippingOptions = _shippingService.GetShippingOptions(cart, _workContext.CurrentCustomer.ShippingAddress, "Shipping.FixedRate");
-			var shippingMethod = checkoutInfo.ShippingMethod == ShippingType.Couries ? shippingOptions.ShippingOptions[1] : shippingOptions.ShippingOptions[0];
+			var shippingMethod = checkoutInfo.ShippingMethod == ShippingType.courier ? shippingOptions.ShippingOptions[1] : shippingOptions.ShippingOptions[0];
 			_customerService.SaveCustomerAttribute<ShippingOption>(customer, SystemCustomerAttributeNames.LastShippingOption, shippingMethod);
 
 			// 4. Payment method
@@ -1575,11 +1608,12 @@ namespace Nop.Web.Controllers
 			processPaymentRequest.PaymentMethodSystemName = customer.SelectedPaymentMethodSystemName;
 
 			var placeOrderResult = _orderProcessingService.PlaceOrder(processPaymentRequest);
+			var order = placeOrderResult.PlacedOrder;
 			if (placeOrderResult.Success)
 			{
 				var postProcessPaymentRequest = new PostProcessPaymentRequest()
 					{
-						Order = placeOrderResult.PlacedOrder
+						Order = order
 					};
 				_paymentService.PostProcessPayment(postProcessPaymentRequest);
 			}
@@ -1587,6 +1621,26 @@ namespace Nop.Web.Controllers
 			{
 				throw new Exception("Не удалось создать заказ.");
 			}
+
+			// Add comments: Note and Modile Phone
+			if (!string.IsNullOrWhiteSpace(checkoutInfo.Comments))
+			{
+				order.OrderNotes.Add(new OrderNote
+					{
+						Note = checkoutInfo.Comments,
+						DisplayToCustomer = true,
+						CreatedOnUtc = DateTime.UtcNow
+					});
+			}
+
+			order.OrderNotes.Add(new OrderNote
+			{
+				Note = "Мобильный телефон: " + checkoutInfo.MobilePhone,
+				DisplayToCustomer = false,
+				CreatedOnUtc = DateTime.UtcNow
+			});
+
+			_orderService.UpdateOrder(order);
 
 			return new JsonNetResult
 			{
@@ -1602,15 +1656,32 @@ namespace Nop.Web.Controllers
 
 	public enum ShippingType
 	{
-		FromStore = 0,
-		Couries = 1
+		fromStore = 0,
+		courier = 1
 	}
 
 	public class CheckoutDTO
 	{
-		public string MobilePhone;
-		public string Address;
-		public string Comments;
-		public ShippingType ShippingMethod;
+		public string MobilePhone { get; set; }
+		public string Address { get; set; }
+		public string Comments { get; set; }
+		public string ShippingMethodStr { get; set; }
+		public ShippingType ShippingMethod { get; set; }
+
+		public void UpdateShippingMethod()
+		{
+			switch (ShippingMethodStr)
+			{
+				case "fromStore":
+					ShippingMethod = ShippingType.fromStore;
+					break;
+				case "courier":
+					ShippingMethod = ShippingType.courier;
+					break;
+				default:
+					ShippingMethod = ShippingType.fromStore;
+					break;
+			}
+		}
 	}
 }

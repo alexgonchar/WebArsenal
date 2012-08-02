@@ -14,10 +14,10 @@
 		};
 
 		var execParams = jQuery.extend(defParams, params);
-		execParams.data = jQuery.toJSON(params.data);
+		execParams.data = JSON.stringify(execParams.data); // jQuery.toJSON(params.data);
 
 		// =========== AJAX CALL ================
-		var requestPromise = jQuery.ajax(params);
+		var requestPromise = jQuery.ajax(execParams);
 		// ======================================
 
 		return requestPromise;

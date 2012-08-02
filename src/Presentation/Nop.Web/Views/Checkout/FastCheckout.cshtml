@@ -1,4 +1,5 @@
 ﻿@model FastCheckoutModel
+@using System.Globalization
 @using Nop.Web.Framework.UI;
 @using Nop.Web.Framework;
 @using Nop.Web.Models.Checkout;
@@ -7,18 +8,18 @@
 @{
 	Layout = "~/Views/Shared/_ColumnsOne.cshtml";
 
-	
+
 	/*Html.AddScriptParts(@Url.Content("~/Scripts/wa/BootstrapValidation.js"));*/
-	
+
 	/*Html.AddScriptParts(@Url.Content("~/Scripts/libs/knockout.validation.js"));*/
-	
+
 	Html.AddScriptParts(@Url.Content("~/Scripts/libs/knockout-2.1.0.js"));
 	/*Html.AddScriptParts(@Url.Content("~/Scripts/libs/knockout.validation.min.v0.9.js"));*/
 	Html.AddScriptParts(@Url.Content("~/Scripts/libs/knockout.validation.js"));
 	Html.AddScriptParts(@Url.Content("~/Scripts/wa/basket/CheckoutVM.js"));
 	Html.AddScriptParts(@Url.Content("https://maps.googleapis.com/maps/api/js?sensor=false"));
 	Html.AddScriptParts(@Url.Content("~/Scripts/wa/basket/map.js"));
-	
+
 	var storeLocation = EngineContext.Current.Resolve<Nop.Core.IWebHelper>().GetStoreLocation();
 }
 <div class="checkout-page">
@@ -27,7 +28,7 @@
 	</div>)
 
 	<div id="checkoutPlaceHolder row-fluid show-grid" class="form-search form-horizontal">
-		<div class="span8">
+		<div class="span7">
 			<fieldset>
 
 				<div class="control-group">
@@ -53,7 +54,7 @@
 						<br />
 						<label class="radio">
 							<input id="courier" type="radio" name="shippingType" value="courier" data-bind="checked: shippingType" />
-							Курьер
+							Курьер - по Днепропетровску
 						</label>
 					</div>
 				</div>
@@ -63,7 +64,7 @@
 						<div id="map_canvas"></div>
 					</div>
 				</div>
-				
+
 				<div data-bind="visible: shippingType() == 'courier'">
 					<div class="control-group">
 						<div class="controls">
@@ -77,7 +78,8 @@
 							Адрес
 						</label>
 						<div class="controls">
-							<textarea class="input-xlarge span12" id="address" data-bind="value: address, valueUpdate: 'afterkeydown'" rows="2"></textarea>
+							<textarea class="input-xlarge span12" id="address" data-bind="value: address, valueUpdate: 'afterkeydown'"
+									  rows="2"></textarea>
 						</div>
 					</div>
 				</div>
@@ -91,34 +93,46 @@
 					</div>
 				</div>
 
-				<div class="control-group">
-					<div class="controls">
-						<span class="label label-info">Оплата товара</span> наличными, при получении
-					</div>
-				</div>
-
 			</fieldset>
-
-			<div class="form-actions">
-				<button type="submit" id="save-info-button" name="save-info-button" class="btn btn-primary"
+			
+			@*<div class="form-actions">
+				
+			</div>*@
+		</div>
+		<div class="span1"></div>
+		<div class="span4">
+			<div class="hero-unit">
+				<h2>К оплате: <span class="productPrice"><span data-bind="text: totalPrice()"></span> грн.</span></h2>
+				<p data-bind="visible: shippingPrice() > 0">Включая доcтавку <span data-bind="text: courierPrice"></span> грн.</p>
+				Оплата товара - наличными, при получении
+				<br/>
+				<br/>
+				<button type="submit" id="save-info-button" name="save-info-button" class="btn btn-large btn-success"
 						data-bind="click: submit, enable: isValid() && checkoutStatus() == 'gatheringInfo'">
 					Оформить заказ</button>
+				<br/>
 				<span data-bind="visible: checkoutStatus() == 'pending'">Заказ обрабатывается...</span>
 			</div>
 		</div>
 	</div>
+	
+	<div class="clear"></div>
+		
 
-	<script type="text/javascript">
-		$(function () {
-			ko.validation.init({
-				decorateElement: true,
-				errorElementClass: "error",
-				errorMessageClass: "help-inline"
+		<script type="text/javascript">
+			$(function () {
+				ko.validation.init({
+					decorateElement: true,
+					errorElementClass: "error",
+					errorMessageClass: "help-inline"
+				});
+
+				var subTotal = @Model.SubTotal.ToString("0.00", CultureInfo.InvariantCulture);
+					courierShippingRate = @Model.CourierShippingRate.ToString("0.00", CultureInfo.InvariantCulture);
+				
+					ko.applyBindings(new CheckoutVM(subTotal, courierShippingRate), $('#checkoutPlaceHolder').get(0));
+
+				initMap(document.getElementById("map_canvas"));
 			});
-
-			ko.applyBindings(new CheckoutVM(), $('#checkoutPlaceHolder').get(0));
-			
-			initMap(document.getElementById("map_canvas"));
-		});
-	</script>
-</div>
+		</script>
+	</div>

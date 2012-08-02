@@ -1,13 +1,14 @@
 ﻿function CheckoutService() {
 
 	function getShippingAddresses() {
-		return $.ajax({ url: absolutePath + 'checkout/GetShippingAddresses/' });
+		return ajax.exec({ url: absolutePath + 'checkout/GetShippingAddresses/' });
 	}
 	
 	function confirmFastCheckout(checkoutInfo) {
-		return $.ajax({
+		return ajax.exec({
 			url: absolutePath + 'checkout/ConfirmFastCheckout/',
-			data: checkoutInfo
+			data: checkoutInfo,
+			type: "POST"
 		});
 	}
 	

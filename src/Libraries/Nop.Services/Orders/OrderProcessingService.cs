@@ -612,7 +612,7 @@ namespace Nop.Services.Orders
                 if (!processPaymentRequest.IsRecurringPayment)
                 {
                     orderWeight = _shippingService.GetShoppingCartTotalWeight(cart);
-                    shoppingCartRequiresShipping = cart.RequiresShipping();
+	                shoppingCartRequiresShipping = cart.RequiresShipping();
                 }
                 else
                 {

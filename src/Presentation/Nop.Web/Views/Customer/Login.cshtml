@@ -1,121 +1,120 @@
 ﻿@model Nop.Web.Models.Customer.LoginModel
 @using Nop.Web.Framework.UI.Captcha;
 @{
-    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+	Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
 
-    //title
-    Html.AddTitleParts(T("PageTitle.Login").Text);
+	//title
+	Html.AddTitleParts(T("PageTitle.Login").Text);
 }
 <div class="login-page">
 
-    <div class="row-fluid show-grid">
-        <div class="span12">
-            <div class="page-title">
-                <h1>@T("Account.Login.Welcome")</h1>
-            </div>
-        </div>
-    </div>
+	<div class="row-fluid show-grid">
+		<div class="span12">
+			<div class="page-title">
+				<h1>@T("Account.Login.Welcome")</h1>
+			</div>
+		</div>
+	</div>
 
-    @Html.Row(@<text>@Html.Partial("_ExternalAuthentication.AssociateMessage")</text>)
-    @Html.Row(@<text>@Html.Partial("_ExternalAuthentication.Errors")</text>)
+	@Html.Row(@<text>@Html.Partial("_ExternalAuthentication.AssociateMessage")</text>)
+	@Html.Row(@<text>@Html.Partial("_ExternalAuthentication.Errors")</text>)
+	@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal" }))
+ {
 
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal" }))
-    {
 
-
-        <div class="row-fluid show-grid wrapper">
-            @if (Model.CheckoutAsGuest)
-            {
-                <div class="span4 new-wrapper">
-                    <span class="register-title">@T("Account.Login.CheckoutAsGuestOrRegister")</span>
-                    <div class="checkout-as-guest-or-register-block">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        @Html.Action("TopicBlock", "Topic", new {systemName = "CheckoutAsGuestOrRegister"})
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="buttons">
-                                        <input type="submit" class="btn" onclick="location.href='@Url.RouteUrl("Checkout")'"
+		<div class="row-fluid show-grid wrapper">
+			@if (Model.CheckoutAsGuest)
+   {
+				<div class="span4 new-wrapper">
+					<span class="register-title">@T("Account.Login.CheckoutAsGuestOrRegister")</span>
+					<div class="checkout-as-guest-or-register-block">
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										@Html.Action("TopicBlock", "Topic", new { systemName = "CheckoutAsGuestOrRegister" })
+									</td>
+								</tr>
+								<tr>
+									<td class="buttons">
+										<input type="submit" class="btn" onclick="location.href='@Url.RouteUrl("Checkout")'"
                                                value="@T("Account.Login.CheckoutAsGuest")" />
-                                        <input type="submit" class="btn" onclick="location.href='@Url.RouteUrl("Register")'"
+										<input type="submit" class="btn" onclick="location.href='@Url.RouteUrl("Register")'"
                                                value="@T("Account.Register")" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="span4 new-wrapper">
-                    <span class="register-title">@T("Account.Login.NewCustomer")</span>
-                    <div class="register-block">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        @T("Account.Login.NewCustomerText")
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="buttons">
-                                        <input type="button" class="btn" onclick="location.href='@Url.RouteUrl("Register")'"
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+   }
+   else
+   {
+				<div class="span4 new-wrapper">
+					<span class="register-title">@T("Account.Login.NewCustomer")</span>
+					<div class="register-block">
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										@T("Account.Login.NewCustomerText")
+									</td>
+								</tr>
+								<tr>
+									<td class="buttons">
+										<input type="button" class="btn" onclick="location.href='@Url.RouteUrl("Register")'"
                                                value="@T("Account.Register")" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            }
-            <div class="span4 returning-wrapper">
-                <span class="login-title">@T("Account.Login.ReturningCustomer")</span>
-                <div class="login-block">
-                    <div class="message-error">
-                        @Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text)
-                    </div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+   }
+			<div class="span4 returning-wrapper">
+				<span class="login-title">@T("Account.Login.ReturningCustomer")</span>
+				<div class="login-block">
+					<div class="message-error">
+						@Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text)
+					</div>
 
-                    <fieldset>
-                        @if (Model.UsernamesEnabled)
-                        {
-                            <div class="control-group">
-                                <label class="control-label">@Html.LabelFor(m => m.Username)</label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.Username)
-                                    @Html.ValidationMessageFor(m => m.Username)
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="control-group">
-                                <label class="control-label">
-                                    @Html.LabelFor(m => m.Email)
-                                </label>
-                                <div class="controls">
-                                    @Html.TextBoxFor(m => m.Email)
-                                    @Html.ValidationMessageFor(m => m.Email)
-                                </div>
-                            </div>
-                        }
-                        <div class="control-group">
-                            <label class="control-label">
-                                @Html.LabelFor(m => m.Password)
-                            </label>
-                            <div class="controls">
-                                @Html.PasswordFor(m => m.Password)
-                                @Html.ValidationMessageFor(m => m.Password)
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="controls">
-                                @Html.MyCheckBoxFor(m => m.RememberMe)
-                            </div>
-                        </div>
+					<fieldset>
+						@if (Model.UsernamesEnabled)
+	  {
+							<div class="control-group">
+								<label class="control-label">@Html.LabelFor(m => m.Username)</label>
+								<div class="controls">
+									@Html.TextBoxFor(m => m.Username)
+									@Html.ValidationMessageFor(m => m.Username)
+								</div>
+							</div>
+	  }
+	  else
+	  {
+							<div class="control-group">
+								<label class="control-label">
+									@Html.LabelFor(m => m.Email)
+								</label>
+								<div class="controls">
+									@Html.TextBoxFor(m => m.Email, new { @class = "span12" })
+									@Html.ValidationMessageFor(m => m.Email)
+								</div>
+							</div>
+	  }
+						<div class="control-group">
+							<label class="control-label">
+								@Html.LabelFor(m => m.Password)
+							</label>
+							<div class="controls">
+								@Html.PasswordFor(m => m.Password)
+								@Html.ValidationMessageFor(m => m.Password)
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls">
+								@Html.MyCheckBoxFor(m => m.RememberMe)
+							</div>
+						</div>
 						<div class="control-group">
 							<div class="controls">
 								@Html.RouteLink(T("Account.Login.ForgotPassword").Text, "PasswordRecovery")
@@ -126,24 +125,24 @@
 								<button class="btn btn-primary" type="submit">@T("Account.Login.LoginButton")</button>
 							</div>
 						</div>
-						
-						@if (Model.DisplayCaptcha)
-                        {
-                            <div class="control-group">
-                                @Html.Raw(Html.GenerateCaptcha())
-                            </div>
-                        }
-                    </fieldset>
 
-                </div>
-            </div>
-            <div class="span4 externalauthentication">
-                <span class="login-title">Войти как:</span>
-                <div class="login-block">
-                    @Html.Action("ExternalMethods", "ExternalAuthentication")
-                </div>
-            </div>
-        </div>
-    }
-    @Html.Row(@<text>@Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })</text>)
+						@if (Model.DisplayCaptcha)
+	  {
+							<div class="control-group">
+								@Html.Raw(Html.GenerateCaptcha())
+							</div>
+	  }
+					</fieldset>
+
+				</div>
+			</div>
+			<div class="span4 externalauthentication">
+				<span class="login-title">Войти как:</span>
+				<div class="login-block">
+					@Html.Action("ExternalMethods", "ExternalAuthentication")
+				</div>
+			</div>
+		</div>
+ }
+	@Html.Row(@<text>@Html.Action("TopicBlock", "Topic", new { systemName = "LoginRegistrationInfo" })</text>)
 </div>

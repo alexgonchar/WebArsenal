@@ -4,6 +4,7 @@ namespace Nop.Web.Models.Checkout
 {
 	public class FastCheckoutModel : BaseNopModel
 	{
-		 
+		public decimal SubTotal;
+		public decimal CourierShippingRate;
 	}
 }
