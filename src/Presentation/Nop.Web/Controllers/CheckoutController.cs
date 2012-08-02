@@ -1573,7 +1573,8 @@ namespace Nop.Web.Controllers
 					{
 						CreatedOnUtc = DateTime.UtcNow,
 						Address1 = checkoutInfo.Address,
-						PhoneNumber = checkoutInfo.MobilePhone
+						PhoneNumber = checkoutInfo.MobilePhone,
+						Email = customer.Email
 					};
 					customer.AddAddress(addressForShipping);
 				}
