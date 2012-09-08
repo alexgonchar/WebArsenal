@@ -2,7 +2,7 @@
 	var self = this;
 	
 	this.shippingType = ko.observable('fromStore'); // courier or fromStore
-	this.existingAddresses = [];
+	this.existingAddresses = ko.observableArray();
 	this.mobilePhone = ko.observable('').extend({ minLength: 8, required: true });
 	this.address = ko.observable('').extend({ forCourierRequired: { shippingType: this.shippingType } });
 	this.selectedAddress = ko.observable('');
@@ -70,7 +70,7 @@
 		checkoutService.getShippingAddresses().done(shippingAddressesretrieved);
 		
 		function shippingAddressesretrieved(addresses) {
-			self.existingAddresses = addresses.userAddresses;
+			self.existingAddresses = ko.observableArray(addresses.userAddresses);
 			if (addresses.userAddresses.length > 0) {
 				self.mobilePhone(addresses.userAddresses[0].PhoneNumber);
 			}

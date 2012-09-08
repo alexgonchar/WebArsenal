@@ -69,7 +69,7 @@
 					<div class="control-group">
 						<div class="controls">
 							<select id="existedAddresses"
-									data-bind="options: existingAddresses, optionsText: 'Address1', visible: true, optionsCaption: 'Ваши адреса...', value: selectedAddress">
+									data-bind="visible: existingAddresses().lebgth > 2, options: existingAddresses, optionsText: 'Address1', visible: true, optionsCaption: 'Ваши адреса...', value: selectedAddress">
 							</select>
 						</div>
 					</div>
