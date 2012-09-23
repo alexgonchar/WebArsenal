@@ -37,3 +37,8 @@ src/UpgradeLog.XML
 _UpgradeReport_Files*/
 Thumbs*/
 src/Presentation/Nop.Web/Plugins/**
+src/Deployable/*
+*/Web.Release.config
+*Web.Release.config*
+Web.Release.config
+src/Presentation/Nop.Web/Web.Release.config
